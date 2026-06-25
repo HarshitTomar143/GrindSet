@@ -1,0 +1,140 @@
+{
+  "mockSize": 30,
+  "sections": [
+    {
+      "id": "paper1",
+      "name": "Paper 1",
+      "groups": [
+        {
+          "id": "main",
+          "name": "Subjects",
+          "subjects": [
+            {
+              "id": "child-development-pedagogy",
+              "name": "Child Development & Pedagogy",
+              "total": 269,
+              "mocks": 9,
+              "file": "paper1__main__child-development-pedagogy.json"
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "total": 259,
+              "mocks": 9,
+              "file": "paper1__main__english.json"
+            },
+            {
+              "id": "environmental-studies",
+              "name": "Environmental Studies",
+              "total": 268,
+              "mocks": 9,
+              "file": "paper1__main__environmental-studies.json"
+            },
+            {
+              "id": "hindi",
+              "name": "Hindi",
+              "total": 265,
+              "mocks": 9,
+              "file": "paper1__main__hindi.json"
+            },
+            {
+              "id": "mathematics",
+              "name": "Mathematics",
+              "total": 210,
+              "mocks": 7,
+              "file": "paper1__main__mathematics.json"
+            },
+            {
+              "id": "sanskrit",
+              "name": "Sanskrit",
+              "total": 60,
+              "mocks": 2,
+              "file": "paper1__main__sanskrit.json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paper2",
+      "name": "Paper 2",
+      "groups": [
+        {
+          "id": "science",
+          "name": "Science Stream (Maths & Science)",
+          "subjects": [
+            {
+              "id": "child-development-pedagogy",
+              "name": "Child Development & Pedagogy",
+              "total": 180,
+              "mocks": 6,
+              "file": "paper2__science__child-development-pedagogy.json"
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "total": 157,
+              "mocks": 6,
+              "file": "paper2__science__english.json"
+            },
+            {
+              "id": "hindi",
+              "name": "Hindi",
+              "total": 89,
+              "mocks": 3,
+              "file": "paper2__science__hindi.json"
+            },
+            {
+              "id": "mathematics-science",
+              "name": "Mathematics & Science",
+              "total": 320,
+              "mocks": 11,
+              "file": "paper2__science__mathematics-science.json"
+            }
+          ]
+        },
+        {
+          "id": "sst",
+          "name": "Social Studies Stream",
+          "subjects": [
+            {
+              "id": "child-development-pedagogy",
+              "name": "Child Development & Pedagogy",
+              "total": 180,
+              "mocks": 6,
+              "file": "paper2__sst__child-development-pedagogy.json"
+            },
+            {
+              "id": "english",
+              "name": "English",
+              "total": 177,
+              "mocks": 6,
+              "file": "paper2__sst__english.json"
+            },
+            {
+              "id": "hindi",
+              "name": "Hindi",
+              "total": 179,
+              "mocks": 6,
+              "file": "paper2__sst__hindi.json"
+            },
+            {
+              "id": "sanskrit",
+              "name": "Sanskrit",
+              "total": 30,
+              "mocks": 1,
+              "file": "paper2__sst__sanskrit.json"
+            },
+            {
+              "id": "social-studies",
+              "name": "Social Studies",
+              "total": 360,
+              "mocks": 12,
+              "file": "paper2__sst__social-studies.json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+/node_modules
+/.next
+/out
+*.log
+scratch_dev.log
+.DS_Store
