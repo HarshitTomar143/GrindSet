@@ -1,4 +1,4 @@
-# UPTET Mock Test
+# 🐙 Octopus
 
 A minimalist quiz web app (Next.js) for the UPTET question banks.
 Questions are stored in **PostgreSQL** and seeded from the source Excel files.

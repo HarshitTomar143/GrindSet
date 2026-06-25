@@ -1,8 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "UPTET Mock Test",
-  description: "Practice mock papers for UPTET Paper 1 & Paper 2",
+  title: "Octopus",
+  applicationName: "Octopus",
+  description: "Octopus — practice mock papers for UPTET Paper 1 & Paper 2",
 };
 
 export default function RootLayout({ children }) {
@@ -11,8 +12,8 @@ export default function RootLayout({ children }) {
       <body>
         <header className="site-header">
           <a href="/" className="brand">
-            <span className="brand-mark">UP</span>
-            <span>UPTET Mock Test</span>
+            <span className="brand-mark">🐙</span>
+            <span>Octopus</span>
           </a>
         </header>
         <main className="container">{children}</main>
