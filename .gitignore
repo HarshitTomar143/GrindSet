@@ -3,4 +3,11 @@
 /out
 *.log
 scratch_dev.log
+
+# env files (keep the example, ignore real secrets like your Neon URL)
+.env
+.env.local
+.env*.local
+!.env.example
+
 .DS_Store

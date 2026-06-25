@@ -17,7 +17,10 @@ export default function RootLayout({ children }) {
         </header>
         <main className="container">{children}</main>
         <footer className="site-footer">
-          Practice papers · 30 questions each · scored at the end
+          Practice papers · 30 questions each · scored at the end ·{" "}
+          <a href="/admin" style={{ textDecoration: "underline" }}>
+            Admin
+          </a>
         </footer>
       </body>
     </html>

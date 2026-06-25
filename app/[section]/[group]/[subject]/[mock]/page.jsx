@@ -24,22 +24,35 @@ export default function QuizPage() {
   const [submitted, setSubmitted] = useState(false);
   const [seconds, setSeconds] = useState(0);
 
-  // Load manifest -> locate subject -> load its question file -> slice the mock.
+  const [user, setUser] = useState(null); // {name, email}
+  const [nameInput, setNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [saveState, setSaveState] = useState("idle"); // idle|saving|saved|error
+
+  // remember the test-taker between tests (browser-local)
+  useEffect(() => {
+    try {
+      const u = JSON.parse(localStorage.getItem("quizUser") || "null");
+      if (u && u.name) setUser(u);
+    } catch {}
+  }, []);
+
+  // Load manifest (for names) + the mock's questions from the API (DB-backed).
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
-        const man = await fetch("/data/manifest.json").then((r) => r.json());
+        const man = await fetch("/api/manifest").then((r) => r.json());
+        if (man.error) throw new Error(man.error);
         const sec = man.sections.find((s) => s.id === section);
         const grp = sec?.groups.find((g) => g.id === group);
         const subj = grp?.subjects.find((s) => s.id === subject);
         if (!subj) throw new Error("Subject not found");
-        const all = await fetch(`/data/questions/${subj.file}`).then((r) =>
-          r.json()
-        );
-        const size = man.mockSize;
-        const start = (mockNum - 1) * size;
-        const slice = all.slice(start, start + size);
+
+        const res = await fetch(
+          `/api/quiz?section=${section}&group=${group}&subject=${subject}&mock=${mockNum}`
+        ).then((r) => r.json());
+        if (res.error) throw new Error(res.error);
         if (!alive) return;
         setMeta({
           sectionName: sec.name,
@@ -50,7 +63,7 @@ export default function QuizPage() {
           groupBase: `/${section}/${group}`,
           sectionBase: `/${section}`,
         });
-        setQuestions(slice);
+        setQuestions(res.questions);
       } catch (e) {
         if (alive) setError(e.message || "Failed to load");
       }
@@ -60,12 +73,12 @@ export default function QuizPage() {
     };
   }, [section, group, subject, mockNum]);
 
-  // count-up timer until submitted
+  // count-up timer: runs once the test-taker is identified, until submitted
   useEffect(() => {
-    if (submitted || !questions) return;
+    if (submitted || !questions || !user) return;
     const id = setInterval(() => setSeconds((s) => s + 1), 1000);
     return () => clearInterval(id);
-  }, [submitted, questions]);
+  }, [submitted, questions, user]);
 
   const results = useMemo(() => {
     if (!submitted || !questions) return null;
@@ -89,21 +102,142 @@ export default function QuizPage() {
     );
   if (!questions || !meta) return <div className="loading">Loading paper…</div>;
 
+  const saveUser = () => {
+    const name = nameInput.trim();
+    if (!name) return;
+    const u = { name, email: emailInput.trim() };
+    try {
+      localStorage.setItem("quizUser", JSON.stringify(u));
+    } catch {}
+    setUser(u);
+  };
+
+  const changeUser = () => {
+    try {
+      localStorage.removeItem("quizUser");
+    } catch {}
+    setNameInput(user?.name || "");
+    setEmailInput(user?.email || "");
+    setUser(null);
+  };
+
+  // ---------- NAME GATE ----------
+  if (!user) {
+    return (
+      <div style={{ maxWidth: 420, margin: "20px auto" }}>
+        <button
+          className="back-btn"
+          onClick={() => (window.location.href = meta.base)}
+        >
+          ← Mock papers
+        </button>
+        <h1 className="page-title">Before you begin</h1>
+        <p className="page-sub">
+          {meta.subjectName} · Mock Paper {mockNum} · {questions.length} questions
+        </p>
+        <form
+          className="q-card"
+          onSubmit={(e) => {
+            e.preventDefault();
+            saveUser();
+          }}
+        >
+          <label className="field-label">Your name *</label>
+          <input
+            className="text-input"
+            value={nameInput}
+            autoFocus
+            onChange={(e) => setNameInput(e.target.value)}
+            placeholder="e.g. Priya Sharma"
+          />
+          <label className="field-label" style={{ marginTop: 12 }}>
+            Email (optional)
+          </label>
+          <input
+            className="text-input"
+            type="email"
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
+            placeholder="you@example.com"
+          />
+          <button
+            className="btn"
+            type="submit"
+            disabled={!nameInput.trim()}
+            style={{ marginTop: 16, width: "100%" }}
+          >
+            Start test →
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   const answeredCount = Object.keys(answers).length;
 
   const select = (idx, letter) =>
     setAnswers((prev) => ({ ...prev, [idx]: letter }));
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const unanswered = questions.length - answeredCount;
     const msg =
       unanswered > 0
         ? `You have ${unanswered} unanswered question(s). Submit anyway?`
         : "Submit your answers?";
-    if (window.confirm(msg)) {
-      setSubmitted(true);
-      window.scrollTo(0, 0);
+    if (!window.confirm(msg)) return;
+
+    let correct = 0,
+      wrong = 0,
+      skipped = 0;
+    questions.forEach((qq, i) => {
+      const a = answers[i];
+      if (!a) skipped++;
+      else if (a === qq.correct) correct++;
+      else wrong++;
+    });
+    const percentage = Math.round((correct / questions.length) * 100);
+
+    setSubmitted(true);
+    window.scrollTo(0, 0);
+
+    setSaveState("saving");
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.name,
+          email: user.email,
+          sectionId: section,
+          sectionName: meta.sectionName,
+          groupId: group,
+          groupName: meta.groupName,
+          subjectId: subject,
+          subjectName: meta.subjectName,
+          mock: mockNum,
+          total: questions.length,
+          correct,
+          wrong,
+          skipped,
+          percentage,
+          duration: seconds,
+          answers,
+        }),
+      });
+      setSaveState(res.ok ? "saved" : "error");
+    } catch {
+      setSaveState("error");
     }
+  };
+
+  const goBack = () => {
+    if (
+      !submitted &&
+      answeredCount > 0 &&
+      !window.confirm("Leave this test? Your answers will be lost.")
+    )
+      return;
+    window.location.href = meta.base;
   };
 
   // ---------- REPORT CARD ----------
@@ -111,9 +245,16 @@ export default function QuizPage() {
     const pct = Math.round((results.correct / results.total) * 100);
     return (
       <div>
+        <button className="back-btn" onClick={goBack}>
+          ← Mock papers
+        </button>
         <h1 className="page-title">Report Card</h1>
         <p className="page-sub">
-          {meta.subjectName} · Mock Paper {mockNum} · time {fmtTime(seconds)}
+          {user.name} · {meta.subjectName} · Mock Paper {mockNum} · time{" "}
+          {fmtTime(seconds)}
+          {saveState === "saving" && " · saving result…"}
+          {saveState === "saved" && " · ✓ result saved"}
+          {saveState === "error" && " · ⚠ result not saved"}
         </p>
 
         <div className="scorebox">
@@ -215,6 +356,9 @@ export default function QuizPage() {
   const q = questions[current];
   return (
     <div>
+      <button className="back-btn" onClick={goBack}>
+        ← Mock papers
+      </button>
       <div className="breadcrumb">
         <a href="/">Home</a>
         <span className="sep">/</span>
@@ -233,9 +377,17 @@ export default function QuizPage() {
 
       <div className="quiz-bar">
         <div className="meta">
-          <strong>{meta.subjectName}</strong> · Mock Paper {mockNum} ·{" "}
-          Question <strong>{current + 1}</strong> of {questions.length} ·{" "}
-          Answered <strong>{answeredCount}</strong>
+          <div>
+            <strong>{meta.subjectName}</strong> · Mock Paper {mockNum} ·{" "}
+            Question <strong>{current + 1}</strong> of {questions.length} ·{" "}
+            Answered <strong>{answeredCount}</strong>
+          </div>
+          <div className="muted-sm" style={{ marginTop: 4 }}>
+            {user.name}{" "}
+            <button className="linklike" onClick={changeUser}>
+              (change)
+            </button>
+          </div>
         </div>
         <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
           <span className="timer">⏱ {fmtTime(seconds)}</span>

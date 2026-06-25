@@ -1,19 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Convert the UPTET Excel question banks into JSON consumed by the Next.js app.
+Parse the UPTET Excel question banks into JSON used to seed the database.
+(Run `node seed.mjs` afterwards to load these into PostgreSQL.)
 
 Outputs:
-  public/data/manifest.json                  -> nav tree (sections/groups/subjects + counts)
-  public/data/questions/<section>__<subject>.json -> full question list per subject
+  seed_data/manifest.json                  -> nav tree (sections/groups/subjects + counts)
+  seed_data/questions/<section>__<subject>.json -> full question list per subject
 
-Run:  python build_data.py
+Run:  python build_data.py   (or `npm run setup` to also seed the DB)
 """
 import os, re, json, math, sys
 import openpyxl
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-OUT_DIR = os.path.join(ROOT, "public", "data")
+OUT_DIR = os.path.join(ROOT, "seed_data")
 Q_DIR = os.path.join(OUT_DIR, "questions")
 MOCK_SIZE = 30
 

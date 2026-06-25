@@ -6,6 +6,7 @@ import {
   findSubject,
 } from "@/lib/data";
 import Breadcrumb from "@/components/Breadcrumb";
+import BackLink from "@/components/BackLink";
 
 export default async function SubjectPage({ params }) {
   const manifest = await getManifest();
@@ -21,8 +22,15 @@ export default async function SubjectPage({ params }) {
     return { n: i + 1, count };
   });
 
+  const backHref =
+    section.groups.length > 1
+      ? `/${section.id}/${group.id}`
+      : `/${section.id}`;
+  const backLabel = section.groups.length > 1 ? group.name : section.name;
+
   return (
     <div>
+      <BackLink href={backHref} label={backLabel} />
       <Breadcrumb
         items={[
           { label: "Home", href: "/" },

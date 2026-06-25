@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getManifest, findSection } from "@/lib/data";
 import Breadcrumb from "@/components/Breadcrumb";
+import BackLink from "@/components/BackLink";
 import SubjectGrid from "@/components/SubjectGrid";
 
 export default async function SectionPage({ params }) {
@@ -18,6 +19,7 @@ export default async function SectionPage({ params }) {
     const g = section.groups[0];
     return (
       <div>
+        <BackLink href="/" label="Home" />
         <Breadcrumb items={crumbs} />
         <h1 className="page-title">{section.name}</h1>
         <p className="page-sub">Pick a subject to see its mock papers.</p>

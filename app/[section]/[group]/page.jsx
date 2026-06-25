@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getManifest, findSection, findGroup } from "@/lib/data";
 import Breadcrumb from "@/components/Breadcrumb";
+import BackLink from "@/components/BackLink";
 import SubjectGrid from "@/components/SubjectGrid";
 
 export default async function GroupPage({ params }) {
@@ -11,6 +12,7 @@ export default async function GroupPage({ params }) {
 
   return (
     <div>
+      <BackLink href={`/${section.id}`} label={section.name} />
       <Breadcrumb
         items={[
           { label: "Home", href: "/" },
