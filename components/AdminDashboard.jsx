@@ -81,6 +81,11 @@ export default function AdminDashboard() {
   const [summary, setSummary] = useState(null);
   const [rows, setRows] = useState(null);
   const [reports, setReports] = useState(null);
+  const [manifest, setManifest] = useState(null);
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedGroup, setExpandedGroup] = useState(null);
+  const [expandedSubject, setExpandedSubject] = useState(null);
   const [error, setError] = useState(null);
 
   const [search, setSearch] = useState("");
@@ -90,16 +95,19 @@ export default function AdminDashboard() {
   useEffect(() => {
     (async () => {
       try {
-        const [s, l, rep] = await Promise.all([
+        const [s, l, rep, man] = await Promise.all([
           fetch("/api/admin/summary").then((r) => r.json()),
           fetch("/api/admin/submissions").then((r) => r.json()),
           fetch("/api/admin/reports").then((r) => r.json()),
+          fetch("/api/manifest").then((r) => r.json()),
         ]);
         if (s.error) throw new Error(s.error);
         if (l.error) throw new Error(l.error);
+        if (man.error) throw new Error(man.error);
         setSummary(s);
         setRows(l.submissions);
         setReports(rep.reports || []);
+        setManifest(man);
       } catch (e) {
         setError(e.message);
       }
@@ -164,6 +172,118 @@ export default function AdminDashboard() {
       <p className="page-sub" style={{ marginTop: 6 }}>
         Every test submission, who took it, and how they scored.
       </p>
+
+      <div style={{ marginBottom: 24 }}>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setDownloadOpen((open) => !open)}
+        >
+          Download paper
+        </button>
+        {downloadOpen && manifest && (
+          <div
+            style={{
+              marginTop: 16,
+              border: "1px solid rgba(120, 130, 170, 0.24)",
+              borderRadius: 14,
+              padding: 16,
+            }}
+          >
+            {manifest.sections.map((section) => (
+              <div key={section.id} style={{ marginBottom: 16 }}>
+                <button
+                  type="button"
+                  className="btn ghost"
+                  onClick={() => {
+                    setExpandedSection((current) =>
+                      current === section.id ? null : section.id
+                    );
+                    setExpandedGroup(null);
+                    setExpandedSubject(null);
+                  }}
+                >
+                  {section.name}
+                </button>
+                {expandedSection === section.id && (
+                  <div style={{ marginLeft: 16, marginTop: 12 }}>
+                    {section.groups.map((group) => (
+                      <div key={group.id} style={{ marginBottom: 14 }}>
+                        <button
+                          type="button"
+                          className="btn ghost"
+                          onClick={() => {
+                            setExpandedGroup((current) =>
+                              current === group.id ? null : group.id
+                            );
+                            setExpandedSubject(null);
+                          }}
+                        >
+                          {group.name}
+                        </button>
+                        {expandedGroup === group.id && (
+                          <div style={{ marginLeft: 16, marginTop: 12 }}>
+                            {group.subjects.map((subject) => {
+                              const subjectKey = `${section.id}|${group.id}|${subject.id}`;
+                              return (
+                                <div key={subject.id} style={{ marginBottom: 12 }}>
+                                  <button
+                                    type="button"
+                                    className="btn ghost"
+                                    onClick={() =>
+                                      setExpandedSubject((current) =>
+                                        current === subjectKey ? null : subjectKey
+                                      )
+                                    }
+                                  >
+                                    {subject.name}
+                                  </button>
+                                  {expandedSubject === subjectKey && (
+                                    <div
+                                      style={{
+                                        marginLeft: 16,
+                                        marginTop: 12,
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+                                        gap: 8,
+                                      }}
+                                    >
+                                      {Array.from({ length: subject.mocks }, (_, index) => (
+                                        <button
+                                          key={index}
+                                          type="button"
+                                          className="btn ghost"
+                                          onClick={() =>
+                                            downloadMockPaperAsJson({
+                                              section_id: section.id,
+                                              group_id: group.id,
+                                              subject_id: subject.id,
+                                              section_name: section.name,
+                                              group_name: group.name,
+                                              subject_name: subject.name,
+                                              mock_num: index + 1,
+                                            })
+                                          }
+                                        >
+                                          Mock {index + 1}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <div className="admin-cards">
         <div className="admin-card" style={{ "--i": 0 }}>
