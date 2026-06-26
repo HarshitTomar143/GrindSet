@@ -109,7 +109,7 @@ export default async function Home() {
                 {subjectCount} subjects · {mockCount} mock papers in this app
               </div>
               <div className="card-qualify">{info.qualify}</div>
-              <span className="pill">Start practising →</span>
+              <span className="pill">Start practicing →</span>
             </a>
           );
         })}

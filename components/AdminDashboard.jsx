@@ -18,6 +18,64 @@ function pctClass(p) {
   return "wrong";
 }
 
+function slugify(value) {
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "mock-paper";
+}
+
+async function downloadMockPaperAsJson(test) {
+  try {
+    const manifestRes = await fetch("/api/manifest");
+    const manifest = await manifestRes.json();
+    if (manifest.error) throw new Error(manifest.error);
+
+    const section = manifest.sections.find((s) => s.name === test.section_name);
+    const group = section?.groups.find((g) =>
+      g.subjects.some((s) => s.name === test.subject_name)
+    );
+    const subject = group?.subjects.find((s) => s.name === test.subject_name);
+
+    if (!section || !group || !subject) {
+      throw new Error("Could not find this mock paper in the manifest.");
+    }
+
+    const res = await fetch(
+      `/api/quiz?section=${section.id}&group=${group.id}&subject=${subject.id}&mock=${test.mock_num}`
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    const payload = {
+      section: section.name,
+      group: group.name,
+      subject: subject.name,
+      mock: test.mock_num,
+      questions: (data.questions || []).map((q) => ({
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correct,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${slugify(section.name)}-${slugify(group.name)}-${slugify(subject.name)}-mock-${test.mock_num}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert(e.message || "Failed to download mock paper.");
+  }
+}
+
 export default function AdminDashboard() {
   const router = useRouter();
   const [summary, setSummary] = useState(null);
@@ -137,6 +195,7 @@ export default function AdminDashboard() {
                   <th>Attempts</th>
                   <th>Avg %</th>
                   <th>Best %</th>
+                  <th>Export</th>
                 </tr>
               </thead>
               <tbody>
@@ -148,6 +207,18 @@ export default function AdminDashboard() {
                     <td>{t.attempts}</td>
                     <td>{t.avg_pct}%</td>
                     <td>{t.best_pct}%</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          downloadMockPaperAsJson(t);
+                        }}
+                      >
+                        Download JSON
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -252,6 +323,7 @@ export default function AdminDashboard() {
               <th>—</th>
               <th>Time</th>
               <th>When</th>
+              <th>Export</th>
             </tr>
           </thead>
           <tbody>
@@ -282,11 +354,23 @@ export default function AdminDashboard() {
                 <td>{r.skipped}</td>
                 <td>{fmtTime(r.duration_seconds)}</td>
                 <td className="muted-sm">{fmtDate(r.created_at)}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn ghost"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      downloadMockPaperAsJson(r);
+                    }}
+                  >
+                    Download JSON
+                  </button>
+                </td>
               </tr>
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} style={{ textAlign: "center", color: "var(--muted)" }}>
+                <td colSpan={10} style={{ textAlign: "center", color: "var(--muted)" }}>
                   No submissions match your filters.
                 </td>
               </tr>
