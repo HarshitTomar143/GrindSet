@@ -270,6 +270,124 @@ a { color: inherit; text-decoration: none; }
 .table tr.row-link { cursor: pointer; transition: background 0.12s; }
 .table tr.row-link:hover { background: var(--accent-soft); }
 
+/* ================= reading size ================= */
+:root { --reading-scale: 1; }
+:root[data-font="sm"] { --reading-scale: 0.9; }
+:root[data-font="md"] { --reading-scale: 1; }
+:root[data-font="lg"] { --reading-scale: 1.16; }
+:root[data-font="xl"] { --reading-scale: 1.34; }
+.q-text { font-size: calc(19px * var(--reading-scale)); }
+.option .otext { font-size: calc(15px * var(--reading-scale)); }
+.explain { font-size: calc(14px * var(--reading-scale)); }
+
+/* ================= dark theme ================= */
+:root[data-theme="dark"] {
+  --bg: #15141b;
+  --card: #211f2a;
+  --card-solid: #211f2a;
+  --ink: #ececf1;
+  --ink-2: #c6c3d4;
+  --muted: #918da6;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.17);
+  --accent: #8b7df0;
+  --accent-strong: #a99cf7;
+  --accent-soft: #272340;
+  --accent-line: #3b3663;
+  --accent-ink: #ffffff;
+  --green: #34d399; --green-soft: #14271f;
+  --red: #fb7185;   --red-soft: #2c1620;
+  --amber: #fbbf24; --amber-soft: #2a2210;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+:root[data-theme="dark"] body { background: var(--bg); }
+:root[data-theme="dark"] .site-header { background: rgba(21, 20, 27, 0.82); }
+:root[data-theme="dark"] .quiz-bar { background: rgba(33, 31, 42, 0.86); }
+:root[data-theme="dark"] .option { background: #1c1a25; }
+:root[data-theme="dark"] .option.selected { background: var(--accent); color: #fff; }
+:root[data-theme="dark"] .modal-backdrop { background: rgba(0, 0, 0, 0.6); }
+
+/* ================= header / theme controls ================= */
+.header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.theme-controls { display: flex; gap: 8px; }
+.tc-btn {
+  width: 38px; height: 38px; border-radius: 11px; border: 1px solid var(--line-strong);
+  background: var(--card); color: var(--ink-2); cursor: pointer; display: grid; place-items: center;
+  font-size: 16px; transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.tc-btn:hover { border-color: var(--accent-line); color: var(--accent-strong); background: var(--accent-soft); }
+.tc-font { display: flex; align-items: baseline; gap: 1px; font-weight: 700; }
+.tc-font .tc-a-sm { font-size: 11px; }
+.tc-font .tc-a-lg { font-size: 16px; }
+
+/* ================= language segmented toggle ================= */
+.seg { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 10px; overflow: hidden; background: var(--card); }
+.seg button { padding: 6px 12px; font: inherit; font-size: 13px; font-weight: 600; background: transparent; color: var(--muted); border: none; cursor: pointer; transition: background 0.12s, color 0.12s; }
+.seg button + button { border-left: 1px solid var(--line-strong); }
+.seg button.active { background: var(--accent); color: #fff; }
+.seg-label { font-size: 12px; color: var(--muted); margin-right: 8px; font-weight: 500; }
+
+/* ================= mode select (pre-test) ================= */
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 6px 0 18px; }
+.mode-card { border: 1.5px solid var(--line-strong); border-radius: 14px; padding: 15px 16px; cursor: pointer; background: var(--card); text-align: left; font: inherit; transition: border-color 0.15s, background 0.15s, box-shadow 0.15s; }
+.mode-card:hover { border-color: var(--accent-line); }
+.mode-card.active { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px var(--accent); }
+.mode-card h4 { margin: 0 0 4px; font-size: 14.5px; font-weight: 700; color: var(--ink); }
+.mode-card p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+@media (max-width: 520px) { .mode-grid { grid-template-columns: 1fr; } }
+
+/* ================= question tools (mark / report) ================= */
+.q-tools { display: flex; gap: 8px; align-items: center; margin-left: auto; flex-wrap: wrap; }
+.tool-btn {
+  display: inline-flex; align-items: center; gap: 6px; background: var(--card);
+  border: 1px solid var(--line-strong); border-radius: 9px; padding: 6px 11px;
+  font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.tool-btn:hover { border-color: var(--accent-line); color: var(--accent-strong); }
+.tool-btn.marked { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+.tool-btn.report:hover { border-color: var(--red); color: var(--red); }
+.tool-btn.done { border-color: var(--green); color: var(--green); cursor: default; }
+
+/* ================= CBT palette states + legend ================= */
+.palette button.seen { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+.palette button.answered { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.palette button.marked { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+.palette button.marked.answered { position: relative; }
+.palette button.marked.answered::after {
+  content: ""; position: absolute; right: 3px; bottom: 3px; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--green); border: 1.5px solid var(--card);
+}
+.palette button.current { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.palette-legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 14px; font-size: 12px; color: var(--muted); }
+.palette-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lg-swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--line-strong); display: inline-block; }
+.lg-swatch.notvisited { background: var(--card); }
+.lg-swatch.seen { background: var(--red-soft); border-color: var(--red); }
+.lg-swatch.answered { background: var(--green-soft); border-color: var(--green); }
+.lg-swatch.marked { background: var(--accent-soft); border-color: var(--accent); }
+
+/* ================= timer warning + mode badge ================= */
+.timer.danger { background: var(--red-soft); color: var(--red); animation: pulseDanger 1s ease-in-out infinite; }
+@keyframes pulseDanger { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+.mode-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); }
+
+/* ================= practice-mode instant feedback ================= */
+.feedback { margin-top: 16px; padding: 12px 14px; border-radius: 10px; font-size: 13.5px; font-weight: 600; }
+.feedback.correct { background: var(--green-soft); color: var(--green); }
+.feedback.wrong { background: var(--red-soft); color: var(--red); }
+
+/* ================= report modal ================= */
+.modal-backdrop { position: fixed; inset: 0; z-index: 60; background: rgba(20, 18, 30, 0.5); display: grid; place-items: center; padding: 20px; animation: fadeUp 0.18s ease; }
+.modal { width: 100%; max-width: 440px; background: var(--card-solid); border: 1px solid var(--line); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
+.modal h3 { margin: 0 0 4px; font-size: 17px; font-weight: 700; }
+.modal .reasons { display: grid; gap: 8px; margin: 16px 0; }
+.reason-opt { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line-strong); border-radius: 10px; padding: 10px 12px; cursor: pointer; font-size: 13.5px; transition: border-color 0.12s, background 0.12s; }
+.reason-opt:hover { border-color: var(--accent-line); }
+.reason-opt.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 600; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
 /* ---------- accessibility ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }

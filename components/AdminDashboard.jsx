@@ -22,6 +22,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [summary, setSummary] = useState(null);
   const [rows, setRows] = useState(null);
+  const [reports, setReports] = useState(null);
   const [error, setError] = useState(null);
 
   const [search, setSearch] = useState("");
@@ -31,14 +32,16 @@ export default function AdminDashboard() {
   useEffect(() => {
     (async () => {
       try {
-        const [s, l] = await Promise.all([
+        const [s, l, rep] = await Promise.all([
           fetch("/api/admin/summary").then((r) => r.json()),
           fetch("/api/admin/submissions").then((r) => r.json()),
+          fetch("/api/admin/reports").then((r) => r.json()),
         ]);
         if (s.error) throw new Error(s.error);
         if (l.error) throw new Error(l.error);
         setSummary(s);
         setRows(l.submissions);
+        setReports(rep.reports || []);
       } catch (e) {
         setError(e.message);
       }
@@ -145,6 +148,58 @@ export default function AdminDashboard() {
                     <td>{t.attempts}</td>
                     <td>{t.avg_pct}%</td>
                     <td>{t.best_pct}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {reports && reports.length > 0 && (
+        <>
+          <h2 className="section-h">
+            Reported questions ({reports.length})
+          </h2>
+          <div className="table-wrap">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Test</th>
+                  <th>Q#</th>
+                  <th>Reason</th>
+                  <th>Question</th>
+                  <th>By</th>
+                  <th>When</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reports.map((r) => (
+                  <tr key={r.id}>
+                    <td>
+                      {r.section_name} · {r.subject_name}
+                      <div className="muted-sm">Mock {r.mock_num}</div>
+                    </td>
+                    <td>{r.question_index != null ? r.question_index + 1 : "—"}</td>
+                    <td>
+                      <span className="tag wrong">{r.reason || "—"}</span>
+                    </td>
+                    <td
+                      style={{
+                        whiteSpace: "normal",
+                        maxWidth: 360,
+                        minWidth: 220,
+                      }}
+                    >
+                      {r.question_text}
+                      {r.note && (
+                        <div className="muted-sm" style={{ marginTop: 4 }}>
+                          “{r.note}”
+                        </div>
+                      )}
+                    </td>
+                    <td className="muted-sm">{r.reporter_name || "—"}</td>
+                    <td className="muted-sm">{fmtDate(r.created_at)}</td>
                   </tr>
                 ))}
               </tbody>
