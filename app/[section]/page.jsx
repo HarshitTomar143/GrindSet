@@ -35,11 +35,12 @@ export default async function SectionPage({ params }) {
       <h1 className="page-title">{section.name}</h1>
       <p className="page-sub">Choose a stream.</p>
       <div className="grid two">
-        {section.groups.map((g) => (
+        {section.groups.map((g, i) => (
           <a
             key={g.id}
             href={`/${section.id}/${g.id}`}
             className="card hero-card"
+            style={{ "--i": i }}
           >
             <div className="card-title">{g.name}</div>
             <div className="card-meta">{g.subjects.length} subjects</div>

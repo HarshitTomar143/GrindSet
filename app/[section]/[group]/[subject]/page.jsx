@@ -47,11 +47,12 @@ export default async function SubjectPage({ params }) {
         {subject.mocks > 1 ? "s" : ""}. Each paper is scored at the end.
       </p>
       <div className="grid">
-        {papers.map((p) => (
+        {papers.map((p, i) => (
           <a
             key={p.n}
             href={`/${section.id}/${group.id}/${subject.id}/${p.n}`}
             className="card"
+            style={{ "--i": i }}
           >
             <div className="card-title">Mock Paper {p.n}</div>
             <div className="card-meta">{p.count} questions</div>

@@ -105,19 +105,19 @@ export default function AdminDashboard() {
       </p>
 
       <div className="admin-cards">
-        <div className="admin-card">
+        <div className="admin-card" style={{ "--i": 0 }}>
           <div className="ac-num">{summary.total}</div>
           <div className="ac-label">Submissions</div>
         </div>
-        <div className="admin-card">
+        <div className="admin-card" style={{ "--i": 1 }}>
           <div className="ac-num">{summary.takers}</div>
           <div className="ac-label">Test-takers</div>
         </div>
-        <div className="admin-card">
+        <div className="admin-card" style={{ "--i": 2 }}>
           <div className="ac-num">{summary.avg_pct}%</div>
           <div className="ac-label">Average score</div>
         </div>
-        <div className="admin-card">
+        <div className="admin-card" style={{ "--i": 3 }}>
           <div className="ac-num">{summary.tests_attempted}</div>
           <div className="ac-label">Distinct tests</div>
         </div>

@@ -263,15 +263,15 @@ export default function QuizPage() {
           </div>
           <div className="score-pct">{pct}% correct</div>
           <div className="stat-row">
-            <div className="stat correct">
+            <div className="stat correct" style={{ "--i": 0 }}>
               <div className="n">{results.correct}</div>
               <div className="l">Correct</div>
             </div>
-            <div className="stat wrong">
+            <div className="stat wrong" style={{ "--i": 1 }}>
               <div className="n">{results.wrong}</div>
               <div className="l">Wrong</div>
             </div>
-            <div className="stat skipped">
+            <div className="stat skipped" style={{ "--i": 2 }}>
               <div className="n">{results.skipped}</div>
               <div className="l">Unattempted</div>
             </div>
@@ -397,21 +397,31 @@ export default function QuizPage() {
         </div>
       </div>
 
+      <div className="progress">
+        <div
+          className="progress-fill"
+          style={{ width: `${((current + 1) / questions.length) * 100}%` }}
+        />
+      </div>
+
       <div className="q-card">
         <div className="q-head">
-          <span className="q-num">{current + 1}</span>
+          <span className="q-num">
+            Question {current + 1}/{questions.length}
+          </span>
         </div>
         <div className="q-text">{q.question}</div>
-        <div className="options">
-          {LETTERS.filter((L) => q.options[L]).map((L) => {
+        <div className="options" key={current}>
+          {LETTERS.filter((L) => q.options[L]).map((L, idx) => {
             const selected = answers[current] === L;
             return (
               <button
                 key={L}
                 className={`option ${selected ? "selected" : ""}`}
+                style={{ "--i": idx }}
                 onClick={() => select(current, L)}
               >
-                <span className="key">{L}</span>
+                <span className="radio" aria-hidden="true" />
                 <span className="otext">{q.options[L]}</span>
               </button>
             );
