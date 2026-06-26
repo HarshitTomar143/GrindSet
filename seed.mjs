@@ -79,9 +79,17 @@ async function main() {
     for (let gi = 0; gi < sec.groups.length; gi++) {
       const grp = sec.groups[gi];
       for (const subj of grp.subjects) {
-        const qs = JSON.parse(
-          await readFile(path.join(SEED_DIR, "questions", subj.file), "utf-8")
-        );
+        // A subject may be backed by a single file or several files that are
+        // concatenated in order (e.g. a Paper 2 subject merged across streams).
+        const fileList =
+          subj.files && subj.files.length ? subj.files : [subj.file];
+        const qs = [];
+        for (const f of fileList) {
+          const part = JSON.parse(
+            await readFile(path.join(SEED_DIR, "questions", f), "utf-8")
+          );
+          qs.push(...part);
+        }
         qs.forEach((q, ord) => {
           rows.push([
             sec.id, sec.name, si,

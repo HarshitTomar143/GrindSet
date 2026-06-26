@@ -14,7 +14,7 @@ const PAPER_INFO = {
     classes: "Classes 6–8",
     level: "Upper primary level",
     blurb:
-      "For candidates who want to teach at the upper primary level. The final 60-mark section is Mathematics & Science or Social Studies, depending on your stream.",
+      "For candidates who want to teach at the upper primary level. Covers Child Development & Pedagogy, the languages, plus Mathematics & Science and Social Studies.",
     facts: ["150 questions", "150 marks", "2½ hours", "No negative marking"],
     qualify: "Qualify at 60% · 55% for OBC / SC / ST",
   },
