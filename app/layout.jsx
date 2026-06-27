@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
           <div className="header-inner">
             <a href="/" className="brand">
               <span className="brand-mark logo-mark">
-                <img src="/logo.jpeg" alt="Octopus Prep logo" />
+                <img src="/octopus.png" alt="Octopus Prep logo" />
               </span>
               <span>Octopus</span>
             </a>
