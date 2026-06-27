@@ -20,10 +20,10 @@ export default function WelcomeModal() {
         </button>
         <h2 id="welcome-title">Welcome to Octopus Prep</h2>
         <p className="welcome-modal-text">
-          This app is designed for UP CET exam preparation. You can practice with subject-wise mock tests that match the exam pattern and get instant scoring feedback.
+          This app is designed for UP TET exam preparation. You can practice with subject-wise mock tests that match the exam pattern and get instant scoring feedback.
         </p>
         <p className="welcome-modal-text">
-          यह ऐप UP CET परीक्षा की तैयारी के लिए है। आप यहाँ विषय-वार मॉक टेस्ट देकर अभ्यास कर सकते हैं और हर पेपर के अंत में अपना स्कोर देख सकते हैं।
+          यह ऐप UP TET परीक्षा की तैयारी के लिए है। आप यहाँ विषय-वार मॉक टेस्ट देकर अभ्यास कर सकते हैं और हर पेपर के अंत में अपना स्कोर देख सकते हैं।
         </p>
         <div className="welcome-modal-steps">
           <strong>How to use the app / उपयोग कैसे करें:</strong>

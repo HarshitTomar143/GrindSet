@@ -68,10 +68,10 @@ export default async function Home() {
     <div>
       <h1 className="page-title">Choose your paper</h1>
       <p className="page-sub">
-        The UP CET exam prep app is built to help you prepare using subject-specific mock tests. Select the paper level you want to practice, then choose a subject mock test to answer questions and get scored at the end.
+        The UP TET exam prep app is built to help you prepare using subject-specific mock tests. Select the paper level you want to practice, then choose a subject mock test to answer questions and get scored at the end.
       </p>
       <div className="app-disclaimer">
-        <strong>Disclaimer:</strong> This application is for practice only. It provides UP CET-style mock tests to help you prepare, but it is not an official exam platform.
+        <strong>Disclaimer:</strong> This application is for practice only. It provides UP TET-style mock tests to help you prepare, but it is not an official exam platform.
       </div>
       <div className="grid two">
         {manifest.sections.map((sec, i) => {
