@@ -68,10 +68,11 @@ export default async function Home() {
     <div>
       <h1 className="page-title">Choose your paper</h1>
       <p className="page-sub">
-        The UPTET is held in two papers. Pick the one for the level you want to
-        teach, then practise its subject-wise mock tests — each has up to{" "}
-        {manifest.mockSize} questions and is scored at the end.
+        The UP CET exam prep app is built to help you prepare using subject-specific mock tests. Select the paper level you want to practice, then choose a subject mock test to answer questions and get scored at the end.
       </p>
+      <div className="app-disclaimer">
+        <strong>Disclaimer:</strong> This application is for practice only. It provides UP CET-style mock tests to help you prepare, but it is not an official exam platform.
+      </div>
       <div className="grid two">
         {manifest.sections.map((sec, i) => {
           const subjectCount = sec.groups.reduce(
