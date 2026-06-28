@@ -1,11 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function WelcomeModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!open) return null;
+  useEffect(() => {
+    setMounted(true);
+    const seen = window.localStorage.getItem("welcomeModalSeen");
+    if (!seen) {
+      setOpen(true);
+    }
+  }, []);
+
+  const closeModal = () => {
+    window.localStorage.setItem("welcomeModalSeen", "1");
+    setOpen(false);
+  };
+
+  if (!mounted || !open) return null;
 
   return (
     <div className="welcome-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="welcome-title">

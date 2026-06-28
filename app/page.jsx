@@ -1,4 +1,5 @@
 import { getManifest } from "@/lib/data";
+import WelcomeModal from "@/components/WelcomeModal";
 
 // Official UPTET structure (Uttar Pradesh Teacher Eligibility Test).
 const PAPER_INFO = {
@@ -66,6 +67,7 @@ export default async function Home() {
 
   return (
     <div>
+      <WelcomeModal />
       <h1 className="page-title">Choose your paper</h1>
       <p className="page-sub">
         The UP TET exam prep app is built to help you prepare using subject-specific mock tests. Select the paper level you want to practice, then choose a subject mock test to answer questions and get scored at the end.

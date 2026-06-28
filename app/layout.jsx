@@ -1,7 +1,6 @@
 import "./globals.css";
 import ThemeControls from "@/components/ThemeControls";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
-import WelcomeModal from "@/components/WelcomeModal";
 
 export const metadata = {
   title: "Octopus",
@@ -50,7 +49,6 @@ export default function RootLayout({ children }) {
             <ThemeControls />
           </div>
         </header>
-        <WelcomeModal />
         <main className="container">{children}</main>
         <footer className="site-footer">
           Practice papers · 30 questions each · scored at the end ·{" "}
