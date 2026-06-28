@@ -23,6 +23,22 @@ export default async function SectionPage({ params }) {
         <Breadcrumb items={crumbs} />
         <h1 className="page-title">{section.name}</h1>
         <p className="page-sub">Pick a subject to see its mock papers.</p>
+        {(section.id === "paper1" || section.id === "paper2") && (
+          <div style={{ marginBottom: 20 }}>
+            <a
+              href={`/${section.id}/${g.id}/${section.id}-full`}
+              className="card hero-card"
+            >
+              <div className="card-title">{section.name} Full Mock Papers</div>
+              <div className="card-meta">
+                {section.id === "paper1"
+                  ? "3 full mocks · choose English or Sanskrit"
+                  : "3 full mocks · choose stream and English or Sanskrit"}
+              </div>
+              <span className="pill">Start full mock →</span>
+            </a>
+          </div>
+        )}
         <SubjectGrid sectionId={section.id} groupId={g.id} subjects={g.subjects} />
       </div>
     );

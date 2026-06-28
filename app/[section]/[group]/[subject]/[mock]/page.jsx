@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { pickLang } from "@/lib/lang";
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -22,7 +22,9 @@ function fmtTime(s) {
 
 export default function QuizPage() {
   const { section, group, subject, mock } = useParams();
+  const searchParams = useSearchParams();
   const mockNum = parseInt(mock, 10);
+  const selectedLang = searchParams.get("lang") || "english";
 
   const [meta, setMeta] = useState(null);
   const [questions, setQuestions] = useState(null);
@@ -71,22 +73,41 @@ export default function QuizPage() {
         const sec = man.sections.find((s) => s.id === section);
         const grp = sec?.groups.find((g) => g.id === group);
         const subj = grp?.subjects.find((s) => s.id === subject);
-        if (!subj) throw new Error("Subject not found");
+        const specialMeta =
+          (section === "paper1" && subject === "paper1-full") ||
+          (section === "paper2" && subject === "paper2-full")
+            ? {
+                sectionName: sec?.name || (section === "paper2" ? "Paper 2" : "Paper 1"),
+                groupName: grp?.name || "Subjects",
+                subjectName:
+                  section === "paper2"
+                    ? "Paper 2 Full Mock"
+                    : "Paper 1 Full Mock",
+                multiGroup: false,
+                base: `/${section}/${group}/${subject}`,
+                groupBase: `/${section}/${group}`,
+                sectionBase: `/${section}`,
+              }
+            : null;
+        if (!subj && !specialMeta) throw new Error("Subject not found");
 
+        const streamParam = searchParams.get("stream") || "science";
         const res = await fetch(
-          `/api/quiz?section=${section}&group=${group}&subject=${subject}&mock=${mockNum}`
+          `/api/quiz?section=${section}&group=${group}&subject=${subject}&mock=${mockNum}&lang=${selectedLang}&stream=${streamParam}`
         ).then((r) => r.json());
         if (res.error) throw new Error(res.error);
         if (!alive) return;
-        setMeta({
-          sectionName: sec.name,
-          groupName: grp.name,
-          subjectName: subj.name,
-          multiGroup: sec.groups.length > 1,
-          base: `/${section}/${group}/${subject}`,
-          groupBase: `/${section}/${group}`,
-          sectionBase: `/${section}`,
-        });
+        setMeta(
+          specialMeta || {
+            sectionName: sec.name,
+            groupName: grp.name,
+            subjectName: subj.name,
+            multiGroup: sec.groups.length > 1,
+            base: `/${section}/${group}/${subject}`,
+            groupBase: `/${section}/${group}`,
+            sectionBase: `/${section}`,
+          }
+        );
         setQuestions(res.questions);
       } catch (e) {
         if (alive) setError(e.message || "Failed to load");
@@ -95,7 +116,7 @@ export default function QuizPage() {
     return () => {
       alive = false;
     };
-  }, [section, group, subject, mockNum]);
+  }, [section, group, subject, mockNum, selectedLang]);
 
   // timer: runs once identified, until submitted (counts elapsed)
   useEffect(() => {
@@ -214,6 +235,14 @@ export default function QuizPage() {
         <p className="page-sub">
           {meta.subjectName} · Mock Paper {mockNum} · {questions.length} questions
         </p>
+        <div className="q-card" style={{ marginTop: 12 }}>
+          <div className="muted-sm" style={{ marginBottom: 8 }}>
+            This mock has 5 sections and 150 questions.
+          </div>
+          <div className="tag mandatory">
+            First: Child Development & Pedagogy → Hindi → {selectedLang === "sanskrit" ? "Sanskrit" : "English"} → Environmental Studies → Mathematics
+          </div>
+        </div>
         <form
           className="q-card"
           onSubmit={(e) => {
@@ -565,6 +594,13 @@ export default function QuizPage() {
                   </button>
                 </div>
               </div>
+              {q.sectionLabel && (
+                <div style={{ marginBottom: 8 }}>
+                  <span className="tag">
+                    {q.sectionLabel}
+                  </span>
+                </div>
+              )}
               <div className="q-text" style={{ fontWeight: 600 }}>
                 {tr(q.question)}
               </div>
@@ -651,6 +687,11 @@ export default function QuizPage() {
             <span className="mode-badge">
               {mode === "exam" ? "Exam" : "Practice"}
             </span>
+            {questions[current]?.sectionLabel && (
+              <span className="tag">
+                {questions[current].sectionLabel}
+              </span>
+            )}
             <span>
               <strong>{meta.subjectName}</strong> · Mock {mockNum} · Q{" "}
               <strong>{current + 1}</strong>/{questions.length} · Answered{" "}
@@ -706,6 +747,13 @@ export default function QuizPage() {
             </button>
           </div>
         </div>
+        {q.sectionLabel && (
+          <div style={{ marginBottom: 10 }}>
+            <span className="tag">
+              {q.sectionLabel}
+            </span>
+          </div>
+        )}
         <div className="q-text">{tr(q.question)}</div>
         <div className="options" key={current}>
           {LETTERS.filter((L) => q.options[L]).map((L, idx) => {

@@ -189,28 +189,45 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
 }
 
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+.tag.mandatory {
+  color: #fff;
+}
+
 /* paper cards: flat solid accent, like the reference header */
 .hero-card { background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); padding: 24px; }
 .hero-card:hover { border-color: var(--accent-strong); box-shadow: 0 10px 26px rgba(125, 111, 209, 0.28); }
 .hero-card .card-title { font-size: 22px; font-weight: 700; margin: 0 0 4px; }
-.hero-card .card-meta { color: rgba(255, 255, 255, 0.82); }
-.hero-card .pill { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.hero-card .card-meta { color: rgba(255, 255, 255, 0.94); }
+.hero-card .muted-sm { color: #fff; }
+.hero-card .pill { background: rgba(255, 255, 255, 0.26); color: #fff; }
 
 .hero-card .card-eyebrow {
   display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.18); color: #fff; padding: 5px 11px; border-radius: 999px; margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.24); color: #fff; padding: 5px 11px; border-radius: 999px; margin-bottom: 14px;
 }
 .hero-card .card-blurb {
-  color: rgba(255, 255, 255, 0.86); font-size: 13.5px; line-height: 1.55; font-weight: 400; margin: 8px 0 16px;
+  color: rgba(255, 255, 255, 0.9); font-size: 13.5px; line-height: 1.55; font-weight: 400; margin: 8px 0 16px;
 }
 .hero-card .fact-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
 .hero-card .fact {
-  font-size: 12px; font-weight: 500; background: rgba(255, 255, 255, 0.16); color: #fff;
+  font-size: 12px; font-weight: 500; background: rgba(255, 255, 255, 0.22); color: #fff;
   padding: 5px 11px; border-radius: 9px;
 }
 .hero-card .card-qualify {
-  font-size: 12.5px; color: rgba(255, 255, 255, 0.8); font-weight: 400; margin-top: 10px;
-  padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 12.5px; color: rgba(255, 255, 255, 0.88); font-weight: 400; margin-top: 10px;
+  padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 .hero-card .pill { margin-top: 16px; }
 
