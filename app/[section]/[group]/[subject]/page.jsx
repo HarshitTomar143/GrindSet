@@ -36,11 +36,19 @@ export default async function SubjectPage({ params }) {
               <div className="card-title">Full Mock Paper {n}</div>
               <div className="card-meta">150 questions · 30 from each section</div>
               <form action={`/${params.section}/${params.group}/${params.subject}/${n}`} method="get">
-                <label className="field-label" htmlFor={`lang-${n}`}>Choose the third section</label>
-                <select id={`lang-${n}`} className="text-input" name="lang" defaultValue="english">
-                  <option value="english">English</option>
-                  <option value="sanskrit">Sanskrit</option>
-                </select>
+                <div className="field-group">
+                  <div className="field-label">Choose the third section</div>
+                  <div className="radio-group radio-grid">
+                    <label className="radio-card">
+                      <input type="radio" name="lang" value="english" defaultChecked />
+                      <span>English</span>
+                    </label>
+                    <label className="radio-card">
+                      <input type="radio" name="lang" value="sanskrit" />
+                      <span>Sanskrit</span>
+                    </label>
+                  </div>
+                </div>
                 <div className="muted-sm" style={{ marginTop: 8 }}>
                   Hindi is always included as a mandatory section.
                 </div>
@@ -80,18 +88,32 @@ export default async function SubjectPage({ params }) {
               <div className="card-title">Full Mock Paper {n}</div>
               <div className="card-meta">150 questions · 30 + 30 + 30 + 60</div>
               <form action={`/${params.section}/${params.group}/${params.subject}/${n}`} method="get">
-                <label className="field-label" htmlFor={`stream-${n}`}>Choose stream</label>
-                <select id={`stream-${n}`} className="text-input" name="stream" defaultValue="science">
-                  <option value="science">Mathematics & Science</option>
-                  <option value="social">Social Studies</option>
-                </select>
-                <label className="field-label" htmlFor={`lang-${n}`} style={{ marginTop: 12 }}>
-                  Choose the language section
-                </label>
-                <select id={`lang-${n}`} className="text-input" name="lang" defaultValue="english">
-                  <option value="english">English</option>
-                  <option value="sanskrit">Sanskrit</option>
-                </select>
+                <div className="field-group">
+                  <div className="field-label">Choose stream</div>
+                  <div className="radio-group radio-grid">
+                    <label className="radio-card">
+                      <input type="radio" name="stream" value="science" defaultChecked />
+                      <span>Mathematics & Science</span>
+                    </label>
+                    <label className="radio-card">
+                      <input type="radio" name="stream" value="social" />
+                      <span>Social Studies</span>
+                    </label>
+                  </div>
+                </div>
+                <div className="field-group" style={{ marginTop: 12 }}>
+                  <div className="field-label">Choose the language section</div>
+                  <div className="radio-group radio-grid">
+                    <label className="radio-card">
+                      <input type="radio" name="lang" value="english" defaultChecked />
+                      <span>English</span>
+                    </label>
+                    <label className="radio-card">
+                      <input type="radio" name="lang" value="sanskrit" />
+                      <span>Sanskrit</span>
+                    </label>
+                  </div>
+                </div>
                 <div className="muted-sm" style={{ marginTop: 8 }}>
                   Hindi is always included as a mandatory section.
                 </div>
