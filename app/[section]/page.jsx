@@ -11,6 +11,7 @@ export default async function SectionPage({ params }) {
 
   const crumbs = [
     { label: "Home", href: "/" },
+    { label: "UP TET", href: "/uptet" },
     { label: section.name },
   ];
 
@@ -19,7 +20,7 @@ export default async function SectionPage({ params }) {
     const g = section.groups[0];
     return (
       <div>
-        <BackLink href="/" label="Home" />
+        <BackLink href="/uptet" label="UP TET" />
         <Breadcrumb items={crumbs} />
         <h1 className="page-title">{section.name}</h1>
         <p className="page-sub">Pick a subject to see its mock papers.</p>
@@ -47,6 +48,7 @@ export default async function SectionPage({ params }) {
   // Multiple groups (e.g. Paper 2 streams): show stream cards.
   return (
     <div>
+      <BackLink href="/uptet" label="UP TET" />
       <Breadcrumb items={crumbs} />
       <h1 className="page-title">{section.name}</h1>
       <p className="page-sub">Choose a stream.</p>

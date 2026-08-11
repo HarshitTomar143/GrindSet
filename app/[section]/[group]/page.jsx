@@ -16,6 +16,7 @@ export default async function GroupPage({ params }) {
       <Breadcrumb
         items={[
           { label: "Home", href: "/" },
+          { label: "UP TET", href: "/uptet" },
           { label: section.name, href: `/${section.id}` },
           { label: group.name },
         ]}

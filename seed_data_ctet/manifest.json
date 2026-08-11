@@ -1,0 +1,767 @@
+{
+  "folders": [
+    {
+      "folder": "paper 1",
+      "exam_id": "ctet",
+      "paper": "paper1",
+      "stream": null,
+      "file": "paper-1.json",
+      "files": [
+        {
+          "file": "CTET_2013_July_Paper1_Solved.xlsx",
+          "rows": 150,
+          "gradable": 150,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2014_Feb_Paper1_Solved.xlsx",
+          "rows": 150,
+          "gradable": 144,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2015_Feb_Paper1_Solved.xlsx",
+          "rows": 150,
+          "gradable": 144,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Feb_Paper1_Solved.xlsx",
+          "rows": 150,
+          "gradable": 150,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Sep_Paper1_Solved.xlsx",
+          "rows": 150,
+          "gradable": 150,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2018_Dec_Paper1_Solved.xlsx",
+          "rows": 210,
+          "gradable": 210,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2019_Questions_Answers.xlsx",
+          "rows": 80,
+          "gradable": 80,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2020_Paper1_Questions_Answers.xlsx",
+          "rows": 62,
+          "gradable": 62,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2021_Paper1_Bilingual_Complete.xlsx",
+          "rows": 240,
+          "gradable": 239,
+          "schemas": [
+            "E"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2022_Paper1_Bilingual_QA.xlsx",
+          "rows": 150,
+          "gradable": 150,
+          "schemas": [
+            "D"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2023_Paper1_Questions.xlsx",
+          "rows": 240,
+          "gradable": 240,
+          "schemas": [
+            "G"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_Dec_Paper1_All_270.xlsx",
+          "rows": 270,
+          "gradable": 269,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2026_March_Paper1_Questions.xlsx",
+          "rows": 210,
+          "gradable": 210,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 2212,
+      "gradable": 2198,
+      "unique_questions": 2175
+    },
+    {
+      "folder": "paper2 science",
+      "exam_id": "ctet",
+      "paper": "paper2",
+      "stream": "science",
+      "file": "paper2-science.json",
+      "files": [
+        {
+          "file": "CTET_2011_Paper2_ClassVI-VIII_Extraction.xlsx",
+          "rows": 180,
+          "gradable": 165,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2012_Nov_Paper2_extraction.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2013_July_Paper2_Science_Extraction.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2014_Feb_Paper2_MathsScience_extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2014_Sept_Paper2_MathsScience_Extraction.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2015_Feb_Paper2_MathScience_Extraction.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2015_Sept_Paper2_Science_Extraction.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Feb_Paper2_MathsScience_Extracted (1).xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Feb_Paper2_MathsScience_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Sept_Paper2_MathsScience_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2026_Feb_Paper2_MathsScience_Extraction.xlsx",
+          "rows": 270,
+          "gradable": 267,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2026_March_Paper2_MathScience_Extraction.xlsx",
+          "rows": 210,
+          "gradable": 210,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 2280,
+      "gradable": 2262,
+      "unique_questions": 2081
+    },
+    {
+      "folder": "paper2 sst",
+      "exam_id": "ctet",
+      "paper": "paper2",
+      "stream": "sst",
+      "file": "paper2-sst.json",
+      "files": [
+        {
+          "file": "CTET_2011_Paper2_Questions.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2012_Jan_Paper2_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2012_Nov_Paper2_SST.xlsx",
+          "rows": 178,
+          "gradable": 178,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2013_July_Paper2_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2014_Feb_Paper2_Questions.xlsx",
+          "rows": 180,
+          "gradable": 179,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2014_SEP_Paper2_SST.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2015_Feb_Paper2_Solved.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2015_Sep_Paper2_SST_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 179,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Paper2_SST_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2016_Paper2_SST_Questions.xlsx",
+          "rows": 180,
+          "gradable": 179,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2018_Feb_Paper2_Questions.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2018_Paper2_Solved.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2019_July_Paper2_Extracted.xlsx",
+          "rows": 239,
+          "gradable": 239,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2021_Dec_Paper2_SST_Questions (1).xlsx",
+          "rows": 240,
+          "gradable": 240,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2021_Jan_Paper2_Extracted.xlsx",
+          "rows": 240,
+          "gradable": 240,
+          "schemas": [
+            "B"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2022_Jan_Paper2_SST_Extracted.xlsx",
+          "rows": 180,
+          "gradable": 180,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2023_Aug_Paper2_SST_Extracted (1).xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2023_Aug_Paper2_SST_Extracted.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_14DEC_Paper2_SST_extraction.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_15DEC_Paper2_SST_extracted (1).xlsx",
+          "rows": 270,
+          "gradable": 269,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_15DEC_Paper2_SST_extracted.xlsx",
+          "rows": 270,
+          "gradable": 269,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_Jan_Paper2_SST_Extracted.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2024_July_Paper2_SST_Extracted.xlsx",
+          "rows": 270,
+          "gradable": 269,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2025_FEB_Paper2_SST_Extraction.xlsx",
+          "rows": 270,
+          "gradable": 270,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2025_March_Paper2_SST_Extraction.xlsx",
+          "rows": 150,
+          "gradable": 150,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_2025_Paper2_SST_Extraction.xlsx",
+          "rows": 270,
+          "gradable": 269,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 5817,
+      "gradable": 5810,
+      "unique_questions": 5181
+    },
+    {
+      "folder": "hindi",
+      "exam_id": "hindi-sahitya",
+      "paper": null,
+      "stream": null,
+      "file": "hindi.json",
+      "files": [
+        {
+          "file": "Aalochana_PYQ.xlsx",
+          "rows": 145,
+          "gradable": 145,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Adikal_PYQ_Extraction.xlsx",
+          "rows": 345,
+          "gradable": 341,
+          "schemas": [
+            "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Alankar_PYQ_Q691-851.xlsx",
+          "rows": 161,
+          "gradable": 161,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Atmakatha_PYQ.xlsx",
+          "rows": 78,
+          "gradable": 78,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bhaktikal_PYQ_extraction.xlsx",
+          "rows": 179,
+          "gradable": 176,
+          "schemas": [
+            "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bhartiya_Pashchatya_Kavyashastra_Chhand.xlsx",
+          "rows": 91,
+          "gradable": 90,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bhasha_Vigyan_PYQ.xlsx",
+          "rows": 315,
+          "gradable": 315,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_Hindi_Gadya_Vikas.xlsx",
+          "rows": 38,
+          "gradable": 38,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "CTET_Hindi_Natak_Ekanki.xlsx",
+          "rows": 399,
+          "gradable": 395,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "HINDI_Jeewani_PYQ.xlsx",
+          "rows": 44,
+          "gradable": 44,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Hindi_Kahani_MCQ_Q993-Q1310.xlsx",
+          "rows": 318,
+          "gradable": 317,
+          "schemas": [
+            "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Hindi_Kahani_PYQ.xlsx",
+          "rows": 311,
+          "gradable": 310,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Hindi_Nibandh_PYQ.xlsx",
+          "rows": 228,
+          "gradable": 227,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Hindi_Patra_Patrika_evam_Puraskar_PYQ.xlsx",
+          "rows": 105,
+          "gradable": 104,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Hindi_Sahitya_Adhunik_Kal_OCR_draft.xlsx",
+          "rows": 606,
+          "gradable": 0,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": true
+        },
+        {
+          "file": "Hindi_Sahitya_ka_Itihas_Kaal_Vibhajan.xlsx",
+          "rows": 122,
+          "gradable": 121,
+          "schemas": [
+            "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Ras_Kavyashastra_PYQ.xlsx",
+          "rows": 113,
+          "gradable": 113,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Ritikaal_PYQ_Extraction.xlsx",
+          "rows": 381,
+          "gradable": 380,
+          "schemas": [
+            "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "anya_gadya_vidhaayein_PYQ.xlsx",
+          "rows": 159,
+          "gradable": 156,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "hindi_upanyas_mcq.xlsx",
+          "rows": 489,
+          "gradable": 416,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 4627,
+      "gradable": 3927,
+      "unique_questions": 4442
+    }
+  ],
+  "totals": {
+    "rows": 14936,
+    "gradable": 14197,
+    "files": 71
+  }
+}

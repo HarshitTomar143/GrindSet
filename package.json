@@ -6,6 +6,9 @@
     "data": "python build_data.py",
     "seed": "node seed.mjs",
     "setup": "python build_data.py && node seed.mjs",
+    "data:ctet": "python build_ctet_data.py",
+    "seed:ctet": "node seed_ctet.mjs",
+    "setup:ctet": "python build_ctet_data.py && node seed_ctet.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"

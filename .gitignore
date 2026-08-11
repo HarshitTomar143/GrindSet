@@ -11,3 +11,5 @@ scratch_dev.log
 !.env.example
 
 .DS_Store
+
+/cet
