@@ -1,6 +1,6 @@
 import WelcomeModal from "@/components/WelcomeModal";
 
-// The two exams the app currently carries question banks for.
+// The exams the app currently carries question banks for.
 const EXAMS = [
   {
     id: "uptet",
@@ -18,9 +18,19 @@ const EXAMS = [
     name: "CTET",
     eyebrow: "Central Teacher Eligibility Test",
     blurb:
-      "Previous-year practice for Paper 1 and both Paper 2 streams, plus a topic-wise Hindi Sahitya bank built from separate question sets.",
-    facts: ["Paper 1", "Paper 2 Science", "Paper 2 SST", "Hindi Sahitya"],
-    meta: "4 sections · 30 questions per mock paper",
+      "Previous-year practice for Paper 1 and both Paper 2 streams, organised subject by subject the way the real paper runs.",
+    facts: ["Paper 1", "Paper 2 Science", "Paper 2 SST", "PYQ based"],
+    meta: "3 sections · 30 questions per mock paper",
+  },
+  {
+    id: "up-tgt-pgt",
+    href: "/up-tgt-pgt",
+    name: "UP TGT / PGT",
+    eyebrow: "UP Trained & Post Graduate Teacher exams",
+    blurb:
+      "Subject practice for the UP TGT and PGT recruitment exams, starting with a topic-wise Hindi Sahitya bank built from previous-year papers.",
+    facts: ["Hindi Sahitya", "Topic-wise", "PYQ based", "Explanations"],
+    meta: "Hindi Sahitya · 30 questions per mock paper",
   },
 ];
 

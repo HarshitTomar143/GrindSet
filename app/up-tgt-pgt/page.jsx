@@ -3,6 +3,6 @@ import BankHome from "@/components/bank/BankHome";
 
 export const dynamic = "force-dynamic";
 
-export default function CtetHome() {
-  return <BankHome bank={findBank("ctet")} />;
+export default function UpTgtPgtHome() {
+  return <BankHome bank={findBank("up-tgt-pgt")} />;
 }

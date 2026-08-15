@@ -5,7 +5,8 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 export const metadata = {
   title: "Octopus",
   applicationName: "Octopus",
-  description: "Octopus — practice mock papers for UP TET and CTET",
+  description:
+    "Octopus — practice mock papers for UP TET, CTET and UP TGT / PGT",
   manifest: "/manifest.webmanifest",
 };
 
