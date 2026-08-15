@@ -1,4 +1,9 @@
 import WelcomeModal from "@/components/WelcomeModal";
+import { findBank } from "@/lib/banks";
+
+// Counted from the bank definition rather than written out, so the card keeps
+// telling the truth as syllabus sections and topics are added.
+const HINDI = findBank("up-tgt-pgt").sections[0];
 
 // The exams the app currently carries question banks for.
 const EXAMS = [
@@ -28,9 +33,14 @@ const EXAMS = [
     name: "UP TGT / PGT",
     eyebrow: "UP Trained & Post Graduate Teacher exams",
     blurb:
-      "Subject practice for the UP TGT and PGT recruitment exams, starting with a topic-wise Hindi Sahitya bank built from previous-year papers.",
-    facts: ["Hindi Sahitya", "Topic-wise", "PYQ based", "Explanations"],
-    meta: "Hindi Sahitya · 30 questions per mock paper",
+      "Subject practice for the UP TGT and PGT recruitment exams. Hindi is laid out section by section the way the syllabus runs it — the history of Hindi literature, gadya, kavyashastra and bhasha vigyan — and every section opens into its own topics.",
+    facts: [
+      "Hindi",
+      `${HINDI.groups.length} syllabus sections`,
+      `${HINDI.topics.length} topics`,
+      "PYQ based",
+    ],
+    meta: "Topic-wise mocks · 30 questions per mock paper",
   },
 ];
 
