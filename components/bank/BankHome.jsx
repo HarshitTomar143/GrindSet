@@ -66,6 +66,7 @@ export default async function BankHome({ bank }) {
               ))}
             </div>
             <div className="card-meta">
+              {sec.groupCount > 0 && `${sec.groupCount} sections · `}
               {sec.topicCount} {sec.kind === "topic" ? "topics" : "subjects"} ·{" "}
               {sec.total.toLocaleString("en-IN")} questions · {sec.mocks} mock
               papers

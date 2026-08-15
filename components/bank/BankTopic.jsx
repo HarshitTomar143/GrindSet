@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { findSection, findTopic, topicLabel } from "@/lib/banks";
+import { findSection, findTopic, displayLabel } from "@/lib/banks";
 import { MOCK_SIZE } from "@/lib/db";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
@@ -28,7 +28,7 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
           { label: topic.name },
         ]}
       />
-      <h1 className="page-title">{topicLabel(topic)}</h1>
+      <h1 className="page-title">{displayLabel(topic)}</h1>
       <p className="page-sub">
         {topic.total} questions · {topic.mocks} mock paper
         {topic.mocks > 1 ? "s" : ""}. Each paper is scored at the end.

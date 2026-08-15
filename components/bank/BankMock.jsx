@@ -3,7 +3,7 @@ import {
   findSection,
   findTopic,
   getMockQuestions,
-  topicLabel,
+  displayLabel,
 } from "@/lib/banks";
 import QuizRunner from "@/components/QuizRunner";
 
@@ -32,7 +32,7 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
         examBase: bank.base,
         sectionName: `${bank.name} · ${section.name}`,
         groupName: section.kind === "topic" ? "Topics" : "Subjects",
-        subjectName: topicLabel(topic),
+        subjectName: displayLabel(topic),
         multiGroup: false,
         base,
         groupBase: `${bank.base}/${section.id}`,
