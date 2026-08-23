@@ -49,11 +49,18 @@ DUPLICATE_FILES = {
     "CTET_2016_Feb_Paper2_MathsScience_Extracted (1).xlsx",
     "CTET_2023_Aug_Paper2_SST_Extracted (1).xlsx",
     "CTET_2024_15DEC_Paper2_SST_extracted (1).xlsx",
+    "Ras_Kavyashastra_PYQ (1).xlsx",
 }
 
 # Raw OCR dump: 504 of 606 rows have no usable options. Parsed and stored like
 # everything else, but every row lands with is_gradable = false.
 KNOWN_BAD = {"Hindi_Sahitya_Adhunik_Kal_OCR_draft.xlsx"}
+
+# One export wrote its data rows one column right of the header from 'Question'
+# onward: 'Question' is empty, the question text sits under 'Option_A' and the
+# answer letter lands in 'Summary'. The columns stay in header order, so nudging
+# just the content indices along recovers every row.
+CONTENT_SHIFT = {"Vyakaran_Tadbhav_Tatsam_Sankar.xlsx": 1}
 
 
 def slug(s):
@@ -350,6 +357,18 @@ def parse_sheet(ws, sheet_name, ctx):
     opt_hi_i = {L: find(m, f"विकल्प {L.lower()} (हिन्दी)") for L in LETTERS}
     blob_en_i = find(m, "options (english)")
     blob_hi_i = find(m, "विकल्प (हिन्दी)")
+
+    # Meta columns stay put; only the content columns are offset.
+    shift = CONTENT_SHIFT.get(ctx["file"], 0)
+    if shift:
+        sh = lambda i: None if i is None else i + shift
+        q_i, q_en_i, q_hi_i = sh(q_i), sh(q_en_i), sh(q_hi_i)
+        ans_i, text_i = sh(ans_i), sh(text_i)
+        exp_i, exp_en_i, exp_hi_i = sh(exp_i), sh(exp_en_i), sh(exp_hi_i)
+        opt_i = {L: sh(v) for L, v in opt_i.items()}
+        opt_en_i = {L: sh(v) for L, v in opt_en_i.items()}
+        opt_hi_i = {L: sh(v) for L, v in opt_hi_i.items()}
+        blob_en_i, blob_hi_i = sh(blob_en_i), sh(blob_hi_i)
 
     meta = {
         "row_id": find(m, "row_id"),

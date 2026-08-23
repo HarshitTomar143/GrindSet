@@ -554,6 +554,36 @@
       "file": "hindi.json",
       "files": [
         {
+          "file": "13-Vyakaran_Muhavare_and_Lokokti.xlsx",
+          "rows": 131,
+          "gradable": 131,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "5-VYAKARAN_Ling_Chapter4.xlsx",
+          "rows": 49,
+          "gradable": 49,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "5-Vyakaran-Vachan.xlsx",
+          "rows": 12,
+          "gradable": 12,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
           "file": "Aalochana_PYQ.xlsx",
           "rows": 145,
           "gradable": 145,
@@ -714,6 +744,26 @@
           "known_bad_ocr": false
         },
         {
+          "file": "Karak_Vyakaran.xlsx",
+          "rows": 34,
+          "gradable": 33,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Ras_Kavyashastra_PYQ (1).xlsx",
+          "rows": 113,
+          "gradable": 113,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
           "file": "Ras_Kavyashastra_PYQ.xlsx",
           "rows": 113,
           "gradable": 113,
@@ -729,6 +779,136 @@
           "gradable": 380,
           "schemas": [
             "F"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Sandhi_Questions.xlsx",
+          "rows": 127,
+          "gradable": 127,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Sanskrit_Sahitya_Questions.xlsx",
+          "rows": 84,
+          "gradable": 82,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Sanskrit_Vyakaran_YCT.xlsx",
+          "rows": 245,
+          "gradable": 244,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Upsarg_Pratyay_YCT.xlsx",
+          "rows": 99,
+          "gradable": 99,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "VYAKARAN_Vartni_Vakya_Shudhikaran_Vakyansh.xlsx",
+          "rows": 302,
+          "gradable": 299,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vilom_Vyakaran.xlsx",
+          "rows": 88,
+          "gradable": 86,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vividh_Chapter12.xlsx",
+          "rows": 210,
+          "gradable": 208,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Ch14_Hindi_Shikshan_Patrakarita.xlsx",
+          "rows": 200,
+          "gradable": 200,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Paryayvachi_Ekarthi_Anekarthi_ShabdYugm.xlsx",
+          "rows": 171,
+          "gradable": 169,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Samas.xlsx",
+          "rows": 100,
+          "gradable": 100,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Sanjna_se_Avyay_tak.xlsx",
+          "rows": 151,
+          "gradable": 150,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Tadbhav_Tatsam_Sankar.xlsx",
+          "rows": 56,
+          "gradable": 56,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vyakaran_Varn_aur_Varnmala.xlsx",
+          "rows": 70,
+          "gradable": 70,
+          "schemas": [
+            "A"
           ],
           "duplicate_of_another_file": false,
           "known_bad_ocr": false
@@ -754,14 +934,14 @@
           "known_bad_ocr": false
         }
       ],
-      "rows": 4627,
-      "gradable": 3927,
-      "unique_questions": 4442
+      "rows": 6869,
+      "gradable": 6155,
+      "unique_questions": 6498
     }
   ],
   "totals": {
-    "rows": 14936,
-    "gradable": 14197,
-    "files": 71
+    "rows": 17178,
+    "gradable": 16425,
+    "files": 89
   }
 }
