@@ -937,11 +937,413 @@
       "rows": 6869,
       "gradable": 6155,
       "unique_questions": 6498
+    },
+    {
+      "folder": "English",
+      "exam_id": "english-literature",
+      "paper": null,
+      "stream": null,
+      "file": "english.json",
+      "files": [
+        {
+          "file": "Active_Passive_Voice_Questions.xlsx",
+          "rows": 178,
+          "gradable": 178,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Alfred_Lord_Tennyson_MCQs.xlsx",
+          "rows": 82,
+          "gradable": 82,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Antonyms_Questions.xlsx",
+          "rows": 78,
+          "gradable": 78,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Charles_Dickens_1812-1870.xlsx",
+          "rows": 105,
+          "gradable": 104,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Charles_Lamb_1775-1834.xlsx",
+          "rows": 119,
+          "gradable": 56,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Clause_Analysis.xlsx",
+          "rows": 56,
+          "gradable": 56,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Common_Error_Questions.xlsx",
+          "rows": 91,
+          "gradable": 91,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Comprehension_Questions (1).xlsx",
+          "rows": 279,
+          "gradable": 279,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Comprehension_Questions.xlsx",
+          "rows": 279,
+          "gradable": 279,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Direct_Indirect_Narration_Questions.xlsx",
+          "rows": 98,
+          "gradable": 98,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Ernest_Hemingway_Questions.xlsx",
+          "rows": 58,
+          "gradable": 58,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Faulkner_Questions.xlsx",
+          "rows": 24,
+          "gradable": 24,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Fill_in_the_Blanks_Questions - Copy.xlsx",
+          "rows": 411,
+          "gradable": 411,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Fill_in_the_Blanks_Questions.xlsx",
+          "rows": 411,
+          "gradable": 411,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Idioms_Questions.xlsx",
+          "rows": 121,
+          "gradable": 121,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "John_Keats_MCQ.xlsx",
+          "rows": 111,
+          "gradable": 111,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Kamala_Das_1934-2009.xlsx",
+          "rows": 45,
+          "gradable": 45,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Literary_Forms_and_Terms_Questions.xlsx",
+          "rows": 134,
+          "gradable": 134,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Matthew_Arnold_Questions.xlsx",
+          "rows": 82,
+          "gradable": 82,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Milton_MCQ.xlsx",
+          "rows": 161,
+          "gradable": 161,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Miscellaneous_Rules_Questions.xlsx",
+          "rows": 38,
+          "gradable": 37,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Mulk_Raj_Anand_MCQs.xlsx",
+          "rows": 32,
+          "gradable": 32,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Nissim_Ezekiel_MCQs.xlsx",
+          "rows": 39,
+          "gradable": 39,
+          "schemas": [
+            "G"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "One_Word_Substitution.xlsx",
+          "rows": 94,
+          "gradable": 94,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Percy_Bysshe_Shelley_MCQs.xlsx",
+          "rows": 119,
+          "gradable": 119,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Phrasal_Verbs.xlsx",
+          "rows": 33,
+          "gradable": 33,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Preposition_Questions.xlsx",
+          "rows": 122,
+          "gradable": 121,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Punctuation_Questions.xlsx",
+          "rows": 42,
+          "gradable": 42,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Robert_Lee_Frost_MCQ.xlsx",
+          "rows": 40,
+          "gradable": 40,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Sentence_Arrangement.xlsx",
+          "rows": 25,
+          "gradable": 25,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Shakespeare_PYQ_Extract.xlsx",
+          "rows": 413,
+          "gradable": 413,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Spelling_Questions.xlsx",
+          "rows": 113,
+          "gradable": 113,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Synonyms_Extracted.xlsx",
+          "rows": 174,
+          "gradable": 174,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Synonyms_Questions.xlsx",
+          "rows": 174,
+          "gradable": 174,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Tense_and_Parts_of_Speech.xlsx",
+          "rows": 206,
+          "gradable": 206,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Thomas_Hardy_Questions.xlsx",
+          "rows": 91,
+          "gradable": 91,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Walt_Whitman_Questions.xlsx",
+          "rows": 77,
+          "gradable": 33,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "William_Wordsworth_PYQ.xlsx",
+          "rows": 214,
+          "gradable": 212,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "find_correct_sentence.xlsx",
+          "rows": 107,
+          "gradable": 107,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 5076,
+      "gradable": 4964,
+      "unique_questions": 4258
     }
   ],
   "totals": {
-    "rows": 17178,
-    "gradable": 16425,
-    "files": 89
+    "rows": 22254,
+    "gradable": 21389,
+    "files": 128
   }
 }

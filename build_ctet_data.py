@@ -35,7 +35,14 @@ FOLDERS = [
     # Not CTET: TGT/PGT/Assistant-Professor Hindi literature PYQs. Loaded under
     # its own exam_id so it is present but trivially separable.
     ("hindi", "hindi-sahitya", None, None),
+    # Same again for the TGT/PGT English literature and language PYQs.
+    ("English", "english-literature", None, None),
 ]
+
+# Folders whose questions are literature/language PYQs rather than CTET papers:
+# their Subject column already names the topic, so canon_subject (which maps onto
+# CTET's five paper subjects) must not touch it.
+LITERATURE_FOLDERS = {"hindi", "English"}
 
 # Sheets that hold commentary rather than questions.
 SKIP_SHEETS = {
@@ -50,6 +57,12 @@ DUPLICATE_FILES = {
     "CTET_2023_Aug_Paper2_SST_Extracted (1).xlsx",
     "CTET_2024_15DEC_Paper2_SST_extracted (1).xlsx",
     "Ras_Kavyashastra_PYQ (1).xlsx",
+    # English: two second passes over booklet sections already extracted
+    # (row-aligned, same answers, only the wording of the prompts differs) and
+    # one byte-identical copy.
+    "Comprehension_Questions (1).xlsx",
+    "Synonyms_Extracted.xlsx",
+    "Fill_in_the_Blanks_Questions - Copy.xlsx",
 }
 
 # Raw OCR dump: 504 of 606 rows have no usable options. Parsed and stored like
@@ -120,6 +133,7 @@ def parse_correct(raw, options):
 HEADER_HINTS = {
     "question", "question (english)", "q.no", "q.no.", "q_no", "s_no", "row_id",
     "subject", "section", "part", "correct_answer", "correct answer", "answer",
+    "correct option",
     "option_a", "option (a)", "option a", "option a (english)", "topic",
 }
 
@@ -343,8 +357,9 @@ def parse_sheet(ws, sheet_name, ctx):
         ans_i = m["key"]
         text_i = find(m, "correct option text", "answer")
     else:
-        ans_i = find(m, "correct_answer", "correct answer", "answer / उत्तर", "answer")
-        text_i = find(m, "correct option text")
+        ans_i = find(m, "correct_answer", "correct answer", "answer / उत्तर",
+                     "answer", "correct option")
+        text_i = find(m, "correct option text", "correct answer text")
 
     exp_i = find(m, "explanation", "summary", "explanation_summary",
                  "explanation / व्याख्या (हिन्दी)")
@@ -424,7 +439,7 @@ def parse_sheet(ws, sheet_name, ctx):
         if ctx["schema_subject_from_sheet"]:
             subject_raw = sheet_name
         if subject_raw:
-            subject_name = (subject_raw if ctx["folder"] == "hindi"
+            subject_name = (subject_raw if ctx["folder"] in LITERATURE_FOLDERS
                             else canon_subject(subject_raw, raw["language_raw"], ctx["folder"]))
         else:
             subject_name, carried = band_subject(ctx["file"], raw["s_no"], question, carried)
