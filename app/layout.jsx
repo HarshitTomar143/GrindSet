@@ -14,7 +14,6 @@ export const viewport = {
   themeColor: "#7d6fd1",
 };
 
-// Apply saved theme/font before first paint to avoid a flash.
 const themeInit = `(function(){try{
 var d=document.documentElement;
 var t=localStorage.getItem('theme'); if(t)d.setAttribute('data-theme',t);
