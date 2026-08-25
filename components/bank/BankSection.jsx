@@ -60,7 +60,13 @@ export default async function BankSection({ bank, sectionId }) {
                 <span className="topic-group-num">{gi + 1}</span>
                 <div>
                   <h2 className="topic-group-title">{g.nameHi || g.name}</h2>
-                  {g.nameHi && <div className="topic-group-sub">{g.name}</div>}
+                  {/* Hindi units caption the roman name under the Devanagari
+                      one; English units caption the syllabus section instead. */}
+                  {(g.nameHi || g.syllabusPart) && (
+                    <div className="topic-group-sub">
+                      {g.nameHi ? g.name : g.syllabusPart}
+                    </div>
+                  )}
                 </div>
                 <span className="topic-group-count">
                   {g.topics.length} topic{g.topics.length > 1 ? "s" : ""}
