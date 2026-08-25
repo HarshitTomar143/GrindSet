@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { findSection, findTopic, displayLabel } from "@/lib/banks";
 import { MOCK_SIZE } from "@/lib/db";
+import { uiText } from "@/lib/ui-text";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 
@@ -12,6 +13,11 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
   const topic = await findTopic(section, topicId);
   if (!topic) notFound();
 
+  const lang = section.uiLang;
+  const t = uiText(lang);
+  const sectionLabel = displayLabel(section, lang);
+  const topicLabel = displayLabel(topic, lang);
+
   const papers = Array.from({ length: topic.mocks }, (_, i) => ({
     n: i + 1,
     count: Math.min(MOCK_SIZE, topic.total - i * MOCK_SIZE),
@@ -19,20 +25,17 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
 
   return (
     <div>
-      <BackLink href={`${bank.base}/${section.id}`} label={section.name} />
+      <BackLink href={`${bank.base}/${section.id}`} label={sectionLabel} />
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
+          { label: t.home, href: "/" },
           { label: bank.name, href: bank.base },
-          { label: section.name, href: `${bank.base}/${section.id}` },
-          { label: topic.name },
+          { label: sectionLabel, href: `${bank.base}/${section.id}` },
+          { label: topicLabel },
         ]}
       />
-      <h1 className="page-title">{displayLabel(topic)}</h1>
-      <p className="page-sub">
-        {topic.total} questions · {topic.mocks} mock paper
-        {topic.mocks > 1 ? "s" : ""}. Each paper is scored at the end.
-      </p>
+      <h1 className="page-title">{topicLabel}</h1>
+      <p className="page-sub">{t.topicSub(topic.total, topic.mocks)}</p>
       <div className="grid">
         {papers.map((p, i) => (
           <a
@@ -41,9 +44,9 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
             className="card"
             style={{ "--i": i }}
           >
-            <div className="card-title">Mock Paper {p.n}</div>
-            <div className="card-meta">{p.count} questions</div>
-            <span className="pill">Start test →</span>
+            <div className="card-title">{t.mockPaper(p.n)}</div>
+            <div className="card-meta">{t.questionCount(p.count)}</div>
+            <span className="pill">{t.startTest}</span>
           </a>
         ))}
       </div>

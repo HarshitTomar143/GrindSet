@@ -1,4 +1,5 @@
 import { getBankOverview } from "@/lib/banks";
+import { uiText } from "@/lib/ui-text";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 
@@ -48,32 +49,40 @@ export default async function BankHome({ bank }) {
       <h1 className="page-title">{bank.chooseTitle}</h1>
       <p className="page-sub">{bank.chooseSub}</p>
       <div className="grid two">
-        {live.map((sec, i) => (
-          <a
-            key={sec.id}
-            href={`${bank.base}/${sec.id}`}
-            className="card hero-card"
-            style={{ "--i": i }}
-          >
-            <span className="card-eyebrow">{sec.eyebrow}</span>
-            <div className="card-title">{sec.name}</div>
-            <p className="card-blurb">{sec.blurb}</p>
-            <div className="fact-row">
-              {sec.facts.map((f) => (
-                <span className="fact" key={f}>
-                  {f}
-                </span>
-              ))}
-            </div>
-            <div className="card-meta">
-              {sec.groupCount > 0 && `${sec.groupCount} sections · `}
-              {sec.topicCount} {sec.kind === "topic" ? "topics" : "subjects"} ·{" "}
-              {sec.total.toLocaleString("en-IN")} questions · {sec.mocks} mock
-              papers
-            </div>
-            <span className="pill">Open section →</span>
-          </a>
-        ))}
+        {live.map((sec, i) => {
+          // A section that reads in Hindi is introduced in Hindi too, even
+          // though the chooser around it stays in English.
+          const t = uiText(sec.uiLang);
+          const title = sec.uiLang === "hi" ? sec.nameHi || sec.name : sec.name;
+          return (
+            <a
+              key={sec.id}
+              href={`${bank.base}/${sec.id}`}
+              className="card hero-card"
+              style={{ "--i": i }}
+            >
+              <span className="card-eyebrow">{sec.eyebrow}</span>
+              <div className="card-title">{title}</div>
+              <p className="card-blurb">{sec.blurb}</p>
+              <div className="fact-row">
+                {sec.facts.map((f) => (
+                  <span className="fact" key={f}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+              <div className="card-meta">
+                {sec.groupCount > 0 && `${t.groupCount(sec.groupCount)} · `}
+                {sec.kind === "topic"
+                  ? t.topicCount(sec.topicCount)
+                  : t.subjectCount(sec.topicCount)}{" "}
+                · {t.questionCount(sec.total.toLocaleString("en-IN"))} ·{" "}
+                {t.mockCount(sec.mocks)}
+              </div>
+              <span className="pill">{t.openSection}</span>
+            </a>
+          );
+        })}
       </div>
       {!live.length && (
         <p className="page-sub">

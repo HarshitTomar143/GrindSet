@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { pickLang } from "@/lib/lang";
+import { uiText } from "@/lib/ui-text";
 
 const LETTERS = ["A", "B", "C", "D"];
 const SECONDS_PER_Q = 60; // exam mode: 1 minute per question (TET ratio)
+// Stored with the report, so these stay English whatever the reader sees;
+// uiText().reportReasons holds the labels, in the same order.
 const REPORT_REASONS = [
   "Wrong answer marked",
   "Typo or unclear wording",
@@ -48,6 +51,8 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
   const autoSubmitRef = useRef(null);
 
   const tr = (t) => pickLang(t, lang);
+  // Copy for the screen itself; a Hindi-reading bank passes uiLang: "hi".
+  const T = uiText(meta.uiLang);
 
   // Sections only exist on full mock papers; a subject paper has none.
   const examSections = useMemo(() => {
@@ -139,8 +144,8 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
   // focus across re-renders.
   const renderLangToggle = () => (
     <div style={{ display: "inline-flex", alignItems: "center" }}>
-      <span className="seg-label">Language</span>
-      <div className="seg" role="group" aria-label="Question language">
+      <span className="seg-label">{T.language}</span>
+      <div className="seg" role="group" aria-label={T.languageAria}>
         <button
           className={lang === "en" ? "active" : ""}
           onClick={() => changeLang("en")}
@@ -157,7 +162,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
           className={lang === "both" ? "active" : ""}
           onClick={() => changeLang("both")}
         >
-          Both
+          {T.both}
         </button>
       </div>
     </div>
@@ -168,25 +173,24 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
     return (
       <div style={{ maxWidth: 460, margin: "20px auto" }}>
         <a className="back-btn" href={meta.base}>
-          ← Mock papers
+          ← {T.mockPapers}
         </a>
-        <h1 className="page-title">Before you begin</h1>
+        <h1 className="page-title">{T.beforeBegin}</h1>
         <p className="page-sub">
-          {meta.subjectName} · Mock Paper {mockNum} · {questions.length} questions
+          {T.gateSub(meta.subjectName, mockNum, questions.length)}
         </p>
         <div className="q-card" style={{ marginTop: 12 }}>
           {examSections.length > 1 ? (
             <>
               <div className="muted-sm" style={{ marginBottom: 8 }}>
-                This mock has {examSections.length} sections and{" "}
-                {questions.length} questions.
+                {T.gateSections(examSections.length, questions.length)}
               </div>
               <div className="tag mandatory">{examSections.join(" → ")}</div>
             </>
           ) : (
             <>
               <div className="muted-sm" style={{ marginBottom: 8 }}>
-                {questions.length} questions, scored as soon as you submit.
+                {T.gateScored(questions.length)}
               </div>
               <div className="tag mandatory">{meta.subjectName}</div>
             </>
@@ -199,42 +203,36 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             saveUser();
           }}
         >
-          <label className="field-label">Choose a mode</label>
+          <label className="field-label">{T.chooseMode}</label>
           <div className="mode-grid">
             <button
               type="button"
               className={`mode-card ${mode === "exam" ? "active" : ""}`}
               onClick={() => setMode("exam")}
             >
-              <h4>📝 Exam mode</h4>
-              <p>
-                {questions.length}-minute timer that auto-submits when time is
-                up. Score &amp; review at the end — like the real CBT.
-              </p>
+              <h4>{T.examMode}</h4>
+              <p>{T.examModeDesc(questions.length)}</p>
             </button>
             <button
               type="button"
               className={`mode-card ${mode === "practice" ? "active" : ""}`}
               onClick={() => setMode("practice")}
             >
-              <h4>📚 Practice mode</h4>
-              <p>
-                Untimed. See the correct answer and explanation right after each
-                question.
-              </p>
+              <h4>{T.practiceMode}</h4>
+              <p>{T.practiceModeDesc}</p>
             </button>
           </div>
 
-          <label className="field-label">Your name *</label>
+          <label className="field-label">{T.yourName}</label>
           <input
             className="text-input"
             value={nameInput}
             autoFocus
             onChange={(e) => setNameInput(e.target.value)}
-            placeholder="e.g. Priya Sharma"
+            placeholder={T.namePlaceholder}
           />
           <label className="field-label" style={{ marginTop: 12 }}>
-            Email (optional)
+            {T.emailOptional}
           </label>
           <input
             className="text-input"
@@ -252,7 +250,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             disabled={!nameInput.trim()}
             style={{ marginTop: 16, width: "100%" }}
           >
-            {mode === "exam" ? "Start test →" : "Start practice →"}
+            {mode === "exam" ? T.startTest : T.startPractice}
           </button>
         </form>
       </div>
@@ -327,8 +325,8 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
     const unanswered = questions.length - answeredCount;
     const msg =
       unanswered > 0
-        ? `You have ${unanswered} unanswered question(s). Submit anyway?`
-        : "Submit your answers?";
+        ? T.confirmUnanswered(unanswered)
+        : T.confirmSubmit;
     if (!window.confirm(msg)) return;
     finalize(false);
   };
@@ -337,7 +335,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
     if (
       !submitted &&
       answeredCount > 0 &&
-      !window.confirm("Leave this test? Your answers will be lost.")
+      !window.confirm(T.confirmLeave)
     )
       return;
     window.location.href = meta.base;
@@ -379,25 +377,25 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
     return (
       <div className="modal-backdrop" onClick={closeReport}>
         <div className="modal" onClick={(e) => e.stopPropagation()}>
-          <h3>Report question {report.index + 1}</h3>
+          <h3>{T.reportTitle(report.index + 1)}</h3>
           <p className="muted-sm" style={{ margin: 0 }}>
-            Tell us what looks wrong — it goes to the admin for review.
+            {T.reportSub}
           </p>
           {report.state === "done" ? (
             <>
               <div className="feedback correct" style={{ marginTop: 16 }}>
-                ✓ Thanks! Your report was submitted.
+                {T.reportThanks}
               </div>
               <div className="modal-actions">
                 <button className="btn" onClick={closeReport}>
-                  Close
+                  {T.close}
                 </button>
               </div>
             </>
           ) : (
             <>
               <div className="reasons">
-                {REPORT_REASONS.map((r) => (
+                {REPORT_REASONS.map((r, ri) => (
                   <label
                     key={r}
                     className={`reason-opt ${
@@ -410,14 +408,14 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
                       checked={report.reason === r}
                       onChange={() => setReport((p) => ({ ...p, reason: r }))}
                     />
-                    {r}
+                    {T.reportReasons[ri]}
                   </label>
                 ))}
               </div>
               <textarea
                 className="text-input"
                 rows={3}
-                placeholder="Add details (optional)…"
+                placeholder={T.reportNotePlaceholder}
                 value={report.note}
                 onChange={(e) =>
                   setReport((p) => ({ ...p, note: e.target.value }))
@@ -425,19 +423,19 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
               />
               {report.state === "error" && (
                 <p className="muted-sm" style={{ color: "var(--red)" }}>
-                  Could not submit — please try again.
+                  {T.reportError}
                 </p>
               )}
               <div className="modal-actions">
                 <button className="btn ghost" onClick={closeReport}>
-                  Cancel
+                  {T.cancel}
                 </button>
                 <button
                   className="btn"
                   onClick={submitReport}
                   disabled={report.state === "saving"}
                 >
-                  {report.state === "saving" ? "Sending…" : "Submit report"}
+                  {report.state === "saving" ? T.sending : T.reportSend}
                 </button>
               </div>
             </>
@@ -453,45 +451,45 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
     return (
       <div>
         <button className="back-btn" onClick={goBack}>
-          ← Mock papers
+          ← {T.mockPapers}
         </button>
-        <h1 className="page-title">Report Card</h1>
+        <h1 className="page-title">{T.reportCard}</h1>
         <p className="page-sub">
-          {user.name} · {meta.subjectName} · Mock Paper {mockNum} · time{" "}
-          {fmtTime(seconds)}
-          {autoSubmitted && " · ⏱ auto-submitted (time up)"}
-          {saveState === "saving" && " · saving result…"}
-          {saveState === "saved" && " · ✓ result saved"}
-          {saveState === "error" && " · ⚠ result not saved"}
+          {user.name} · {meta.subjectName} · {T.mockPaper(mockNum)} ·{" "}
+          {T.timeLabel} {fmtTime(seconds)}
+          {autoSubmitted && T.autoSubmitted}
+          {saveState === "saving" && T.saving}
+          {saveState === "saved" && T.saved}
+          {saveState === "error" && T.saveFailed}
         </p>
 
         <div className="scorebox">
           <div className="score-num">
             {results.correct}/{results.total}
           </div>
-          <div className="score-pct">{pct}% correct</div>
+          <div className="score-pct">{T.pctCorrect(pct)}</div>
           <div className="stat-row">
             <div className="stat correct" style={{ "--i": 0 }}>
               <div className="n">{results.correct}</div>
-              <div className="l">Correct</div>
+              <div className="l">{T.correct}</div>
             </div>
             <div className="stat wrong" style={{ "--i": 1 }}>
               <div className="n">{results.wrong}</div>
-              <div className="l">Wrong</div>
+              <div className="l">{T.wrong}</div>
             </div>
             <div className="stat skipped" style={{ "--i": 2 }}>
               <div className="n">{results.skipped}</div>
-              <div className="l">Unattempted</div>
+              <div className="l">{T.unattempted}</div>
             </div>
           </div>
         </div>
 
         <div className="center-actions">
           <a className="btn" href={meta.base}>
-            Other mock papers
+            {T.otherMocks}
           </a>
           <a className="btn ghost" href="/">
-            Home
+            {T.home}
           </a>
         </div>
 
@@ -505,7 +503,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
           }}
         >
           <h2 className="page-title" style={{ fontSize: 20, marginBottom: 0 }}>
-            Review
+            {T.review}
           </h2>
           {renderLangToggle()}
         </div>
@@ -528,16 +526,16 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <span className={`tag ${state}`}>
                     {state === "correct"
-                      ? "Correct"
+                      ? T.correct
                       : state === "wrong"
-                      ? "Wrong"
-                      : "Skipped"}
+                      ? T.wrong
+                      : T.skipped}
                   </span>
                   <button
                     className="tool-btn report"
                     onClick={() => openReport(i)}
                   >
-                    ⚐ Report
+                    {T.report}
                   </button>
                 </div>
               </div>
@@ -567,7 +565,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
               </div>
               {q.explanation && (
                 <div className="explain">
-                  <b>Explanation:</b> {tr(q.explanation)}
+                  <b>{T.explanation}</b> {tr(q.explanation)}
                 </div>
               )}
             </div>
@@ -576,10 +574,10 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
 
         <div className="center-actions">
           <a className="btn" href={meta.base}>
-            Other mock papers
+            {T.otherMocks}
           </a>
           <a className="btn ghost" href="/">
-            Home
+            {T.home}
           </a>
         </div>
         {renderReportModal()}
@@ -608,10 +606,10 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
   return (
     <div>
       <button className="back-btn" onClick={goBack}>
-        ← Mock papers
+        ← {T.mockPapers}
       </button>
       <div className="breadcrumb">
-        <a href="/">Home</a>
+        <a href="/">{T.home}</a>
         {meta.examBase && (
           <>
             <span className="sep">/</span>
@@ -629,7 +627,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
         <span className="sep">/</span>
         <a href={meta.base}>{meta.subjectName}</a>
         <span className="sep">/</span>
-        <span>Mock {mockNum}</span>
+        <span>{T.mockShort(mockNum)}</span>
       </div>
 
       <div className="quiz-bar">
@@ -643,19 +641,19 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             }}
           >
             <span className="mode-badge">
-              {mode === "exam" ? "Exam" : "Practice"}
+              {mode === "exam" ? T.examBadge : T.practiceBadge}
             </span>
             {q?.sectionLabel && <span className="tag">{q.sectionLabel}</span>}
             <span>
-              <strong>{meta.subjectName}</strong> · Mock {mockNum} · Q{" "}
-              <strong>{current + 1}</strong>/{questions.length} · Answered{" "}
-              <strong>{answeredCount}</strong>
+              <strong>{meta.subjectName}</strong> · {T.mockShort(mockNum)} ·{" "}
+              {T.qShort} <strong>{current + 1}</strong>/{questions.length} ·{" "}
+              {T.answeredLabel} <strong>{answeredCount}</strong>
             </span>
           </div>
           <div className="muted-sm" style={{ marginTop: 4 }}>
             {user.name}{" "}
             <button className="linklike" onClick={changeUser}>
-              (change)
+              {T.changeUser}
             </button>
           </div>
         </div>
@@ -672,7 +670,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             ⏱ {fmtTime(timed ? remaining : seconds)}
           </span>
           <button className="btn success" onClick={handleSubmit}>
-            Submit test
+            {T.submitTest}
           </button>
         </div>
       </div>
@@ -690,20 +688,20 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
           style={{ alignItems: "center", flexWrap: "wrap" }}
         >
           <span className="q-num">
-            Question {current + 1}/{questions.length}
+            {T.questionOf(current + 1, questions.length)}
           </span>
           <div className="q-tools">
             <button
               className={`tool-btn ${marked.has(current) ? "marked" : ""}`}
               onClick={() => toggleMark(current)}
             >
-              {marked.has(current) ? "★ Marked" : "☆ Mark for review"}
+              {marked.has(current) ? T.marked : T.markForReview}
             </button>
             <button
               className="tool-btn report"
               onClick={() => openReport(current)}
             >
-              ⚐ Report
+              {T.report}
             </button>
           </div>
         </div>
@@ -746,12 +744,12 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
               }`}
             >
               {answers[current] === q.correct
-                ? "✓ Correct!"
-                : `✗ Incorrect — the correct answer is ${q.correct}.`}
+                ? T.correctFeedback
+                : T.wrongFeedback(q.correct)}
             </div>
             {q.explanation && (
               <div className="explain">
-                <b>Explanation:</b> {tr(q.explanation)}
+                <b>{T.explanation}</b> {tr(q.explanation)}
               </div>
             )}
           </>
@@ -763,7 +761,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             disabled={current === 0}
             onClick={() => setCurrent((c) => Math.max(0, c - 1))}
           >
-            ← Previous
+            {T.previous}
           </button>
           {current < questions.length - 1 ? (
             <button
@@ -772,11 +770,11 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
                 setCurrent((c) => Math.min(questions.length - 1, c + 1))
               }
             >
-              Next →
+              {T.next}
             </button>
           ) : (
             <button className="btn success" onClick={handleSubmit}>
-              Submit test
+              {T.submitTest}
             </button>
           )}
         </div>
@@ -795,16 +793,16 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
       </div>
       <div className="palette-legend">
         <span>
-          <i className="lg-swatch notvisited" /> Not visited
+          <i className="lg-swatch notvisited" /> {T.legendNotVisited}
         </span>
         <span>
-          <i className="lg-swatch seen" /> Not answered
+          <i className="lg-swatch seen" /> {T.legendNotAnswered}
         </span>
         <span>
-          <i className="lg-swatch answered" /> Answered
+          <i className="lg-swatch answered" /> {T.legendAnswered}
         </span>
         <span>
-          <i className="lg-swatch marked" /> Marked for review
+          <i className="lg-swatch marked" /> {T.legendMarked}
         </span>
       </div>
 

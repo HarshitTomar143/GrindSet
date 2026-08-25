@@ -5,6 +5,7 @@ import {
   getMockQuestions,
   displayLabel,
 } from "@/lib/banks";
+import { uiText } from "@/lib/ui-text";
 import QuizRunner from "@/components/QuizRunner";
 
 // One mock paper, handed to the shared quiz runner.
@@ -21,6 +22,8 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
   const questions = await getMockQuestions(section, topic, mockNum);
   if (!questions.length) notFound();
 
+  const lang = section.uiLang;
+  const t = uiText(lang);
   const base = `${bank.base}/${section.id}/${topic.id}`;
 
   return (
@@ -28,11 +31,12 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
       questions={questions}
       mockNum={mockNum}
       meta={{
+        uiLang: lang,
         examName: bank.name,
         examBase: bank.base,
-        sectionName: `${bank.name} · ${section.name}`,
-        groupName: section.kind === "topic" ? "Topics" : "Subjects",
-        subjectName: displayLabel(topic),
+        sectionName: `${bank.name} · ${displayLabel(section, lang)}`,
+        groupName: section.kind === "topic" ? t.topicsWord : t.subjectsWord,
+        subjectName: displayLabel(topic, lang),
         multiGroup: false,
         base,
         groupBase: `${bank.base}/${section.id}`,
