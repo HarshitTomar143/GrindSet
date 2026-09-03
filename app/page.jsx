@@ -35,7 +35,7 @@ const EXAMS = [
     name: "UP TGT / PGT",
     eyebrow: "UP Trained & Post Graduate Teacher exams",
     blurb:
-      "Subject practice for the UP TGT and PGT recruitment exams. Each subject is laid out section by section the way its syllabus runs it — sahitya, kavyashastra and vyakaran in Hindi, language and grammar, forms of literature and the prescribed authors in English — and every section opens into its own topics.",
+      "Subject practice for the UP TGT and PGT recruitment exams. Each subject is laid out section by section the way its syllabus runs it — sahitya, kavyashastra and vyakaran in Hindi, language and grammar, forms of literature and the prescribed authors in English, history through to Uttar Pradesh in General Studies — and every section opens into its own topics.",
     facts: [
       ...UP_SUBJECTS.map((s) => s.name),
       `${UP_GROUPS} syllabus sections`,

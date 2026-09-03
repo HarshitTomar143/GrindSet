@@ -37,12 +37,16 @@ FOLDERS = [
     ("hindi", "hindi-sahitya", None, None),
     # Same again for the TGT/PGT English literature and language PYQs.
     ("English", "english-literature", None, None),
+    # General Studies: the UP-focused GS question banks (history, geography,
+    # polity, economy, science, environment, ICT). One workbook per subject.
+    ("gs", "general-studies", None, None),
 ]
 
-# Folders whose questions are literature/language PYQs rather than CTET papers:
-# their Subject column already names the topic, so canon_subject (which maps onto
-# CTET's five paper subjects) must not touch it.
-LITERATURE_FOLDERS = {"hindi", "English"}
+# Folders whose questions are not CTET papers: their Subject column already names
+# the topic (a literature chapter, a GS chapter), so canon_subject -- which maps
+# onto CTET's five paper subjects -- must not touch it. Left unmapped, a GS row
+# labelled "सामान्य विज्ञान" would be rewritten to "Mathematics & Science".
+RAW_SUBJECT_FOLDERS = {"hindi", "English", "gs"}
 
 # Sheets that hold commentary rather than questions.
 SKIP_SHEETS = {
@@ -63,11 +67,25 @@ DUPLICATE_FILES = {
     "Comprehension_Questions (1).xlsx",
     "Synonyms_Extracted.xlsx",
     "Fill_in_the_Blanks_Questions - Copy.xlsx",
+    # GS: the older of two passes over the same 205 UP-GK questions. Both are
+    # row-aligned with identical options and answers; the '(1)' export is kept
+    # instead because its question text carries the trailing instruction line
+    # ("नीचे दिये गये कूट से...") that this one truncates.
+    "UP_Samanya_Gyan_Questions.xlsx",
 }
 
 # Raw OCR dump: 504 of 606 rows have no usable options. Parsed and stored like
 # everything else, but every row lands with is_gradable = false.
-KNOWN_BAD = {"Hindi_Sahitya_Adhunik_Kal_OCR_draft.xlsx"}
+KNOWN_BAD = {
+    "Hindi_Sahitya_Adhunik_Kal_OCR_draft.xlsx",
+    # GS: both suffer the same Devanagari matra reordering in the source PDF's
+    # text layer. The environment booklet's extraction dropped the question and
+    # option text entirely rather than store the garbled form, so all 562 of its
+    # rows carry answers only and none survive parsing; the science booklet kept
+    # the garbled text, so its rows parse and grade but read badly.
+    "Environment_Ecology_Questions.xlsx",
+    "Samanya_Vighyan_Questions.xlsx",
+}
 
 # One export wrote its data rows one column right of the header from 'Question'
 # onward: 'Question' is empty, the question text sits under 'Option_A' and the
@@ -313,7 +331,7 @@ def parse_exam(filename):
     session = None
     low = filename.lower()
     for mon in MONTHS:
-        if re.search(r"[_\s\-]" + mon, low):
+        if re.search(r"[_\s\-]" + mon + r"(?![a-z])", low):
             session = mon.capitalize()
             break
     return year, session
@@ -439,7 +457,7 @@ def parse_sheet(ws, sheet_name, ctx):
         if ctx["schema_subject_from_sheet"]:
             subject_raw = sheet_name
         if subject_raw:
-            subject_name = (subject_raw if ctx["folder"] in LITERATURE_FOLDERS
+            subject_name = (subject_raw if ctx["folder"] in RAW_SUBJECT_FOLDERS
                             else canon_subject(subject_raw, raw["language_raw"], ctx["folder"]))
         else:
             subject_name, carried = band_subject(ctx["file"], raw["s_no"], question, carried)

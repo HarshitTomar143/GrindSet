@@ -1339,11 +1339,161 @@
       "rows": 5076,
       "gradable": 4964,
       "unique_questions": 4258
+    },
+    {
+      "folder": "gs",
+      "exam_id": "general-studies",
+      "paper": null,
+      "stream": null,
+      "file": "gs.json",
+      "files": [
+        {
+          "file": "Adhunik_Bharat_Question_Bank.xlsx",
+          "rows": 753,
+          "gradable": 690,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Ancient_History_Questions.xlsx",
+          "rows": 507,
+          "gradable": 501,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bharat_ka_Bhugol_Questions.xlsx",
+          "rows": 644,
+          "gradable": 635,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bhartiya_Jansankhya_Questions.xlsx",
+          "rows": 97,
+          "gradable": 0,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Bhartiya_Samvidhan_Questions.xlsx",
+          "rows": 1082,
+          "gradable": 959,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Educational_Technology_Questions.xlsx",
+          "rows": 48,
+          "gradable": 48,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Environment_Ecology_Questions.xlsx",
+          "rows": 0,
+          "gradable": 0,
+          "schemas": [],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": true
+        },
+        {
+          "file": "ICT_Questions_Extracted.xlsx",
+          "rows": 142,
+          "gradable": 142,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Indian_Economy_Questions.xlsx",
+          "rows": 348,
+          "gradable": 325,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Krishi_Vanijya_Vyapar_Questions.xlsx",
+          "rows": 112,
+          "gradable": 111,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Medieval_History_Questions.xlsx",
+          "rows": 442,
+          "gradable": 340,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Samanya_Vighyan_Questions.xlsx",
+          "rows": 1077,
+          "gradable": 1015,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": true
+        },
+        {
+          "file": "UP_Samanya_Gyan_Questions (1).xlsx",
+          "rows": 205,
+          "gradable": 197,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "UP_Samanya_Gyan_Questions.xlsx",
+          "rows": 205,
+          "gradable": 201,
+          "schemas": [
+            "A"
+          ],
+          "duplicate_of_another_file": true,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 5662,
+      "gradable": 5164,
+      "unique_questions": 5432
     }
   ],
   "totals": {
-    "rows": 22254,
-    "gradable": 21389,
-    "files": 128
+    "rows": 27916,
+    "gradable": 26553,
+    "files": 142
   }
 }
