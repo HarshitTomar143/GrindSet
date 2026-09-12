@@ -1,7 +1,7 @@
 {
-  "name": "Octopus — UPTET Practice",
+  "name": "Octopus — Teaching exam practice",
   "short_name": "Octopus",
-  "description": "Practise UPTET Paper 1 & Paper 2 mock tests, with offline support.",
+  "description": "Timed mock papers for UP TET, CTET and UP TGT / PGT, built from previous-year questions.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

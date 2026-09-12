@@ -5,182 +5,166 @@ import {
   findGroup,
   findSubject,
 } from "@/lib/data";
+import { SUBJECTS, subjectIcon, firstLetter } from "@/lib/subjects";
+import { uiText, uiFormat } from "@/lib/ui-text";
+import { bi } from "@/lib/site-lang";
+import { getSiteLang } from "@/lib/site-lang-server";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
+import MockPaperGrid from "@/components/MockPaperGrid";
+import SubjectIcon from "@/components/SubjectIcon";
+
+// The two full-mock choosers, and the extra choices each paper asks for.
+const FULL_MOCKS = {
+  paper1: {
+    subject: "paper1-full",
+    sub: "fullMocksSub1",
+    split: "fullMockSplit1",
+    streams: null,
+  },
+  paper2: {
+    subject: "paper2-full",
+    sub: "fullMocksSub2",
+    split: "fullMockSplit2",
+    streams: ["mathematics-science", "social-studies"],
+  },
+};
+
+// The query values the mock page reads (see [mock]/page.jsx).
+const STREAM_VALUE = { "mathematics-science": "science", "social-studies": "social" };
 
 export default async function SubjectPage({ params }) {
+  const lang = getSiteLang();
+  const T = uiText(lang);
+  const subjectLabel = (id) => bi(lang, SUBJECTS[id].en, SUBJECTS[id].hi, true);
+
   const manifest = await getManifest();
-
-  if (
-    params.section === "paper1" &&
-    params.group === "main" &&
-    params.subject === "paper1-full"
-  ) {
-    return (
-      <div>
-        <BackLink href="/paper1" label="Paper 1" />
-        <Breadcrumb
-          items={[
-            { label: "Home", href: "/" },
-            { label: "UP TET", href: "/uptet" },
-            { label: "Paper 1", href: "/paper1" },
-            { label: "Full Mock Papers" },
-          ]}
-        />
-        <h1 className="page-title">Paper 1 Full Mock Papers</h1>
-        <p className="page-sub">
-          Pick a language and start a full Paper 1 mock paper with 150 questions across five sections: Child Development & Pedagogy, Hindi, your chosen third section, Environmental Studies, and Mathematics.
-        </p>
-        <div className="grid two">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className="card hero-card" style={{ "--i": n }}>
-              <div className="card-title">Full Mock Paper {n}</div>
-              <div className="card-meta">150 questions · 30 from each section</div>
-              <form action={`/${params.section}/${params.group}/${params.subject}/${n}`} method="get">
-                <div className="field-group">
-                  <div className="field-label">Choose the third section</div>
-                  <div className="radio-group radio-grid">
-                    <label className="radio-card">
-                      <input type="radio" name="lang" value="english" defaultChecked />
-                      <span>English</span>
-                    </label>
-                    <label className="radio-card">
-                      <input type="radio" name="lang" value="sanskrit" />
-                      <span>Sanskrit</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="muted-sm" style={{ marginTop: 8 }}>
-                  Hindi is always included as a mandatory section.
-                </div>
-                <button className="btn" type="submit" style={{ marginTop: 12, width: "100%" }}>
-                  Start Mock Paper {n} →
-                </button>
-              </form>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (
-    params.section === "paper2" &&
-    params.group === "main" &&
-    params.subject === "paper2-full"
-  ) {
-    return (
-      <div>
-        <BackLink href="/paper2" label="Paper 2" />
-        <Breadcrumb
-          items={[
-            { label: "Home", href: "/" },
-            { label: "UP TET", href: "/uptet" },
-            { label: "Paper 2", href: "/paper2" },
-            { label: "Full Mock Papers" },
-          ]}
-        />
-        <h1 className="page-title">Paper 2 Full Mock Papers</h1>
-        <p className="page-sub">
-          Pick your stream and language, then start a full Paper 2 mock paper with 150 questions: 30 from CDP, 30 from Hindi, 30 from English or Sanskrit, and 60 from the chosen stream.
-        </p>
-        <div className="grid two">
-          {[1, 2, 3].map((n) => (
-            <div key={n} className="card hero-card" style={{ "--i": n }}>
-              <div className="card-title">Full Mock Paper {n}</div>
-              <div className="card-meta">150 questions · 30 + 30 + 30 + 60</div>
-              <form action={`/${params.section}/${params.group}/${params.subject}/${n}`} method="get">
-                <div className="field-group">
-                  <div className="field-label">Choose stream</div>
-                  <div className="radio-group radio-grid">
-                    <label className="radio-card">
-                      <input type="radio" name="stream" value="science" defaultChecked />
-                      <span>Mathematics & Science</span>
-                    </label>
-                    <label className="radio-card">
-                      <input type="radio" name="stream" value="social" />
-                      <span>Social Studies</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="field-group" style={{ marginTop: 12 }}>
-                  <div className="field-label">Choose the language section</div>
-                  <div className="radio-group radio-grid">
-                    <label className="radio-card">
-                      <input type="radio" name="lang" value="english" defaultChecked />
-                      <span>English</span>
-                    </label>
-                    <label className="radio-card">
-                      <input type="radio" name="lang" value="sanskrit" />
-                      <span>Sanskrit</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="muted-sm" style={{ marginTop: 8 }}>
-                  Hindi is always included as a mandatory section.
-                </div>
-                <button className="btn" type="submit" style={{ marginTop: 12, width: "100%" }}>
-                  Start Mock Paper {n} →
-                </button>
-              </form>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   const section = findSection(manifest, params.section);
+  const sectionName = section
+    ? bi(lang, section.name, section.nameHi, true)
+    : params.section;
+
+  const full = FULL_MOCKS[params.section];
+  if (full && params.group === "main" && params.subject === full.subject) {
+    const paperEn = section?.name || params.section;
+    const paperHi = section?.nameHi || paperEn;
+    const radio = (name, value, label, checked) => (
+      <label className="radio-card" key={value}>
+        <input type="radio" name={name} value={value} defaultChecked={checked} />
+        <span>{label}</span>
+      </label>
+    );
+
+    return (
+      <div data-exam="uptet">
+        <BackLink href={`/${params.section}`} label={sectionName} />
+        <Breadcrumb
+          items={[
+            { label: T.home, href: "/" },
+            { label: "UP TET", href: "/uptet" },
+            { label: sectionName, href: `/${params.section}` },
+            { label: T.fullMocksCrumb },
+          ]}
+        />
+        <h1 className="page-title">
+          {uiFormat(lang, "fullMocksTitle", [paperEn], [paperHi])}
+        </h1>
+        <p className="page-sub">{T[full.sub]}</p>
+        <div className="grid two">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="paper-card" style={{ "--i": n }}>
+              <h3 className="paper-title">{T.fullMockN(n)}</h3>
+              <div className="paper-blurb">{T[full.split]}</div>
+              <form
+                action={`/${params.section}/${params.group}/${params.subject}/${n}`}
+                method="get"
+              >
+                {full.streams && (
+                  <div className="field-group">
+                    <div className="field-label">{T.chooseStreamLabel}</div>
+                    <div className="radio-group radio-grid">
+                      {full.streams.map((id, i) =>
+                        radio("stream", STREAM_VALUE[id], subjectLabel(id), i === 0)
+                      )}
+                    </div>
+                  </div>
+                )}
+                <div
+                  className="field-group"
+                  style={full.streams ? { marginTop: 12 } : undefined}
+                >
+                  <div className="field-label">
+                    {full.streams ? T.chooseLanguageSection : T.chooseThird}
+                  </div>
+                  <div className="radio-group radio-grid">
+                    {radio("lang", "english", subjectLabel("english"), true)}
+                    {radio("lang", "sanskrit", subjectLabel("sanskrit"), false)}
+                  </div>
+                </div>
+                <div className="muted-sm" style={{ marginTop: 8 }}>
+                  {T.hindiMandatory}
+                </div>
+                <button
+                  className="btn"
+                  type="submit"
+                  style={{ marginTop: 12, width: "100%" }}
+                >
+                  {T.startMockN(n)}
+                </button>
+              </form>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   const group = findGroup(section, params.group);
   const subject = findSubject(group, params.subject);
   if (!section || !group || !subject) notFound();
 
   const size = manifest.mockSize;
-  const papers = Array.from({ length: subject.mocks }, (_, i) => {
-    const start = i * size;
-    const count = Math.min(size, subject.total - start);
-    return { n: i + 1, count };
-  });
-
-  const backHref =
-    section.groups.length > 1
-      ? `/${section.id}/${group.id}`
-      : `/${section.id}`;
-  const backLabel = section.groups.length > 1 ? group.name : section.name;
+  const multiGroup = section.groups.length > 1;
+  const groupName = bi(lang, group.name, group.nameHi, true);
+  const subjectName = bi(lang, subject.name, subject.nameHi, true);
+  const backHref = multiGroup ? `/${section.id}/${group.id}` : `/${section.id}`;
 
   return (
-    <div>
-      <BackLink href={backHref} label={backLabel} />
+    <div data-exam="uptet">
+      <BackLink href={backHref} label={multiGroup ? groupName : sectionName} />
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
+          { label: T.home, href: "/" },
           { label: "UP TET", href: "/uptet" },
-          { label: section.name, href: `/${section.id}` },
-          ...(section.groups.length > 1
-            ? [{ label: group.name, href: `/${section.id}/${group.id}` }]
+          { label: sectionName, href: `/${section.id}` },
+          ...(multiGroup
+            ? [{ label: groupName, href: `/${section.id}/${group.id}` }]
             : []),
-          { label: subject.name },
+          { label: subjectName },
         ]}
       />
-      <h1 className="page-title">{subject.name}</h1>
-      <p className="page-sub">
-        {subject.total} questions · {subject.mocks} mock paper
-        {subject.mocks > 1 ? "s" : ""}. Each paper is scored at the end.
-      </p>
-      <div className="grid">
-        {papers.map((p, i) => (
-          <a
-            key={p.n}
-            href={`/${section.id}/${group.id}/${subject.id}/${p.n}`}
-            className="card"
-            style={{ "--i": i }}
-          >
-            <div className="card-title">Mock Paper {p.n}</div>
-            <div className="card-meta">{p.count} questions</div>
-            <span className="pill">Start test →</span>
-          </a>
-        ))}
+      <div className="page-title-row">
+        <SubjectIcon
+          icon={subjectIcon(subject.id)}
+          letter={firstLetter(subjectName)}
+          size={48}
+        />
+        <h1 className="page-title">{subjectName}</h1>
       </div>
+      <p className="page-sub">{T.topicSub(subject.total, subject.mocks)}</p>
+      <MockPaperGrid
+        papers={Array.from({ length: subject.mocks }, (_, i) => ({
+          href: `/${section.id}/${group.id}/${subject.id}/${i + 1}`,
+          title: T.mockPaper(i + 1),
+          meta: T.questionCount(Math.min(size, subject.total - i * size)),
+        }))}
+        labels={{
+          start: T.startTest,
+          resume: T.resume,
+          retake: T.retake,
+          inProgress: T.inProgress,
+        }}
+      />
     </div>
   );
 }

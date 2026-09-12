@@ -1,88 +1,125 @@
 import WelcomeModal from "@/components/WelcomeModal";
-import { findBank } from "@/lib/banks";
+import ContinuePractice from "@/components/ContinuePractice";
+import ExamLogo from "@/components/ExamLogo";
+import { listExams } from "@/lib/exams";
+import { getAllExamStats } from "@/lib/stats";
+import { uiText } from "@/lib/ui-text";
+import { getSiteLang } from "@/lib/site-lang-server";
 
-// Counted from the bank definition rather than written out, so the card keeps
-// telling the truth as subjects, syllabus sections and topics are added.
-const UP_SUBJECTS = findBank("up-tgt-pgt").sections;
-const UP_GROUPS = UP_SUBJECTS.reduce((n, s) => n + s.groups.length, 0);
-const UP_TOPICS = UP_SUBJECTS.reduce((n, s) => n + s.topics.length, 0);
+export const dynamic = "force-dynamic";
 
-// The exams the app currently carries question banks for.
-const EXAMS = [
-  {
-    id: "uptet",
-    href: "/uptet",
-    name: "UP TET",
-    eyebrow: "Uttar Pradesh Teacher Eligibility Test",
-    blurb:
-      "Subject-wise mock papers for Paper 1 and Paper 2, plus full-length 150-question mocks that follow the real paper pattern.",
-    facts: ["Paper 1 & Paper 2", "Subject mocks", "Full mocks", "Bilingual"],
-    meta: "Paper 1 · Paper 2 (Maths & Science / Social Studies)",
-  },
-  {
-    id: "ctet",
-    href: "/ctet",
-    name: "CTET",
-    eyebrow: "Central Teacher Eligibility Test",
-    blurb:
-      "Previous-year practice for Paper 1 and both Paper 2 streams, organised subject by subject the way the real paper runs.",
-    facts: ["Paper 1", "Paper 2 Science", "Paper 2 SST", "PYQ based"],
-    meta: "3 sections · 30 questions per mock paper",
-  },
-  {
-    id: "up-tgt-pgt",
-    href: "/up-tgt-pgt",
-    name: "UP TGT / PGT",
-    eyebrow: "UP Trained & Post Graduate Teacher exams",
-    blurb:
-      "Subject practice for the UP TGT and PGT recruitment exams. Each subject is laid out section by section the way its syllabus runs it — sahitya, kavyashastra and vyakaran in Hindi, language and grammar, forms of literature and the prescribed authors in English, history through to Uttar Pradesh in General Studies — and every section opens into its own topics.",
-    facts: [
-      ...UP_SUBJECTS.map((s) => s.name),
-      `${UP_GROUPS} syllabus sections`,
-      `${UP_TOPICS} topics`,
-    ],
-    meta: "Topic-wise mocks · 30 questions per mock paper",
-  },
-];
+const nf = (n) => n.toLocaleString("en-IN");
+const PART_WORD = { papers: "wPapers", subjects: "wSubjects", topics: "wTopics" };
 
-export default function Home() {
+export default async function Home() {
+  const lang = getSiteLang();
+  const T = uiText(lang);
+  const exams = listExams(lang);
+  const stats = await getAllExamStats();
+
+  const live = Object.values(stats).filter(Boolean);
+  const totalQuestions = live.reduce((a, s) => a + s.questions, 0);
+  const totalMocks = live.reduce((a, s) => a + s.mocks, 0);
+
   return (
     <div>
-      <WelcomeModal />
-      <h1 className="page-title">Choose your exam</h1>
-      <p className="page-sub">
-        Pick the exam you are preparing for. Each one has its own question bank
-        of previous-year papers, split into mock tests that are scored as soon
-        as you submit.
-      </p>
-      <div className="app-disclaimer">
-        <strong>Disclaimer:</strong> This application is for practice only. It
-        provides TET-style mock tests to help you prepare, but it is not an
-        official exam platform.
-      </div>
-      <div className="grid two">
-        {EXAMS.map((exam, i) => (
-          <a
-            key={exam.id}
-            href={exam.href}
-            className="card hero-card"
-            style={{ "--i": i }}
-          >
-            <span className="card-eyebrow">{exam.eyebrow}</span>
-            <div className="card-title">{exam.name}</div>
-            <p className="card-blurb">{exam.blurb}</p>
-            <div className="fact-row">
-              {exam.facts.map((f) => (
-                <span className="fact" key={f}>
-                  {f}
-                </span>
-              ))}
+      <WelcomeModal lang={lang} />
+
+      <section className="home-hero">
+        <p className="hero-eyebrow">{T.heroEyebrow}</p>
+        {/* In "both" the Hindi headline leads and the English one sits under it
+            as a subtitle, rather than one very long two-language headline. */}
+        <h1 className="hero-title">
+          {lang === "both" ? uiText("hi").heroTitle : T.heroTitle}
+        </h1>
+        {lang === "both" && (
+          <p className="hero-title-alt" lang="en">
+            {uiText("en").heroTitle}
+          </p>
+        )}
+        <p className="hero-sub">{T.heroSub}</p>
+        {totalQuestions > 0 && (
+          <dl className="hero-stats">
+            <div>
+              <dt>{T.statQuestions}</dt>
+              <dd>{nf(totalQuestions)}</dd>
             </div>
-            <div className="card-meta">{exam.meta}</div>
-            <span className="pill">Start practicing →</span>
-          </a>
-        ))}
+            <div>
+              <dt>{T.statMocks}</dt>
+              <dd>{nf(totalMocks)}</dd>
+            </div>
+            <div>
+              <dt>{T.statExams}</dt>
+              <dd>{exams.length}</dd>
+            </div>
+          </dl>
+        )}
+      </section>
+
+      <ContinuePractice lang={lang} />
+
+      <h2 className="strip-title">{T.chooseExam}</h2>
+      <div className="exam-grid">
+        {exams.map((exam, i) => {
+          const s = stats[exam.id];
+          const partWord = T[PART_WORD[s?.partKind]] || T.wTopics;
+          return (
+            <a
+              key={exam.id}
+              href={exam.href}
+              className="exam-card"
+              data-exam={exam.id}
+              style={{ "--i": i }}
+            >
+              <div className="exam-card-head">
+                <ExamLogo exam={exam} size={54} />
+                <div className="exam-card-id">
+                  <span className="exam-card-authority">
+                    {exam.authorityShort}
+                  </span>
+                  <span className="exam-card-name">{exam.name}</span>
+                </div>
+              </div>
+
+              <p className="exam-card-full">{exam.fullName}</p>
+              <p className="exam-card-blurb">{exam.tagline}</p>
+
+              <div className="exam-card-facts">
+                {exam.facts.map((f) => (
+                  <span className="fact" key={f}>
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              <div className="exam-card-foot">
+                {s ? (
+                  <div className="exam-card-counts">
+                    <span>
+                      <b>{nf(s.questions)}</b> {T.wQuestions(s.questions)}
+                    </span>
+                    <span>
+                      <b>{nf(s.mocks)}</b> {T.wMocks(s.mocks)}
+                    </span>
+                    <span>
+                      <b>{nf(s.parts)}</b> {partWord(s.parts)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="exam-card-counts">
+                    <span>{exam.papers}</span>
+                  </div>
+                )}
+                <span className="exam-card-cta">{T.startPractising}</span>
+              </div>
+            </a>
+          );
+        })}
       </div>
+
+      <p className="app-disclaimer">
+        <strong>{T.disclaimerLead}</strong> {T.disclaimerBody}
+      </p>
     </div>
   );
 }

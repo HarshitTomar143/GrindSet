@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { uiText, uiFormat } from "@/lib/ui-text";
 
 const FONTS = ["sm", "md", "lg", "xl"];
-const FONT_LABEL = { sm: "Small", md: "Normal", lg: "Large", xl: "Extra large" };
 
-export default function ThemeControls() {
+export default function ThemeControls({ lang }) {
+  const T = uiText(lang);
   const [theme, setTheme] = useState("light");
   const [font, setFont] = useState("md");
 
@@ -35,13 +36,22 @@ export default function ThemeControls() {
   const cycleFont = () =>
     applyFont(FONTS[(FONTS.indexOf(font) + 1) % FONTS.length]);
 
+  const size = Math.max(0, FONTS.indexOf(font));
+  const sizeLabel = uiFormat(
+    lang,
+    "textSize",
+    [uiText("en").fontSizes[size]],
+    [uiText("hi").fontSizes[size]]
+  );
+  const themeLabel = theme === "dark" ? T.toLight : T.toDark;
+
   return (
     <div className="theme-controls">
       <button
         className="tc-btn tc-font"
         onClick={cycleFont}
-        title={`Text size: ${FONT_LABEL[font]} (tap to change)`}
-        aria-label={`Text size: ${FONT_LABEL[font]}`}
+        title={sizeLabel}
+        aria-label={sizeLabel}
       >
         <span className="tc-a-sm">A</span>
         <span className="tc-a-lg">A</span>
@@ -49,8 +59,8 @@ export default function ThemeControls() {
       <button
         className="tc-btn"
         onClick={() => applyTheme(theme === "dark" ? "light" : "dark")}
-        title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-        aria-label="Toggle dark mode"
+        title={themeLabel}
+        aria-label={themeLabel}
       >
         {theme === "dark" ? "☀" : "☾"}
       </button>

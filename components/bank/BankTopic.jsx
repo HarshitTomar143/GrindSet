@@ -2,8 +2,12 @@ import { notFound } from "next/navigation";
 import { findSection, findTopic, displayLabel } from "@/lib/banks";
 import { MOCK_SIZE } from "@/lib/db";
 import { uiText } from "@/lib/ui-text";
+import { getSiteLang } from "@/lib/site-lang-server";
+import { subjectIcon, firstLetter } from "@/lib/subjects";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
+import MockPaperGrid from "@/components/MockPaperGrid";
+import SubjectIcon from "@/components/SubjectIcon";
 
 // The mock papers a single subject or topic is split into.
 
@@ -13,18 +17,25 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
   const topic = await findTopic(section, topicId);
   if (!topic) notFound();
 
-  const lang = section.uiLang;
+  const lang = getSiteLang();
   const t = uiText(lang);
   const sectionLabel = displayLabel(section, lang);
   const topicLabel = displayLabel(topic, lang);
+  const leadName = lang === "en" ? topic.name : topic.nameHi || topic.name;
 
-  const papers = Array.from({ length: topic.mocks }, (_, i) => ({
-    n: i + 1,
-    count: Math.min(MOCK_SIZE, topic.total - i * MOCK_SIZE),
-  }));
+  // Labels are resolved here because MockPaperGrid runs on the client and
+  // cannot be handed the functions in lib/ui-text.js.
+  const papers = Array.from({ length: topic.mocks }, (_, i) => {
+    const count = Math.min(MOCK_SIZE, topic.total - i * MOCK_SIZE);
+    return {
+      href: `${bank.base}/${section.id}/${topic.id}/${i + 1}`,
+      title: t.mockPaper(i + 1),
+      meta: t.questionCount(count),
+    };
+  });
 
   return (
-    <div>
+    <div data-exam={bank.id}>
       <BackLink href={`${bank.base}/${section.id}`} label={sectionLabel} />
       <Breadcrumb
         items={[
@@ -34,22 +45,24 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
           { label: topicLabel },
         ]}
       />
-      <h1 className="page-title">{topicLabel}</h1>
-      <p className="page-sub">{t.topicSub(topic.total, topic.mocks)}</p>
-      <div className="grid">
-        {papers.map((p, i) => (
-          <a
-            key={p.n}
-            href={`${bank.base}/${section.id}/${topic.id}/${p.n}`}
-            className="card"
-            style={{ "--i": i }}
-          >
-            <div className="card-title">{t.mockPaper(p.n)}</div>
-            <div className="card-meta">{t.questionCount(p.count)}</div>
-            <span className="pill">{t.startTest}</span>
-          </a>
-        ))}
+      <div className="page-title-row">
+        <SubjectIcon
+          icon={section.kind === "topic" ? null : subjectIcon(topic.id)}
+          letter={firstLetter(leadName)}
+          size={48}
+        />
+        <h1 className="page-title">{topicLabel}</h1>
       </div>
+      <p className="page-sub">{t.topicSub(topic.total, topic.mocks)}</p>
+      <MockPaperGrid
+        papers={papers}
+        labels={{
+          start: t.startTest,
+          resume: t.resume,
+          retake: t.retake,
+          inProgress: t.inProgress,
+        }}
+      />
     </div>
   );
 }

@@ -1,12 +1,19 @@
 import "./globals.css";
 import ThemeControls from "@/components/ThemeControls";
+import LangSwitch from "@/components/LangSwitch";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import { getSiteLang } from "@/lib/site-lang-server";
+import { htmlLang } from "@/lib/site-lang";
+import { uiText } from "@/lib/ui-text";
 
 export const metadata = {
-  title: "Octopus",
+  title: {
+    default: "Octopus · Teaching exam practice",
+    template: "%s · Octopus",
+  },
   applicationName: "Octopus",
   description:
-    "Octopus — practice mock papers for UP TET, CTET and UP TGT / PGT",
+    "Timed mock papers built from previous-year questions for UP TET, CTET and UP TGT / PGT, scored the moment you submit.",
   manifest: "/manifest.webmanifest",
 };
 
@@ -21,8 +28,12 @@ var f=localStorage.getItem('fontScale'); if(f)d.setAttribute('data-font',f);
 }catch(e){}})();`;
 
 export default function RootLayout({ children }) {
+  const lang = getSiteLang();
+  const T = uiText(lang);
+
   return (
-    <html lang="en">
+    // themeInit stamps data-theme/data-font on <html> before hydration.
+    <html lang={htmlLang(lang)} data-lang={lang} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -42,19 +53,30 @@ export default function RootLayout({ children }) {
           <div className="header-inner">
             <a href="/" className="brand">
               <span className="brand-mark logo-mark">
-                <img src="/octopus.png" alt="Octopus Prep logo" />
+                <img src="/octopus-mark.png" alt="" width="40" height="40" />
               </span>
-              <span>Octopus</span>
+              <span className="brand-text">
+                <span>Octopus</span>
+                <span className="brand-sub">{T.brandSub}</span>
+              </span>
             </a>
-            <ThemeControls />
+            <div className="header-actions">
+              <LangSwitch lang={lang} label={T.siteLanguage} />
+              <ThemeControls lang={lang} />
+            </div>
           </div>
         </header>
         <main className="container">{children}</main>
         <footer className="site-footer">
-          Practice papers · 30 questions each · scored at the end ·{" "}
-          <a href="/admin" style={{ textDecoration: "underline" }}>
-            Admin
-          </a>
+          <div className="footer-inner">
+            <div className="footer-line">{T.footerLine}</div>
+            <div className="footer-links">
+              <a href="/uptet">UP TET</a>
+              <a href="/ctet">CTET</a>
+              <a href="/up-tgt-pgt">UP TGT / PGT</a>
+              <a href="/admin">{T.admin}</a>
+            </div>
+          </div>
         </footer>
         <ServiceWorkerRegister />
       </body>

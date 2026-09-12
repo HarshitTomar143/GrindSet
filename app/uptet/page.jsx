@@ -1,42 +1,35 @@
 import { getManifest } from "@/lib/data";
+import { getExam } from "@/lib/exams";
+import { getExamStats } from "@/lib/stats";
+import { uiText } from "@/lib/ui-text";
+import { bi } from "@/lib/site-lang";
+import { getSiteLang } from "@/lib/site-lang-server";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
+import ExamHeader from "@/components/ExamHeader";
 
 export const dynamic = "force-dynamic";
 
-// Official UPTET structure (Uttar Pradesh Teacher Eligibility Test).
-const PAPER_INFO = {
-  "1": {
-    classes: "Classes 1–5",
-    level: "Primary level",
-    blurb:
-      "For candidates who want to teach at the primary level. Covers Child Development & Pedagogy, Language I, Language II, Mathematics and Environmental Studies.",
-    facts: ["150 questions", "150 marks", "2½ hours", "No negative marking"],
-    qualify: "Qualify at 60% · 55% for OBC / SC / ST",
-  },
-  "2": {
-    classes: "Classes 6–8",
-    level: "Upper primary level",
-    blurb:
-      "For candidates who want to teach at the upper primary level. Covers Child Development & Pedagogy, the languages, plus Mathematics & Science and Social Studies.",
-    facts: ["150 questions", "150 marks", "2½ hours", "No negative marking"],
-    qualify: "Qualify at 60% · 55% for OBC / SC / ST",
-  },
-};
+const nf = (n) => n.toLocaleString("en-IN");
 
-function paperInfo(sec) {
-  const isPaper2 = String(sec.id).includes("2") || /\b2\b/.test(sec.name);
-  return PAPER_INFO[isPaper2 ? "2" : "1"];
+// Official UPTET structure: Paper 1 is primary (Classes 1–5), Paper 2 upper
+// primary (Classes 6–8). The copy for each lives in lib/ui-text.js.
+function isPaper2(sec) {
+  return String(sec.id).includes("2") || /\b2\b/.test(sec.name);
 }
 
 export default async function UptetHome() {
+  const lang = getSiteLang();
+  const T = uiText(lang);
+  const exam = getExam("uptet", lang);
+
   let manifest;
   try {
     manifest = await getManifest();
   } catch (e) {
     return (
       <div>
-        <BackLink href="/" label="Exams" />
+        <BackLink href="/" label={T.exams} />
         <h1 className="page-title">Setup needed</h1>
         <p className="page-sub">{e.message}</p>
         <div className="q-card">
@@ -60,7 +53,7 @@ export default async function UptetHome() {
   if (!manifest.sections.length) {
     return (
       <div>
-        <BackLink href="/" label="Exams" />
+        <BackLink href="/" label={T.exams} />
         <h1 className="page-title">No questions yet</h1>
         <p className="page-sub">
           The database is connected but empty. Run <code>npm run setup</code> to
@@ -70,16 +63,17 @@ export default async function UptetHome() {
     );
   }
 
+  const stats = await getExamStats("uptet");
+
   return (
-    <div>
-      <BackLink href="/" label="Exams" />
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "UP TET" }]} />
-      <h1 className="page-title">UP TET · Choose your paper</h1>
-      <p className="page-sub">
-        Select the paper level you want to practice, then choose a subject mock
-        test to answer questions and get scored at the end.
-      </p>
-      <div className="grid two">
+    <div data-exam="uptet">
+      <BackLink href="/" label={T.exams} />
+      <Breadcrumb items={[{ label: T.home, href: "/" }, { label: "UP TET" }]} />
+
+      <ExamHeader exam={exam} stats={stats} sub={T.uptetSub} lang={lang} />
+
+      <h2 className="strip-title">{T.choosePaper}</h2>
+      <div className="paper-grid">
         {manifest.sections.map((sec, i) => {
           const subjectCount = sec.groups.reduce(
             (a, g) => a + g.subjects.length,
@@ -89,32 +83,49 @@ export default async function UptetHome() {
             (a, g) => a + g.subjects.reduce((b, s) => b + s.mocks, 0),
             0
           );
-          const info = paperInfo(sec);
+          const questionCount = sec.groups.reduce(
+            (a, g) => a + g.subjects.reduce((b, s) => b + s.total, 0),
+            0
+          );
+          const p2 = isPaper2(sec);
           return (
             <a
               key={sec.id}
               href={`/${sec.id}`}
-              className="card hero-card"
+              className="paper-card"
               style={{ "--i": i }}
             >
-              <span className="card-eyebrow">
-                {info.classes} · {info.level}
+              <span className="paper-eyebrow">
+                {p2 ? T.paper2Level : T.paper1Level}
               </span>
-              <div className="card-title">{sec.name}</div>
-              <p className="card-blurb">{info.blurb}</p>
-              <div className="fact-row">
-                {info.facts.map((f) => (
+              <h3 className="paper-title">{bi(lang, sec.name, sec.nameHi, true)}</h3>
+              <p className="paper-blurb">{p2 ? T.paper2Blurb : T.paper1Blurb}</p>
+              <div className="paper-facts">
+                {T.tetFacts.map((f) => (
                   <span className="fact" key={f}>
                     {f}
                   </span>
                 ))}
               </div>
-              <div className="card-meta">
-                {sec.groups.length > 1 ? `${sec.groups.length} streams · ` : ""}
-                {subjectCount} subjects · {mockCount} mock papers in this app
+              <div className="paper-foot">
+                <div className="paper-counts">
+                  {sec.groups.length > 1 && (
+                    <span>
+                      <b>{sec.groups.length}</b> {T.wStreams(sec.groups.length)}
+                    </span>
+                  )}
+                  <span>
+                    <b>{subjectCount}</b> {T.wSubjects(subjectCount)}
+                  </span>
+                  <span>
+                    <b>{nf(questionCount)}</b> {T.wQuestions(questionCount)}
+                  </span>
+                  <span>
+                    <b>{mockCount}</b> {T.wMocks(mockCount)}
+                  </span>
+                </div>
+                <span className="paper-cta">{T.openPaper}</span>
               </div>
-              <div className="card-qualify">{info.qualify}</div>
-              <span className="pill">Start practicing →</span>
             </a>
           );
         })}

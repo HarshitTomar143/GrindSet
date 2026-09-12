@@ -6,6 +6,8 @@ import {
   displayLabel,
 } from "@/lib/banks";
 import { uiText } from "@/lib/ui-text";
+import { getExam } from "@/lib/exams";
+import { getSiteLang } from "@/lib/site-lang-server";
 import QuizRunner from "@/components/QuizRunner";
 
 // One mock paper, handed to the shared quiz runner.
@@ -22,8 +24,9 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
   const questions = await getMockQuestions(section, topic, mockNum);
   if (!questions.length) notFound();
 
-  const lang = section.uiLang;
+  const lang = getSiteLang();
   const t = uiText(lang);
+  const exam = getExam(bank.id);
   const base = `${bank.base}/${section.id}/${topic.id}`;
 
   return (
@@ -32,8 +35,13 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
       mockNum={mockNum}
       meta={{
         uiLang: lang,
+        examId: bank.id,
+        examLogo: exam?.logo || null,
         examName: bank.name,
         examBase: bank.base,
+        // null for an exam with no published qualifying mark: no verdict shown.
+        passMark: exam?.cutoff?.general ?? null,
+        mockCount: topic.mocks,
         sectionName: `${bank.name} · ${displayLabel(section, lang)}`,
         groupName: section.kind === "topic" ? t.topicsWord : t.subjectsWord,
         subjectName: displayLabel(topic, lang),
@@ -48,6 +56,10 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
         sectionId: `${bank.resultPrefix}-${section.id}`,
         groupId: bank.resultPrefix,
         subjectId: topic.id,
+        // Saved results keep English names whatever the reader sees.
+        sectionName: `${bank.name} · ${displayLabel(section, "en")}`,
+        groupName: section.kind === "topic" ? "Topics" : "Subjects",
+        subjectName: displayLabel(topic, "en"),
       }}
     />
   );
