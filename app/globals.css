@@ -757,6 +757,73 @@ a { color: inherit; text-decoration: none; }
   padding: 4px 10px;
   border-radius: 8px;
 }
+/* The featured exam: one card across the full width, laid out sideways -
+   who it is and what it holds on the left, the numbers and the button on the
+   right - so it reads as the lead item above the row of upright cards. */
+.exam-featured { display: grid; gap: 16px; margin-bottom: 16px; }
+.exam-card-wide {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 32px;
+  padding: 26px 28px;
+  border-left-width: 5px;
+  background: linear-gradient(100deg, var(--accent-soft) 0%, var(--card) 58%);
+}
+.exam-card-wide .exam-card-main { flex: 1 1 0; min-width: 0; }
+.exam-card-wide .exam-card-name { font-size: 28px; }
+.exam-card-wide .exam-card-blurb { max-width: 62ch; font-size: 14.5px; }
+.exam-card-wide .exam-card-side {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 210px;
+  padding-left: 32px;
+  border-left: 1px solid var(--line);
+}
+.exam-card-wide .exam-card-counts {
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 0;
+  border-top: 0;
+  font-size: 14px;
+}
+.exam-card-wide .exam-card-counts b { font-size: 19px; margin-right: 2px; }
+.exam-card-wide .exam-card-cta { align-self: flex-start; margin-top: 18px; font-size: 14px; padding: 11px 20px; }
+.exam-badge {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+@media (max-width: 760px) {
+  .exam-card-wide { flex-direction: column; gap: 0; padding: 20px 20px 18px; }
+  .exam-card-wide .exam-card-name { font-size: 24px; }
+  .exam-card-wide .exam-card-side {
+    min-width: 0;
+    padding-left: 0;
+    border-left: 0;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .exam-card-wide .exam-card-counts { flex-direction: row; gap: 4px 16px; font-size: 12.5px; }
+  .exam-card-wide .exam-card-counts b { font-size: inherit; }
+}
+
+/* On the home page the exams lead and the introduction follows them. */
+.home-lead { margin-top: 0; }
+.home-hero-below { margin: 48px 0 0; padding-top: 32px; border-top: 1px solid var(--line); }
+.home-hero-below .hero-title { font-size: clamp(22px, 3vw, 30px); max-width: 26ch; }
+
 /* margin-top:auto is what keeps three cards of different lengths ending on
    the same line, which the old layout did not. */
 .exam-card-foot { margin-top: auto; padding-top: 18px; }
