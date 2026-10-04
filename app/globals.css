@@ -686,10 +686,12 @@ a { color: inherit; text-decoration: none; }
   margin: 34px 0 14px;
 }
 
+/* One column by default; three upright columns only where each has room
+   (see the 980px rule below). auto-fit used to leave a 2 + 1 orphan here. */
 .exam-grid {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
 }
 
@@ -757,39 +759,19 @@ a { color: inherit; text-decoration: none; }
   padding: 4px 10px;
   border-radius: 8px;
 }
-/* The featured exam: one card across the full width, laid out sideways -
-   who it is and what it holds on the left, the numbers and the button on the
-   right - so it reads as the lead item above the row of upright cards. */
+/* The chooser's cards at three sizes.
+     phone   (< 620px)   every card upright, one per row
+     tablet  (620-979px) every card sideways, one per row
+     laptop  (980px +)   the featured card sideways across the top, the rest
+                         upright in three columns beneath it */
+.exam-card-main { min-width: 0; }
+.exam-card-side { margin-top: auto; padding-top: 18px; }
 .exam-featured { display: grid; gap: 16px; margin-bottom: 16px; }
 .exam-card-wide {
-  flex-direction: row;
-  align-items: stretch;
-  gap: 32px;
-  padding: 26px 28px;
   border-left-width: 5px;
   background: linear-gradient(100deg, var(--accent-soft) 0%, var(--card) 58%);
 }
-.exam-card-wide .exam-card-main { flex: 1 1 0; min-width: 0; }
-.exam-card-wide .exam-card-name { font-size: 28px; }
-.exam-card-wide .exam-card-blurb { max-width: 62ch; font-size: 14.5px; }
-.exam-card-wide .exam-card-side {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 210px;
-  padding-left: 32px;
-  border-left: 1px solid var(--line);
-}
-.exam-card-wide .exam-card-counts {
-  flex-direction: column;
-  gap: 8px;
-  padding-top: 0;
-  border-top: 0;
-  font-size: 14px;
-}
-.exam-card-wide .exam-card-counts b { font-size: 19px; margin-right: 2px; }
-.exam-card-wide .exam-card-cta { align-self: flex-start; margin-top: 18px; font-size: 14px; padding: 11px 20px; }
+.exam-card-name { overflow-wrap: anywhere; }
 .exam-badge {
   display: inline-block;
   margin-left: 10px;
@@ -803,20 +785,75 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
   padding: 5px 9px;
   border-radius: 999px;
+  white-space: nowrap;
 }
-@media (max-width: 760px) {
-  .exam-card-wide { flex-direction: column; gap: 0; padding: 20px 20px 18px; }
-  .exam-card-wide .exam-card-name { font-size: 24px; }
-  .exam-card-wide .exam-card-side {
-    min-width: 0;
+
+/* A card lying sideways: copy on the left, numbers and button on the right. */
+@media (min-width: 620px) {
+  .exam-card-wide,
+  .exam-grid .exam-card {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 28px;
+  }
+  .exam-card-wide .exam-card-main,
+  .exam-grid .exam-card .exam-card-main { flex: 1 1 0; }
+  .exam-card-wide .exam-card-side,
+  .exam-grid .exam-card .exam-card-side {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 190px;
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+  .exam-card-wide .exam-card-counts,
+  .exam-grid .exam-card .exam-card-counts {
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 0;
+    border-top: 0;
+    font-size: 13.5px;
+  }
+  .exam-card-wide .exam-card-counts b,
+  .exam-grid .exam-card .exam-card-counts b { font-size: 17px; margin-right: 2px; }
+  .exam-card-wide .exam-card-cta,
+  .exam-grid .exam-card .exam-card-cta { align-self: flex-start; margin-top: 16px; }
+}
+
+/* Laptop: the other exams stand back up, three abreast. */
+@media (min-width: 980px) {
+  .exam-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .exam-grid .exam-card { flex-direction: column; gap: 0; }
+  .exam-grid .exam-card .exam-card-main { flex: 0 1 auto; }
+  .exam-grid .exam-card .exam-card-side {
+    display: block;
+    width: auto;
+    margin-top: auto;
+    padding-top: 18px;
     padding-left: 0;
     border-left: 0;
-    margin-top: 18px;
+  }
+  .exam-grid .exam-card .exam-card-counts {
+    flex-direction: row;
+    gap: 4px 14px;
     padding-top: 14px;
     border-top: 1px solid var(--line);
+    font-size: 12.5px;
   }
-  .exam-card-wide .exam-card-counts { flex-direction: row; gap: 4px 16px; font-size: 12.5px; }
-  .exam-card-wide .exam-card-counts b { font-size: inherit; }
+  .exam-grid .exam-card .exam-card-counts b { font-size: inherit; margin-right: 0; }
+  .exam-grid .exam-card .exam-card-cta { margin-top: 14px; }
+
+  .exam-card-wide { gap: 32px; padding: 26px 28px; }
+  .exam-card-wide .exam-card-name { font-size: 28px; }
+  .exam-card-wide .exam-card-blurb { max-width: 62ch; font-size: 14.5px; }
+  .exam-card-wide .exam-card-side { width: 220px; padding-left: 32px; }
+  .exam-card-wide .exam-card-counts { gap: 8px; font-size: 14px; }
+  .exam-card-wide .exam-card-counts b { font-size: 19px; }
+  .exam-card-wide .exam-card-cta { margin-top: 18px; font-size: 14px; padding: 11px 20px; }
 }
 
 /* On the home page the exams lead and the introduction follows them. */
@@ -1755,3 +1792,66 @@ a { color: inherit; text-decoration: none; }
 .paper-card-id { min-width: 0; }
 .paper-card-id .paper-eyebrow { display: block; }
 .paper-card-id .paper-title { margin-top: 4px; }
+
+
+/* ==========================================================================
+   PHONES
+   Nothing may be wider than the screen. The rules below make the header fit
+   down to a 320px display, keep long words and formulas inside their boxes,
+   and tighten the reading sizes that were set for a laptop.
+   ========================================================================== */
+
+/* A stray wide element must never give the whole page a sideways scroll. */
+body { overflow-x: clip; }
+img, svg, video { max-width: 100%; }
+.q-text, .option .otext, .explain, .card-title, .page-title, .exam-name,
+.paper-title, .topic-group-title { overflow-wrap: anywhere; }
+.header-inner { min-width: 0; }
+.brand { min-width: 0; }
+.header-actions { flex: 0 0 auto; }
+
+@media (max-width: 560px) {
+  /* One line that scrolls, instead of three lines of wrapped crumbs. */
+  .breadcrumb {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    margin-bottom: 16px;
+  }
+  .breadcrumb::-webkit-scrollbar { display: none; }
+
+  .page-title { font-size: 22px; line-height: 1.25; }
+  .page-title-row { gap: 10px; }
+  .exam-name { font-size: 24px; }
+  .hero-sub { font-size: 14.5px; }
+
+  .q-card { padding: 18px 16px; border-radius: 16px; }
+  .q-text { font-size: calc(17px * var(--reading-scale)); line-height: 1.45; }
+  .options { gap: 10px; margin-top: 16px; }
+  .option { padding: 13px 14px; gap: 11px; }
+  .q-figure { padding: 8px; margin-top: 12px; }
+  /* Smaller tools so the number and both buttons share a row where they
+     can; in two languages they are too long for that and wrap instead. */
+  .q-head { align-items: center; }
+  .q-tools { gap: 6px; }
+  .q-tools .tool-btn { padding: 6px 9px; font-size: 12px; }
+}
+
+/* Narrow phones, and phones with the display size turned up. */
+@media (max-width: 400px) {
+  .site-header { padding: 10px 10px; }
+  .brand { gap: 7px; font-size: 15px; }
+  .brand-mark.logo-mark { width: 36px; height: 36px; border-radius: 10px; }
+  .header-inner, .header-actions, .theme-controls { gap: 4px; }
+  .lang-switch button { padding: 7px 6px; font-size: 12px; }
+  .tc-btn { width: 34px; min-width: 34px; padding-left: 0; padding-right: 0; }
+  .container { padding: 20px 12px 64px; }
+  .exam-card { padding: 16px 15px 15px; }
+  .exam-card-name { font-size: 20px; }
+  .exam-badge { margin-left: 7px; font-size: 10px; padding: 4px 7px; }
+}
+@media (max-width: 345px) {
+  /* The mark alone identifies the site; the name gives way to the controls. */
+  .brand-text { display: none; }
+}

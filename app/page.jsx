@@ -12,9 +12,10 @@ const nf = (n) => n.toLocaleString("en-IN");
 const PART_WORD = { papers: "wPapers", subjects: "wSubjects", topics: "wTopics" };
 
 /**
- * One exam on the chooser. `wide` is the horizontal layout used for the
- * featured exam: identity and copy on the left, counts and the button on the
- * right. The default is the upright card the other exams sit in side by side.
+ * One exam on the chooser, in two parts: who it is and what it holds (main),
+ * then the counts and the button (side). The stylesheet decides how the two
+ * sit - stacked on a phone, side by side on a tablet, and on a laptop upright
+ * columns under the `wide` featured card, which stays sideways.
  */
 function ExamCard({ exam, stats: s, T, index, wide = false }) {
   const partWord = T[PART_WORD[s?.partKind]] || T.wTopics;
@@ -69,8 +70,8 @@ function ExamCard({ exam, stats: s, T, index, wide = false }) {
       data-exam={exam.id}
       style={{ "--i": index }}
     >
-      {wide ? <div className="exam-card-main">{body}</div> : body}
-      <div className={wide ? "exam-card-side" : "exam-card-foot"}>
+      <div className="exam-card-main">{body}</div>
+      <div className="exam-card-side">
         {counts}
         <span className="exam-card-cta">{T.startPractising}</span>
       </div>
