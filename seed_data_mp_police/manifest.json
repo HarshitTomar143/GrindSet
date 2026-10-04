@@ -1,0 +1,370 @@
+{
+ "exam_id": "mp-police",
+ "key_prefix": "mp-police",
+ "totals": {
+  "sittings": 26,
+  "rows": 2600,
+  "gradable": 2528,
+  "diagrams": 158,
+  "diagram_bytes": 6050774,
+  "skipped": {
+   "disputed": 25,
+   "no_answer": 10,
+   "diagram_missing": 37
+  }
+ },
+ "sittings": [
+  {
+   "sitting_id": "2023-08-23-s1",
+   "exam_date": "2023-08-23",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_2023_Shift-I.xlsx",
+   "diagram_file": "mcq's/CET_Questions_with_Diagrams.xlsx",
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 7,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-23-s2",
+   "exam_date": "2023-08-23",
+   "shift": 2,
+   "question_file": "mp_police_constable_2023_shift2.xlsx",
+   "diagram_file": "Diagram_23-08-2023_shift-II.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 8,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-23-s3",
+   "exam_date": "2023-08-23",
+   "shift": 3,
+   "question_file": "exam.xlsx",
+   "diagram_file": "Diagram_23-08-2023_shift-III.xlsx",
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 8,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-24-s2",
+   "exam_date": "2023-08-24",
+   "shift": 2,
+   "question_file": "questions.xlsx",
+   "diagram_file": "Diagram_24-08-2023_shift-II.xlsx",
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 10,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-24-s3",
+   "exam_date": "2023-08-24",
+   "shift": 3,
+   "question_file": "mcq's/mp_police_2023_shift3.xlsx",
+   "diagram_file": "Diagram_24-08-2023_Shift-III.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 11,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-25-s1",
+   "exam_date": "2023-08-25",
+   "shift": 1,
+   "question_file": "mcq's/mp_police_2023_shift1.xlsx",
+   "diagram_file": "Diagram_25-08-2023_Shift-I.xlsx",
+   "questions": 100,
+   "gradable": 97,
+   "diagrams": 11,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-25-s2",
+   "exam_date": "2023-08-25",
+   "shift": 2,
+   "question_file": "mcq's/mp_police_2023_shift2.xlsx",
+   "diagram_file": "Diagram_25-08-2023_Shift-II.xlsx",
+   "questions": 100,
+   "gradable": 96,
+   "diagrams": 11,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-25-s3",
+   "exam_date": "2023-08-25",
+   "shift": 3,
+   "question_file": "mcq's/mp_police_constable_2023_shift3.xlsx",
+   "diagram_file": "Diagram_25-08-2023_Shift-III.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 11,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-26-s2",
+   "exam_date": "2023-08-26",
+   "shift": 2,
+   "question_file": "mcq's/mcq.xlsx",
+   "diagram_file": "Diagram_26-08-2023_Shift-II.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 12,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-26-s3",
+   "exam_date": "2023-08-26",
+   "shift": 3,
+   "question_file": "mcq's/mp_police_2023_shift3 (2).xlsx",
+   "diagram_file": "Diagram_26-08-2023_Shist-III.xlsx",
+   "questions": 100,
+   "gradable": 100,
+   "diagrams": 13,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-27-s1",
+   "exam_date": "2023-08-27",
+   "shift": 1,
+   "question_file": "mcq's/mp_police_2023_shift1 (2).xlsx",
+   "diagram_file": "Diagram_27-08-2023_Shift-I.xlsx",
+   "questions": 100,
+   "gradable": 97,
+   "diagrams": 13,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-27-s2",
+   "exam_date": "2023-08-27",
+   "shift": 2,
+   "question_file": "mcq's/mp_police_2023_shift2 (2).xlsx",
+   "diagram_file": "Diagram_27-08-2023_Shift-II.xlsx",
+   "questions": 100,
+   "gradable": 100,
+   "diagrams": 12,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-27-s3",
+   "exam_date": "2023-08-27",
+   "shift": 3,
+   "question_file": "mcq's/mp_police_2023_shift3 (1).xlsx",
+   "diagram_file": "Diagram_27-08-2023_Shift-III.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 5,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-28-s2",
+   "exam_date": "2023-08-28",
+   "shift": 2,
+   "question_file": "mcq's/mp_police_2023_shift2 (1).xlsx",
+   "diagram_file": "Diagram_28-08-2023_Shift-II.xlsx",
+   "questions": 100,
+   "gradable": 99,
+   "diagrams": 13,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2023-08-28-s3",
+   "exam_date": "2023-08-28",
+   "shift": 3,
+   "question_file": "mp_police_2023_shift3.xlsx",
+   "diagram_file": "Diagram_28-08-2023_Shift-III.xlsx",
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 13,
+   "diagram_missing": []
+  },
+  {
+   "sitting_id": "2025-11-06-s1",
+   "exam_date": "2025-11-06",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_06-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 96,
+   "diagrams": 0,
+   "diagram_missing": [
+    65,
+    99
+   ]
+  },
+  {
+   "sitting_id": "2025-11-07-s1",
+   "exam_date": "2025-11-07",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_07-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 0,
+   "diagram_missing": [
+    26
+   ]
+  },
+  {
+   "sitting_id": "2025-11-08-s1",
+   "exam_date": "2025-11-08",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_08-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 97,
+   "diagrams": 0,
+   "diagram_missing": [
+    86,
+    90,
+    94
+   ]
+  },
+  {
+   "sitting_id": "2025-11-10-s2",
+   "exam_date": "2025-11-10",
+   "shift": 2,
+   "question_file": "MP_Police_Constable_10-Nov-2025_Shift-II.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 93,
+   "diagrams": 0,
+   "diagram_missing": [
+    49,
+    56,
+    60,
+    66
+   ]
+  },
+  {
+   "sitting_id": "2025-11-11-s2",
+   "exam_date": "2025-11-11",
+   "shift": 2,
+   "question_file": "MP_Police_Constable_11-11-2025_Shift-II.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 95,
+   "diagrams": 0,
+   "diagram_missing": [
+    43,
+    65,
+    81,
+    88,
+    91
+   ]
+  },
+  {
+   "sitting_id": "2025-11-12-s1",
+   "exam_date": "2025-11-12",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_12-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 96,
+   "diagrams": 0,
+   "diagram_missing": [
+    23,
+    40,
+    90
+   ]
+  },
+  {
+   "sitting_id": "2025-11-13-s2",
+   "exam_date": "2025-11-13",
+   "shift": 2,
+   "question_file": "MP_Police_Constable_13-11-2025_Shift-II.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 92,
+   "diagrams": 0,
+   "diagram_missing": [
+    55,
+    59,
+    78,
+    80,
+    90,
+    94,
+    98
+   ]
+  },
+  {
+   "sitting_id": "2025-11-17-s1",
+   "exam_date": "2025-11-17",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_17-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 95,
+   "diagrams": 0,
+   "diagram_missing": [
+    3,
+    15,
+    72,
+    89
+   ]
+  },
+  {
+   "sitting_id": "2025-11-18-s2",
+   "exam_date": "2025-11-18",
+   "shift": 2,
+   "question_file": "MP_Police_Constable_18-11-2025_Shift-II.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 98,
+   "diagrams": 0,
+   "diagram_missing": [
+    91,
+    94
+   ]
+  },
+  {
+   "sitting_id": "2025-11-22-s1",
+   "exam_date": "2025-11-22",
+   "shift": 1,
+   "question_file": "MP_Police_Constable_22-11-2025_Shift-I.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 95,
+   "diagrams": 0,
+   "diagram_missing": [
+    3,
+    23,
+    74
+   ]
+  },
+  {
+   "sitting_id": "2025-undated-s1",
+   "exam_date": null,
+   "shift": 1,
+   "question_file": "19_mp_police_2025_shift1.xlsx",
+   "diagram_file": null,
+   "questions": 100,
+   "gradable": 97,
+   "diagrams": 0,
+   "diagram_missing": [
+    70,
+    89,
+    100
+   ]
+  }
+ ],
+ "skipped_files": {
+  "mcq's/mp_constable_2023_shift2.xlsx": "98% identical to mp_police_2023_shift2.xlsx (25-08-2023 Shift-II)",
+  "mcq's/mp_police_constable_2023.xlsx": "earlier draft of the 25-08-2023 Shift-II paper (91% identical)",
+  "mcq's/CET_Questions_with_Diagrams (1).xlsx": "re-export of CET_Questions_with_Diagrams.xlsx"
+ },
+ "warnings": [
+  "2025-11-06-s1: figure marked but no diagram supplied for Q[65, 99]",
+  "2025-11-07-s1: figure marked but no diagram supplied for Q[26]",
+  "2025-11-08-s1: figure marked but no diagram supplied for Q[86, 90, 94]",
+  "2025-11-10-s2: figure marked but no diagram supplied for Q[49, 56, 60, 66]",
+  "2025-11-11-s2: figure marked but no diagram supplied for Q[43, 65, 81, 88, 91]",
+  "2025-11-12-s1: figure marked but no diagram supplied for Q[23, 40, 90]",
+  "2025-11-13-s2: figure marked but no diagram supplied for Q[55, 59, 78, 80, 90, 94, 98]",
+  "2025-11-17-s1: figure marked but no diagram supplied for Q[3, 15, 72, 89]",
+  "2025-11-18-s2: figure marked but no diagram supplied for Q[91, 94]",
+  "2025-11-22-s1: figure marked but no diagram supplied for Q[3, 23, 74]",
+  "2025-undated-s1: figure marked but no diagram supplied for Q[70, 89, 100]"
+ ]
+}

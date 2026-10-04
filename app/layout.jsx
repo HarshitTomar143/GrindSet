@@ -74,6 +74,7 @@ export default function RootLayout({ children }) {
               <a href="/uptet">UP TET</a>
               <a href="/ctet">CTET</a>
               <a href="/up-tgt-pgt">UP TGT / PGT</a>
+              <a href="/mp-police">MP Police</a>
               <a href="/admin">{T.admin}</a>
             </div>
           </div>

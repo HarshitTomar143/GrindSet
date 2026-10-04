@@ -11,8 +11,8 @@ import ExamHeader from "@/components/ExamHeader";
 import SubjectIcon from "@/components/SubjectIcon";
 
 // Landing page for a question bank: the exam's masthead, then one card per
-// section with live counts. Shared by every bank that reads from
-// `ctet_questions` (CTET, UP TGT/PGT).
+// section with live counts. Shared by every bank in lib/banks.js (CTET,
+// UP TGT/PGT, MP Police).
 
 const nf = (n) => n.toLocaleString("en-IN");
 
@@ -92,23 +92,29 @@ export default async function BankHome({ bank }) {
               </div>
               <div className="paper-foot">
                 <div className="paper-counts">
-                  {sec.groupCount > 0 && (
+                  {/* Only a syllabus has units; year headings are not counted. */}
+                  {sec.groupCount > 0 && sec.groups && (
                     <span>
                       <b>{sec.groupCount}</b> {T.wUnits(sec.groupCount)}
                     </span>
                   )}
                   <span>
                     <b>{sec.topicCount}</b>{" "}
-                    {sec.kind === "topic"
+                    {sec.itemWord
+                      ? T[sec.itemWord](sec.topicCount)
+                      : sec.kind === "topic"
                       ? T.wTopics(sec.topicCount)
                       : T.wSubjects(sec.topicCount)}
                   </span>
                   <span>
                     <b>{nf(sec.total)}</b> {T.wQuestions(sec.total)}
                   </span>
-                  <span>
-                    <b>{nf(sec.mocks)}</b> {T.wMocks(sec.mocks)}
-                  </span>
+                  {/* Whole papers are already counted as papers above. */}
+                  {sec.itemWord !== "wPapers" && (
+                    <span>
+                      <b>{nf(sec.mocks)}</b> {T.wMocks(sec.mocks)}
+                    </span>
+                  )}
                 </div>
                 <span className="paper-cta">{T.openSection}</span>
               </div>

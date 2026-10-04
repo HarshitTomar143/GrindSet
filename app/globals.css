@@ -249,6 +249,10 @@ a { color: inherit; text-decoration: none; }
 .q-num { color: var(--orange); font-weight: 600; font-size: 14px; letter-spacing: 0; }
 .q-text { font-size: 19px; line-height: 1.5; white-space: pre-wrap; font-weight: 600; letter-spacing: -0.01em; }
 
+/* A question's diagram: scanned line art, kept on a white plate in both themes. */
+.q-figure { margin-top: 16px; padding: 12px; background: #ffffff; border: 1px solid var(--line-strong); border-radius: 12px; display: inline-block; max-width: 100%; }
+.q-figure img { display: block; max-width: 100%; height: auto; }
+
 .options { display: grid; gap: 12px; margin-top: 22px; }
 .option {
   display: flex; gap: 14px; align-items: center; padding: 16px 18px;
@@ -556,6 +560,14 @@ a { color: inherit; text-decoration: none; }
   --accent-ink: #ffffff;
   --accent-glow: rgba(109, 91, 208, 0.26);
 }
+[data-exam="mp-police"] {
+  --accent: #1d5fb4;
+  --accent-strong: #174c91;
+  --accent-soft: #e9f1fb;
+  --accent-line: #c3d8f3;
+  --accent-ink: #ffffff;
+  --accent-glow: rgba(29, 95, 180, 0.26);
+}
 
 :root[data-theme="dark"] [data-exam="uptet"] {
   --accent: #f97316;
@@ -577,6 +589,13 @@ a { color: inherit; text-decoration: none; }
   --accent-soft: #272340;
   --accent-line: #3b3663;
   --accent-glow: rgba(139, 125, 240, 0.3);
+}
+:root[data-theme="dark"] [data-exam="mp-police"] {
+  --accent: #4f9bf5;
+  --accent-strong: #7db6fa;
+  --accent-soft: #14233a;
+  --accent-line: #23406a;
+  --accent-glow: rgba(79, 155, 245, 0.3);
 }
 
 /* The emblem plate. Always light: these are printed line-art marks and they

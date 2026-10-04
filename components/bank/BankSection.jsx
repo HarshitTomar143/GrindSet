@@ -6,6 +6,7 @@ import {
   displayLabel,
 } from "@/lib/banks";
 import { uiText } from "@/lib/ui-text";
+import { loc } from "@/lib/site-lang";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { topicCard } from "@/lib/subjects";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -41,9 +42,18 @@ export default async function BankSection({ bank, sectionId }) {
         lang,
         T: t,
         withIcon: !isTopic,
-        hiSubInEn: isTopic,
+        // A transliterated literature topic keeps its Devanagari name in
+        // English; a dated paper has nothing to transliterate.
+        hiSubInEn: isTopic && !section.itemWord,
+        papersLabel: loc(section.paperTitle, lang),
       })
     );
+
+  const intro =
+    loc(section.sub, lang) ||
+    (groups ? t.subGrouped : isTopic ? t.subTopics : t.subSubjects);
+  const groupCount = (n) =>
+    section.itemWord ? `${n} ${t[section.itemWord](n)}` : t.topicCount(n);
 
   const unitTitle = (g) => (lang === "en" ? g.name : g.nameHi || g.name);
   // The unit's other name, or the syllabus section it is printed under.
@@ -64,13 +74,11 @@ export default async function BankSection({ bank, sectionId }) {
         ]}
       />
       <h1 className="page-title">{sectionLabel}</h1>
-      <p className="page-sub">
-        {groups ? t.subGrouped : isTopic ? t.subTopics : t.subSubjects}
-      </p>
+      <p className="page-sub">{intro}</p>
 
       {groups && (
         <UnitNav
-          label={t.subGrouped}
+          label={intro}
           units={groups.map((g) => ({
             id: g.id,
             name: unitTitle(g),
@@ -91,7 +99,7 @@ export default async function BankSection({ bank, sectionId }) {
                   {caption && <div className="topic-group-sub">{caption}</div>}
                 </div>
                 <span className="topic-group-count">
-                  {t.topicCount(g.topics.length)}
+                  {groupCount(g.topics.length)}
                 </span>
               </header>
               <TopicGrid topics={cards(g.topics)} />

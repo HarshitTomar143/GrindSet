@@ -39,6 +39,25 @@ function fmtPace(s) {
 }
 
 /**
+ * A question's diagram. Scanned line art, black on white, so it always sits on
+ * a white plate - in dark mode a transparent or dark backing would lose it.
+ */
+function QuestionFigure({ image, alt }) {
+  if (!image?.src) return null;
+  return (
+    <div className="q-figure">
+      <img
+        src={image.src}
+        alt={alt}
+        width={image.width || undefined}
+        height={image.height || undefined}
+        decoding="async"
+      />
+    </div>
+  );
+}
+
+/**
  * The quiz screen, shared by every exam.
  *
  * Laid out like the computer-based test it is preparing for: the question on
@@ -908,6 +927,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
                 </div>
               )}
               <div className="q-text">{tr(q.question)}</div>
+              <QuestionFigure image={q.image} alt={T.figure} />
               <div className="options" style={{ marginTop: 12 }}>
                 {LETTERS.filter((L) => q.options[L]).map((L) => {
                   let cls = "option";
@@ -1104,6 +1124,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             )}
 
             <div className="q-text">{tr(q.question)}</div>
+            <QuestionFigure image={q.image} alt={T.figure} />
 
             <div className="options" key={current}>
               {optionLetters.map((L, idx) => {

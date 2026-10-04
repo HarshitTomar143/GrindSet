@@ -9,11 +9,16 @@
     "data:ctet": "python build_ctet_data.py",
     "seed:ctet": "node seed_ctet.mjs",
     "setup:ctet": "python build_ctet_data.py && node seed_ctet.mjs",
+    "data:mp-police": "python build_mp_police_data.py",
+    "upload:mp-police": "node upload_mp_police_diagrams.mjs",
+    "seed:mp-police": "node seed_mp_police.mjs",
+    "setup:mp-police": "python build_mp_police_data.py && node upload_mp_police_diagrams.mjs && node seed_mp_police.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1146.0",
     "dotenv": "^16.4.5",
     "next": "14.2.5",
     "pg": "^8.12.0",

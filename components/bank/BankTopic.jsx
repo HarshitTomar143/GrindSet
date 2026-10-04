@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { findSection, findTopic, displayLabel } from "@/lib/banks";
-import { MOCK_SIZE } from "@/lib/db";
+import { findSection, findTopic, displayLabel, mockSizeOf } from "@/lib/banks";
+import { loc } from "@/lib/site-lang";
 import { uiText } from "@/lib/ui-text";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { subjectIcon, firstLetter } from "@/lib/subjects";
@@ -25,11 +25,14 @@ export default async function BankTopic({ bank, sectionId, topicId }) {
 
   // Labels are resolved here because MockPaperGrid runs on the client and
   // cannot be handed the functions in lib/ui-text.js.
+  const size = mockSizeOf(section);
+  // A real sitting is one whole paper, so it is not called "Mock Paper 1".
+  const wholePaper = topic.mocks === 1 ? loc(section.paperTitle, lang) : null;
   const papers = Array.from({ length: topic.mocks }, (_, i) => {
-    const count = Math.min(MOCK_SIZE, topic.total - i * MOCK_SIZE);
+    const count = Math.min(size, topic.total - i * size);
     return {
       href: `${bank.base}/${section.id}/${topic.id}/${i + 1}`,
-      title: t.mockPaper(i + 1),
+      title: wholePaper || t.mockPaper(i + 1),
       meta: t.questionCount(count),
     };
   });
