@@ -69,8 +69,11 @@ function QuestionFigure({ image, alt }) {
  * @param questions  loaded on the server; each may carry sectionLabel/sectionName
  * @param meta       display names + the hrefs used by breadcrumbs and Back
  * @param submitMeta ids stored with the result and with question reports
+ * @param account    the signed-in candidate ({ name, email }) or null; when set
+ *                   it replaces the typed name, and the server ties the result
+ *                   to the account
  */
-export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
+export default function QuizRunner({ questions, meta, submitMeta, mockNum, account = null }) {
   const [answers, setAnswers] = useState({}); // idx -> letter
   const [current, setCurrent] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -146,10 +149,14 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
 
   // remember the test-taker + language preference (browser-local)
   useEffect(() => {
-    try {
-      const u = JSON.parse(localStorage.getItem("quizUser") || "null");
-      if (u && u.name) setUser(u);
-    } catch {}
+    if (account) {
+      setUser({ name: account.name, email: account.email || "" });
+    } else {
+      try {
+        const u = JSON.parse(localStorage.getItem("quizUser") || "null");
+        if (u && u.name) setUser(u);
+      } catch {}
+    }
     const href = window.location.pathname + window.location.search;
     setPaperHref(href);
     const saved = readAttempt(href);
@@ -251,6 +258,10 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
   };
 
   const saveUser = () => {
+    if (account) {
+      setUser({ name: account.name, email: account.email || "" });
+      return;
+    }
     const name = nameInput.trim();
     if (!name) return;
     const u = { name, email: emailInput.trim() };
@@ -395,31 +406,45 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum }) {
             </button>
           </div>
 
-          <label className="field-label">{T.yourName}</label>
-          <input
-            className="text-input"
-            value={nameInput}
-            autoFocus
-            onChange={(e) => setNameInput(e.target.value)}
-            placeholder={T.namePlaceholder}
-          />
-          <label className="field-label" style={{ marginTop: 12 }}>
-            {T.emailOptional}
-          </label>
-          <input
-            className="text-input"
-            type="email"
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-            placeholder="you@example.com"
-          />
+          {account ? (
+            <p className="gate-account">
+              {T.signedInAs} <b>{account.name}</b>
+            </p>
+          ) : (
+            <>
+              <label className="field-label">{T.yourName}</label>
+              <input
+                className="text-input"
+                value={nameInput}
+                autoFocus
+                onChange={(e) => setNameInput(e.target.value)}
+                placeholder={T.namePlaceholder}
+              />
+              <label className="field-label" style={{ marginTop: 12 }}>
+                {T.emailOptional}
+              </label>
+              <input
+                className="text-input"
+                type="email"
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+                placeholder="you@example.com"
+              />
+              <p className="muted-sm" style={{ marginTop: 10 }}>
+                <a className="gate-signin" href={`/signin?callbackUrl=${encodeURIComponent(meta.base + "/" + mockNum)}`}>
+                  {T.signIn}
+                </a>{" "}
+                · {T.authSub}
+              </p>
+            </>
+          )}
 
           <div style={{ marginTop: 16 }}>{renderLangToggle()}</div>
 
           <button
             className="btn"
             type="submit"
-            disabled={!nameInput.trim()}
+            disabled={!account && !nameInput.trim()}
             style={{ marginTop: 16, width: "100%" }}
           >
             {mode === "exam" ? T.startTest : T.startPractice}

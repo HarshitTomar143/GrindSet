@@ -5,6 +5,8 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { htmlLang } from "@/lib/site-lang";
 import { uiText } from "@/lib/ui-text";
+import { getAccount } from "@/lib/auth";
+import AccountButton from "@/components/AccountButton";
 
 export const metadata = {
   title: {
@@ -27,9 +29,10 @@ var t=localStorage.getItem('theme'); if(t)d.setAttribute('data-theme',t);
 var f=localStorage.getItem('fontScale'); if(f)d.setAttribute('data-font',f);
 }catch(e){}})();`;
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   const lang = getSiteLang();
   const T = uiText(lang);
+  const account = await getAccount();
 
   return (
     // themeInit stamps data-theme/data-font on <html> before hydration.
@@ -63,6 +66,7 @@ export default function RootLayout({ children }) {
             <div className="header-actions">
               <LangSwitch lang={lang} label={T.siteLanguage} />
               <ThemeControls lang={lang} />
+              <AccountButton account={account} T={T} />
             </div>
           </div>
         </header>

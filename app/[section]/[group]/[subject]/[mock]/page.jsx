@@ -12,6 +12,7 @@ import { getExam } from "@/lib/exams";
 import { uiFormat } from "@/lib/ui-text";
 import { bi } from "@/lib/site-lang";
 import { getSiteLang } from "@/lib/site-lang-server";
+import { getAccount } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,7 @@ export default async function UptetMockPage({ params, searchParams }) {
     <QuizRunner
       questions={questions}
       mockNum={mockNum}
+      account={await getAccount()}
       meta={{
         uiLang: lang,
         examId: "uptet",

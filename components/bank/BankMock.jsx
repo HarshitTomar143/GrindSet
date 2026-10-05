@@ -9,6 +9,7 @@ import { uiText } from "@/lib/ui-text";
 import { getExam } from "@/lib/exams";
 import { loc } from "@/lib/site-lang";
 import { getSiteLang } from "@/lib/site-lang-server";
+import { getAccount } from "@/lib/auth";
 import QuizRunner from "@/components/QuizRunner";
 
 // One mock paper, handed to the shared quiz runner.
@@ -38,6 +39,7 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
     <QuizRunner
       questions={questions}
       mockNum={mockNum}
+      account={await getAccount()}
       meta={{
         uiLang: lang,
         examId: bank.id,
