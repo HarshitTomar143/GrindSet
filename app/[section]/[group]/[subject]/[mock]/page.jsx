@@ -15,6 +15,8 @@ import { getSiteLang } from "@/lib/site-lang-server";
 import { getAccount } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
+// A paper in progress is not a page to land on from search.
+export const metadata = { robots: { index: false, follow: true } };
 
 const FULL_MOCK_SUBJECTS = { paper1: "paper1-full", paper2: "paper2-full" };
 

@@ -1,7 +1,7 @@
 import AuthPage from "@/components/AuthPage";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Sign in" };
+export const metadata = { title: "Sign in", robots: { index: false, follow: false } };
 
 export default function SignInPage({ searchParams }) {
   return <AuthPage mode="signin" searchParams={searchParams} />;

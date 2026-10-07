@@ -6,6 +6,7 @@ import { getMockQuestions } from "@/lib/data";
 import BackLink from "@/components/BackLink";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "Admin", robots: { index: false, follow: false } };
 
 const LETTERS = ["A", "B", "C", "D"];
 

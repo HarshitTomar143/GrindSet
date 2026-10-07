@@ -7,8 +7,13 @@ import { htmlLang } from "@/lib/site-lang";
 import { uiText } from "@/lib/ui-text";
 import { getAccount } from "@/lib/auth";
 import AccountButton from "@/components/AccountButton";
+import { SITE_URL } from "@/lib/site-url";
 
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
+  // "./" resolves against each page's own path, so every page gets a canonical
+  // link to itself with any query string dropped.
+  alternates: { canonical: "./" },
   title: {
     default: "Octopus · Teaching exam practice",
     template: "%s · Octopus",

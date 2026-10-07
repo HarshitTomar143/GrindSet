@@ -8,7 +8,7 @@ import BackLink from "@/components/BackLink";
 import SignOutButton from "@/components/SignOutButton";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "My account" };
+export const metadata = { title: "My account", robots: { index: false, follow: false } };
 
 const dateFmt = new Intl.DateTimeFormat("en-IN", {
   day: "numeric",
