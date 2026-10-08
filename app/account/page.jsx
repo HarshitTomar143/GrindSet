@@ -1,21 +1,16 @@
 import { redirect } from "next/navigation";
 import { getAccount } from "@/lib/auth";
 import { findUserById } from "@/lib/users";
-import { getUserSubmissions } from "@/lib/submissions";
+import { getDashboard } from "@/lib/dashboard";
+import { listExams } from "@/lib/exams";
 import { uiText } from "@/lib/ui-text";
 import { getSiteLang } from "@/lib/site-lang-server";
 import BackLink from "@/components/BackLink";
 import SignOutButton from "@/components/SignOutButton";
+import Dashboard from "@/components/account/Dashboard";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "My account", robots: { index: false, follow: false } };
-
-const dateFmt = new Intl.DateTimeFormat("en-IN", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  timeZone: "Asia/Kolkata",
-});
 
 export default async function AccountPage() {
   const account = await getAccount();
@@ -26,7 +21,7 @@ export default async function AccountPage() {
   const user = await findUserById(account.id);
   // The cookie outlived the account (deleted, or a different database).
   if (!user) redirect("/signin");
-  const results = await getUserSubmissions(account.id, 30);
+  const data = await getDashboard(account.id, lang);
 
   const methods = [
     user.has_password && T.accountMethodPassword,
@@ -34,7 +29,7 @@ export default async function AccountPage() {
   ].filter(Boolean);
 
   return (
-    <div className="auth-page account-page">
+    <div className="account-page">
       <BackLink href="/" label={T.home} />
       <h1 className="page-title">{T.account}</h1>
 
@@ -49,31 +44,7 @@ export default async function AccountPage() {
         <SignOutButton label={T.signOut} />
       </div>
 
-      <h2 className="strip-title">{T.accountResults}</h2>
-      {results.length === 0 ? (
-        <p className="page-sub">{T.accountNoResults}</p>
-      ) : (
-        <div className="account-results">
-          {results.map((r) => (
-            <div className="account-result" key={r.id}>
-              <div className="account-result-main">
-                <div className="account-result-title">
-                  {r.subject_name} · {T.mockPaper(r.mock_num)}
-                </div>
-                <div className="muted-sm">
-                  {r.section_name} · {dateFmt.format(new Date(r.created_at))}
-                </div>
-              </div>
-              <div className="account-result-score">
-                <b>{r.percentage}%</b>
-                <span className="muted-sm">
-                  {r.correct}/{r.total}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <Dashboard data={data} examList={listExams(lang)} T={T} lang={lang} />
     </div>
   );
 }
