@@ -31,7 +31,7 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
   const account = await getAccount();
   const allowed = await paperRateLimit(account);
   if (!allowed.ok) {
-    return <PaperLimitNotice lang={lang} retryAfter={allowed.retryAfter} backHref={bank.base} />;
+    return <PaperLimitNotice lang={lang} allowed={allowed} backHref={bank.base} />;
   }
 
   const questions = await getMockQuestions(section, topic, mockNum, lang);

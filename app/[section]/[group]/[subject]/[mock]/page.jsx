@@ -40,7 +40,7 @@ export default async function UptetMockPage({ params, searchParams }) {
   const account = await getAccount();
   const allowed = await paperRateLimit(account);
   if (!allowed.ok) {
-    return <PaperLimitNotice lang={lang} retryAfter={allowed.retryAfter} backHref="/uptet" />;
+    return <PaperLimitNotice lang={lang} allowed={allowed} backHref="/uptet" />;
   }
 
   const questions = isFull
