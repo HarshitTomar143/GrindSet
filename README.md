@@ -74,8 +74,9 @@ The `submissions` table is created automatically on the first submission and is
 | `seed.mjs` | Loads `seed_data` into the `questions` table in PostgreSQL (`npm run seed`). |
 | `lib/db.js` | PostgreSQL connection pool (reads `DATABASE_URL`). |
 | `lib/data.js` | Builds the navigation tree and mock-paper slices with SQL queries. |
-| `app/api/manifest`, `app/api/quiz` | API routes the quiz page calls in the browser. |
+| `app/api/manifest`, `app/api/quiz` | API routes the admin dashboard calls in the browser (`quiz` is admin-only). |
 | `app/api/submit` | Records a finished test into the `submissions` table. |
+| `lib/rate-limit.js` | Request limits (papers opened, logins, submissions), counted in the `rate_limits` table. The numbers are in `LIMITS`. |
 | `lib/submissions.js` | Submission table + read queries for the admin panel. |
 | `lib/admin.js`, `app/api/admin/*` | Admin password check, login/logout, and protected data routes. |
 | `app/admin/` | Admin login + dashboard + per-submission detail. |

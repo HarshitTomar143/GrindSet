@@ -10,7 +10,9 @@ import { getExam } from "@/lib/exams";
 import { loc } from "@/lib/site-lang";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { getAccount } from "@/lib/auth";
+import { paperRateLimit } from "@/lib/rate-limit";
 import QuizRunner from "@/components/QuizRunner";
+import PaperLimitNotice from "@/components/PaperLimitNotice";
 
 // One mock paper, handed to the shared quiz runner.
 
@@ -26,6 +28,12 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
   const lang = getSiteLang();
   const t = uiText(lang);
 
+  const account = await getAccount();
+  const allowed = await paperRateLimit(account);
+  if (!allowed.ok) {
+    return <PaperLimitNotice lang={lang} retryAfter={allowed.retryAfter} backHref={bank.base} />;
+  }
+
   const questions = await getMockQuestions(section, topic, mockNum, lang);
   if (!questions.length) notFound();
 
@@ -39,7 +47,7 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
     <QuizRunner
       questions={questions}
       mockNum={mockNum}
-      account={await getAccount()}
+      account={account}
       meta={{
         uiLang: lang,
         examId: bank.id,

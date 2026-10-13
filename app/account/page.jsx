@@ -6,6 +6,7 @@ import { listExams } from "@/lib/exams";
 import { uiText } from "@/lib/ui-text";
 import { getSiteLang } from "@/lib/site-lang-server";
 import BackLink from "@/components/BackLink";
+import { emailOtpEnabled } from "@/lib/mail";
 import SignOutButton from "@/components/SignOutButton";
 import Dashboard from "@/components/account/Dashboard";
 
@@ -26,6 +27,8 @@ export default async function AccountPage() {
   const methods = [
     user.has_password && T.accountMethodPassword,
     user.has_google && "Google",
+    user.email && emailOtpEnabled() && T.accountMethodEmailOtp,
+    user.phone && T.accountMethodPhone,
   ].filter(Boolean);
 
   return (
@@ -36,7 +39,9 @@ export default async function AccountPage() {
       <div className="q-card account-card">
         <div className="account-id">
           <div className="account-name">{user.name}</div>
-          <div className="account-email">{user.email}</div>
+          <div className="account-email">
+            {[user.email, user.phone && `+91 ${user.phone}`].filter(Boolean).join(" · ")}
+          </div>
           <div className="muted-sm">
             {T.accountSignsInWith} {methods.join(" · ")}
           </div>

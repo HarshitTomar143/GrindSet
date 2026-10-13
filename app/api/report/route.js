@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { recordReport } from "@/lib/reports";
+import { LIMITS, rateLimit, clientIp, tooManyResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request) {
+  const allowed = await rateLimit(LIMITS.report, clientIp(request));
+  if (!allowed.ok) return tooManyResponse(allowed, "Too many requests");
+
   try {
     const b = await request.json();
     if (!b.questionText || !String(b.questionText).trim()) {

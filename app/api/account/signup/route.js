@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { authConfigured, tooManyAttempts } from "@/lib/auth";
+import { authConfigured } from "@/lib/auth";
+import { LIMITS, rateLimit, clientIp, tooManyResponse } from "@/lib/rate-limit";
 import {
   createPasswordUser,
   normalizeEmail,
@@ -19,10 +20,8 @@ export async function POST(request) {
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
 
-  const ip = (request.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "local";
-  if (tooManyAttempts(`signup:${ip}`)) {
-    return NextResponse.json({ error: "tooMany" }, { status: 429 });
-  }
+  const allowed = await rateLimit(LIMITS.signup, clientIp(request));
+  if (!allowed.ok) return tooManyResponse(allowed);
 
   let body;
   try {

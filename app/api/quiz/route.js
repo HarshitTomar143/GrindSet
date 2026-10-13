@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { isTokenValid, ADMIN_COOKIE } from "@/lib/admin";
 import { getMockQuestions, getFullMockQuestions } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +16,13 @@ const SUBJECT_LABELS = {
   "social-studies": "Social Studies",
 };
 
+// Only the admin dashboard reads papers this way; candidates get theirs from
+// the paper's own page, which is rate limited (lib/rate-limit.js).
 export async function GET(request) {
+  if (!isTokenValid(cookies().get(ADMIN_COOKIE)?.value)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const section = searchParams.get("section");
   const group = searchParams.get("group");

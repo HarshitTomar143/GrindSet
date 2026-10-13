@@ -2,17 +2,25 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import OtpAuthForm from "./OtpAuthForm";
 
 /**
  * The sign-in and sign-up form. One component for both: sign-up adds the name
- * field and creates the account first, then signs in the same way.
+ * field and creates the account first, then signs in the same way. Where
+ * one-time codes are on, a switch above the fields swaps in OtpAuthForm.
  *
  * `text` is plain strings resolved on the server (a server component cannot
  * hand a client one the functions in lib/ui-text.js). `callbackUrl` has
  * already been checked to be a path on this site.
  */
-export default function AuthForm({ mode, text, googleOn, callbackUrl, initialError }) {
+export default function AuthForm({ mode, text, googleOn, phoneOn, emailOtpOn, callbackUrl, initialError }) {
   const isSignUp = mode === "signup";
+  const [method, setMethod] = useState("password");
+  const methods = [
+    ["password", text.methodPassword],
+    emailOtpOn && ["email", text.methodEmailOtp],
+    phoneOn && ["phone", text.methodPhone],
+  ].filter(Boolean);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -82,6 +90,29 @@ export default function AuthForm({ mode, text, googleOn, callbackUrl, initialErr
         </>
       )}
 
+      {methods.length > 1 && (
+        <div className="auth-methods" role="group">
+          {methods.map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              className={method === id ? "active" : ""}
+              aria-pressed={method === id}
+              onClick={() => {
+                setMethod(id);
+                setError("");
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {method !== "password" ? (
+        // Keyed, so switching between email and mobile starts a clean form.
+        <OtpAuthForm key={method} channel={method} text={text} callbackUrl={callbackUrl} />
+      ) : (
       <form onSubmit={onSubmit} noValidate>
         {isSignUp && (
           <>
@@ -147,6 +178,7 @@ export default function AuthForm({ mode, text, googleOn, callbackUrl, initialErr
           {busy ? text.working : isSignUp ? text.signUp : text.signIn}
         </button>
       </form>
+      )}
 
       <p className="auth-switch">
         {isSignUp ? text.haveAccount : text.noAccount}{" "}

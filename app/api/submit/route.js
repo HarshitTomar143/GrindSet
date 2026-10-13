@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { recordSubmission } from "@/lib/submissions";
 import { getAccount } from "@/lib/auth";
+import { LIMITS, rateLimit, clientIp, tooManyResponse } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request) {
+  const allowed = await rateLimit(LIMITS.submit, clientIp(request));
+  if (!allowed.ok) return tooManyResponse(allowed, "Too many requests");
+
   try {
     const body = await request.json();
     // A signed-in candidate's result carries the account's own name and email,

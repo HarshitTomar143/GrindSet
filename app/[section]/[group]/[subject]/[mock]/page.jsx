@@ -13,6 +13,8 @@ import { uiFormat } from "@/lib/ui-text";
 import { bi } from "@/lib/site-lang";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { getAccount } from "@/lib/auth";
+import { paperRateLimit } from "@/lib/rate-limit";
+import PaperLimitNotice from "@/components/PaperLimitNotice";
 
 export const dynamic = "force-dynamic";
 // A paper in progress is not a page to land on from search.
@@ -35,6 +37,12 @@ export default async function UptetMockPage({ params, searchParams }) {
   const subject = isFull ? null : findSubject(group, params.subject);
   if (!section || !group || (!subject && !isFull)) notFound();
 
+  const account = await getAccount();
+  const allowed = await paperRateLimit(account);
+  if (!allowed.ok) {
+    return <PaperLimitNotice lang={lang} retryAfter={allowed.retryAfter} backHref="/uptet" />;
+  }
+
   const questions = isFull
     ? await getFullMockQuestions(params.section, mockNum, { language, stream, lang })
     : await getMockQuestions(params.section, params.group, params.subject, mockNum);
@@ -47,7 +55,7 @@ export default async function UptetMockPage({ params, searchParams }) {
     <QuizRunner
       questions={questions}
       mockNum={mockNum}
-      account={await getAccount()}
+      account={account}
       meta={{
         uiLang: lang,
         examId: "uptet",

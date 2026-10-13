@@ -3,6 +3,8 @@ import { getAccount, googleEnabled, authConfigured, safeCallbackPath } from "@/l
 import { uiText } from "@/lib/ui-text";
 import { getSiteLang } from "@/lib/site-lang-server";
 import BackLink from "@/components/BackLink";
+import { phoneSignInEnabled } from "@/lib/sms";
+import { emailOtpEnabled } from "@/lib/mail";
 import AuthForm from "@/components/AuthForm";
 
 // The body of /signin and /signup. Anyone already signed in is sent on to
@@ -34,6 +36,8 @@ export default async function AuthPage({ mode, searchParams }) {
         <AuthForm
           mode={mode}
           googleOn={googleEnabled()}
+          phoneOn={phoneSignInEnabled()}
+          emailOtpOn={emailOtpEnabled()}
           callbackUrl={callbackUrl}
           initialError={errorFromQuery(searchParams?.error, T)}
           text={{
@@ -49,6 +53,20 @@ export default async function AuthPage({ mode, searchParams }) {
             working: T.authWorking,
             noAccount: T.authNoAccount,
             haveAccount: T.authHaveAccount,
+            methodPassword: T.authMethodPassword,
+            methodEmailOtp: T.authMethodEmailOtp,
+            emailOtpHint: T.authEmailOtpHint,
+            methodPhone: T.authMethodPhone,
+            phone: T.authPhone,
+            phoneHint: T.authPhoneHint,
+            sendOtp: T.authSendOtp,
+            otp: T.authOtp,
+            // Templates: the form fills in the address and the countdown.
+            otpSent: T.authOtpSent("{to}"),
+            verify: T.authVerify,
+            resend: T.authResend,
+            resendIn: T.authResendIn("{n}"),
+            change: T.authChange,
             errors: {
               credentials: T.authErrCredentials,
               exists: T.authErrExists,
@@ -57,6 +75,11 @@ export default async function AuthPage({ mode, searchParams }) {
               name: T.authErrName,
               email: T.authErrEmail,
               password: T.authErrPassword,
+              phone: T.authErrPhone,
+              otp: T.authErrOtp,
+              otpWait: T.authErrOtpWait,
+              sms: T.authErrSms,
+              mail: T.authErrMail,
               generic: T.authErrGeneric,
               unavailable: T.authErrGeneric,
             },
