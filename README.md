@@ -56,9 +56,14 @@ Visit **`/admin`** (also linked in the footer) to see all activity.
   remembered in their browser for next time.
 - On submit, the result is saved to a **`submissions`** table (who, which test,
   score, correct/wrong/skipped, time taken, timestamp, and their answers).
-- The dashboard shows totals, average score, most-attempted tests, and a
-  searchable/sortable table of every submission. Click a row to see that person's
-  full answer-by-answer review.
+- The panel has five tabs: **Overview** (papers and people today / 7 / 30 days,
+  activity per day, split by exam, registered accounts), **Papers** (every paper
+  that has been sat, with attempts and scores), **People** (everyone who has sat
+  a paper, and every account), **Submissions** (searchable, paged, CSV download)
+  and **Reported questions**. Click a person or a paper to see its submissions;
+  click a submission for the answer-by-answer review.
+- Only submitted papers are counted. Someone who is not signed in is told apart
+  by the email or name they typed.
 - Access is protected by **`ADMIN_PASSWORD`** in your env file. The login sets an
   httpOnly cookie for 8 hours.
 
@@ -77,7 +82,8 @@ The `submissions` table is created automatically on the first submission and is
 | `app/api/manifest`, `app/api/quiz` | API routes the admin dashboard calls in the browser (`quiz` is admin-only). |
 | `app/api/submit` | Records a finished test into the `submissions` table. |
 | `lib/rate-limit.js` | Request limits (papers opened, logins, submissions), counted in the `rate_limits` table. The numbers are in `LIMITS`. |
-| `lib/submissions.js` | Submission table + read queries for the admin panel. |
+| `lib/submissions.js` | Submission table and the candidate's own results. |
+| `lib/admin-stats.js`, `components/admin/` | Queries and tabs for the admin panel. |
 | `lib/admin.js`, `app/api/admin/*` | Admin password check, login/logout, and protected data routes. |
 | `app/admin/` | Admin login + dashboard + per-submission detail. |
 | `app/` | Next.js App Router pages (navigation + quiz). |
