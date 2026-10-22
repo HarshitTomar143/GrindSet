@@ -61,7 +61,7 @@ export default async function RootLayout({ children }) {
           <div className="header-inner">
             <a href="/" className="brand">
               <span className="brand-mark logo-mark">
-                <img src="/octopus-mark.png" alt="" width="40" height="40" />
+                <img src="/pyqsetu-mark.png" alt="" width="40" height="40" />
               </span>
               <span className="brand-text">
                 <span>PYQSetu</span>
