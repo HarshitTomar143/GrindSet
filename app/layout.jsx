@@ -15,10 +15,10 @@ export const metadata = {
   // link to itself with any query string dropped.
   alternates: { canonical: "./" },
   title: {
-    default: "Octopus · Teaching exam practice",
-    template: "%s · Octopus",
+    default: "PYQSetu · Teaching exam practice",
+    template: "%s · PYQSetu",
   },
-  applicationName: "Octopus",
+  applicationName: "PYQSetu",
   description:
     "Timed mock papers built from previous-year questions for UP TET, CTET and UP TGT / PGT, scored the moment you submit.",
   manifest: "/manifest.webmanifest",
@@ -64,7 +64,7 @@ export default async function RootLayout({ children }) {
                 <img src="/octopus-mark.png" alt="" width="40" height="40" />
               </span>
               <span className="brand-text">
-                <span>Octopus</span>
+                <span>PYQSetu</span>
                 <span className="brand-sub">{T.brandSub}</span>
               </span>
             </a>

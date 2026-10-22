@@ -56,7 +56,7 @@ export default function WelcomeModal({ lang }) {
         >
           ×
         </button>
-        <h2 id="welcome-title">Octopus में आपका स्वागत है · Welcome</h2>
+        <h2 id="welcome-title">PYQSetu में आपका स्वागत है · Welcome</h2>
 
         <div className="welcome-lang">
           <strong>अपनी भाषा चुनें · Choose your language</strong>
