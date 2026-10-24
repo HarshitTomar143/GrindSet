@@ -2,6 +2,7 @@ import "./globals.css";
 import ThemeControls from "@/components/ThemeControls";
 import LangSwitch from "@/components/LangSwitch";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import Analytics from "@/components/Analytics";
 import { getSiteLang } from "@/lib/site-lang-server";
 import { htmlLang } from "@/lib/site-lang";
 import { uiText } from "@/lib/ui-text";
@@ -89,6 +90,7 @@ export default async function RootLayout({ children }) {
           </div>
         </footer>
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
     </html>
   );
