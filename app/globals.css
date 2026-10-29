@@ -112,21 +112,6 @@ a { color: inherit; text-decoration: none; }
   font-size: 14px;
 }
 
-.logo-mark {
-  width: 100px;
-  height: 100px;
-  padding: 4px;
-  border-radius: 14px;
-  background: var(--accent-soft);
-}
-
-.logo-mark img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
 /* ---------- header ---------- */
@@ -139,16 +124,6 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--line);
 }
 .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 17px; }
-.brand-mark {
-  display: inline-grid; place-items: center;
-  width: 36px; height: 36px; border-radius: 11px;
-  background: var(--accent-soft); font-size: 18px;
-}
-.brand-mark.logo-mark {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-}
 
 .container { max-width: 920px; margin: 0 auto; padding: 36px 20px 80px; }
 .site-footer { text-align: center; color: var(--muted); font-size: 13px; padding: 28px; }
@@ -1054,7 +1029,14 @@ a { color: inherit; text-decoration: none; }
 .header-inner { max-width: 1060px; }
 
 .site-header { padding: 12px 22px; }
-.brand-mark.logo-mark { width: 40px; height: 40px; border-radius: 12px; padding: 3px; }
+/* The logo is drawn on white, so it keeps a white plate in dark mode too. */
+.brand-logo {
+  display: inline-flex; flex: 0 0 auto;
+  height: 40px; padding: 0 4px;
+  border-radius: 10px; background: #fff;
+}
+:root[data-theme="dark"] .brand-logo { box-shadow: 0 0 0 1px var(--line); }
+.brand-logo img { height: 100%; width: auto; display: block; }
 .brand { gap: 10px; font-size: 16px; letter-spacing: -0.02em; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
 .brand-sub {
@@ -2030,7 +2012,7 @@ img, svg, video { max-width: 100%; }
   .account-chip, .account-signin { width: 34px; height: 34px; }
   .site-header { padding: 10px 10px; }
   .brand { gap: 7px; font-size: 15px; }
-  .brand-mark.logo-mark { width: 36px; height: 36px; border-radius: 10px; }
+  .brand-logo { height: 36px; padding: 0 3px; border-radius: 8px; }
   .header-inner, .header-actions, .theme-controls { gap: 4px; }
   .lang-switch button { padding: 7px 6px; font-size: 12px; }
   .tc-btn { width: 34px; min-width: 34px; padding-left: 0; padding-right: 0; }

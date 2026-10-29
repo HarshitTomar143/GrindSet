@@ -54,18 +54,17 @@ export default async function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
         />
-        <link rel="apple-touch-icon" href="/pwa-icon.svg" />
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
       <body>
         <header className="site-header">
           <div className="header-inner">
             <a href="/" className="brand">
-              <span className="brand-mark logo-mark">
-                <img src="/pyqsetu-mark.png" alt="" width="40" height="40" />
+              {/* The logo carries the wordmark, so no separate name beside it. */}
+              <span className="brand-logo">
+                <img src="/logo.jpeg" alt="PYQSetu" width="504" height="333" />
               </span>
               <span className="brand-text">
-                <span>PYQSetu</span>
                 <span className="brand-sub">{T.brandSub}</span>
               </span>
             </a>
