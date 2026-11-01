@@ -62,7 +62,7 @@ export default async function RootLayout({ children }) {
             <a href="/" className="brand">
               {/* The logo carries the wordmark, so no separate name beside it. */}
               <span className="brand-logo">
-                <img src="/logo.jpeg" alt="PYQSetu" width="504" height="333" />
+                <img src="/Updated.png" alt="PYQSetu" width="1543" height="1019" />
               </span>
               <span className="brand-text">
                 <span className="brand-sub">{T.brandSub}</span>

@@ -1029,13 +1029,13 @@ a { color: inherit; text-decoration: none; }
 .header-inner { max-width: 1060px; }
 
 .site-header { padding: 12px 22px; }
-/* The logo is drawn on white, so it keeps a white plate in dark mode too. */
+/* The logo is transparent, so it sits straight on the header. Its navy would
+   vanish on the dark header, so dark mode flips the lightness but keeps the hues. */
 .brand-logo {
   display: inline-flex; flex: 0 0 auto;
-  height: 40px; padding: 0 4px;
-  border-radius: 10px; background: #fff;
+  height: 40px;
 }
-:root[data-theme="dark"] .brand-logo { box-shadow: 0 0 0 1px var(--line); }
+:root[data-theme="dark"] .brand-logo img { filter: invert(1) hue-rotate(180deg); }
 .brand-logo img { height: 100%; width: auto; display: block; }
 .brand { gap: 10px; font-size: 16px; letter-spacing: -0.02em; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
@@ -2012,7 +2012,7 @@ img, svg, video { max-width: 100%; }
   .account-chip, .account-signin { width: 34px; height: 34px; }
   .site-header { padding: 10px 10px; }
   .brand { gap: 7px; font-size: 15px; }
-  .brand-logo { height: 36px; padding: 0 3px; border-radius: 8px; }
+  .brand-logo { height: 36px; }
   .header-inner, .header-actions, .theme-controls { gap: 4px; }
   .lang-switch button { padding: 7px 6px; font-size: 12px; }
   .tc-btn { width: 34px; min-width: 34px; padding-left: 0; padding-right: 0; }
