@@ -68,12 +68,13 @@ export default function WelcomeModal({ lang }) {
         </div>
 
         <p className="welcome-modal-text">
-          यह ऐप UP TET, CTET और UP TGT / PGT परीक्षा की तैयारी के लिए है। यहाँ
+          यह ऐप सरकारी परीक्षाओं — UP TET, CTET, UP TGT / PGT और MP Police — की तैयारी के लिए है। यहाँ
           विषय-वार मॉक टेस्ट देकर अभ्यास कीजिए और हर पेपर के अंत में अपना स्कोर
           और व्याख्या देखिए।
         </p>
         <p className="welcome-modal-text">
-          Practice papers for UP TET, CTET and UP TGT / PGT, built from
+          Practice papers for government exams — UP TET, CTET, UP TGT / PGT and
+          MP Police — built from
           previous-year questions. Papers are timed like the real
           computer-based test and scored as soon as you submit.
         </p>

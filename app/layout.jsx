@@ -16,12 +16,12 @@ export const metadata = {
   // link to itself with any query string dropped.
   alternates: { canonical: "./" },
   title: {
-    default: "PYQSetu · Teaching exam practice",
+    default: "PYQSetu · Government exam practice",
     template: "%s · PYQSetu",
   },
   applicationName: "PYQSetu",
   description:
-    "Timed mock papers built from previous-year questions for UP TET, CTET and UP TGT / PGT, scored the moment you submit.",
+    "Timed mock papers built from previous-year questions for government exams — UP TET, CTET, UP TGT / PGT and MP Police — scored the moment you submit.",
   manifest: "/manifest.webmanifest",
 };
 
