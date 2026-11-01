@@ -9,6 +9,7 @@ import { uiText } from "@/lib/ui-text";
 import { getAccount } from "@/lib/auth";
 import AccountButton from "@/components/AccountButton";
 import { SITE_URL } from "@/lib/site-url";
+import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION, OG_BASE, TWITTER_BASE, siteJsonLd, JsonLd } from "@/lib/seo";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -16,13 +17,32 @@ export const metadata = {
   // link to itself with any query string dropped.
   alternates: { canonical: "./" },
   title: {
-    default: "PYQSetu · Government exam practice",
-    template: "%s · PYQSetu",
+    default: `${SITE_NAME} · ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
   },
-  applicationName: "PYQSetu",
-  description:
-    "Timed mock papers built from previous-year questions for government exams — UP TET, CTET, UP TGT / PGT and MP Police — scored the moment you submit.",
+  applicationName: SITE_NAME,
+  description: SITE_DESCRIPTION,
   manifest: "/manifest.webmanifest",
+  // Pages that set their own title and description override these two; the
+  // share image is in OG_BASE.
+  openGraph: {
+    ...OG_BASE,
+    title: `${SITE_NAME} · ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    ...TWITTER_BASE,
+    title: `${SITE_NAME} · ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  // Ownership proofs for Google Search Console and Bing Webmaster Tools, set
+  // in the environment once each tool hands out its code.
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 export const viewport = {
@@ -55,6 +75,7 @@ export default async function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
         />
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <JsonLd data={siteJsonLd()} />
       </head>
       <body>
         <header className="site-header">

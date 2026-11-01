@@ -13,6 +13,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 import MockPaperGrid from "@/components/MockPaperGrid";
 import SubjectIcon from "@/components/SubjectIcon";
+import { uptetMetadata } from "@/lib/seo";
 
 // The two full-mock choosers, and the extra choices each paper asks for.
 const FULL_MOCKS = {
@@ -32,6 +33,10 @@ const FULL_MOCKS = {
 
 // The query values the mock page reads (see [mock]/page.jsx).
 const STREAM_VALUE = { "mathematics-science": "science", "social-studies": "social" };
+
+export function generateMetadata({ params }) {
+  return uptetMetadata(params);
+}
 
 export default async function SubjectPage({ params }) {
   const lang = getSiteLang();

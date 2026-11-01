@@ -6,11 +6,16 @@ import { getSiteLang } from "@/lib/site-lang-server";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 import SubjectGrid from "@/components/SubjectGrid";
+import { uptetMetadata } from "@/lib/seo";
 
 // The papers that have a full-length mock, and the ui-text key describing it.
 const FULL_MOCK_BLURB = { paper1: "fullMockBlurb1", paper2: "fullMockBlurb2" };
 
 const nf = (n) => n.toLocaleString("en-IN");
+
+export function generateMetadata({ params }) {
+  return uptetMetadata(params);
+}
 
 export default async function SectionPage({ params }) {
   const lang = getSiteLang();

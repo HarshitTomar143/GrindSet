@@ -7,8 +7,11 @@ import { getSiteLang } from "@/lib/site-lang-server";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 import ExamHeader from "@/components/ExamHeader";
+import { examMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = examMetadata("uptet");
 
 const nf = (n) => n.toLocaleString("en-IN");
 

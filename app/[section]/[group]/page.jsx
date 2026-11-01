@@ -6,6 +6,11 @@ import { getSiteLang } from "@/lib/site-lang-server";
 import Breadcrumb from "@/components/Breadcrumb";
 import BackLink from "@/components/BackLink";
 import SubjectGrid from "@/components/SubjectGrid";
+import { uptetMetadata } from "@/lib/seo";
+
+export function generateMetadata({ params }) {
+  return uptetMetadata(params);
+}
 
 export default async function GroupPage({ params }) {
   const lang = getSiteLang();
