@@ -16,7 +16,7 @@ const TABS = [
   { id: "people", label: "People", sub: "Everyone who has sat a paper, and every registered account." },
   { id: "submissions", label: "Submissions", sub: "Every finished paper, who sat it, and how they scored." },
   { id: "reports", label: "Reported questions", sub: "Questions candidates have flagged." },
-  { id: "pdfs", label: "Important PDFs", sub: "PDFs listed on the home page: add, edit, reorder, and choose whether each can be viewed, downloaded or both." },
+  { id: "pdfs", label: "News & PDFs", sub: "The “Important news & PDFs” column on the home page: add news or PDFs, edit, reorder, and choose whether each PDF can be viewed, downloaded or both." },
 ];
 // Coming back from a submission's page lands on the tab it was opened from.
 const STORE = "admin-view";

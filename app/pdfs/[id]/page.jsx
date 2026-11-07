@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
 
 export default async function PdfPage({ params }) {
   const pdf = await getPdf(params.id).catch(() => null);
-  if (!pdf || !pdf.published || !canView(pdf.mode)) notFound();
+  if (!pdf || !pdf.published || pdf.kind === "news" || !canView(pdf.mode)) notFound();
 
   const lang = getSiteLang();
   const T = uiText(lang);

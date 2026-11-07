@@ -9,7 +9,7 @@ const MODES = [
 ];
 const MODE_LABEL = Object.fromEntries(MODES.map((m) => [m.id, m.label]));
 const MAX_MB = 100;
-const EMPTY = { title: "", description: "", mode: "both", published: true, source: "upload", url: "" };
+const EMPTY = { kind: "pdf", title: "", description: "", mode: "both", published: true, source: "upload", url: "", link: "" };
 
 function fmtSize(bytes) {
   if (!bytes) return "";
@@ -87,6 +87,8 @@ export default function PdfsTab() {
   const openEdit = (p) => {
     setEditing(p.id);
     setForm({
+      kind: p.kind === "news" ? "news" : "pdf",
+      link: p.link_url || "",
       title: p.title,
       description: p.description || "",
       mode: p.mode,
@@ -124,15 +126,18 @@ export default function PdfsTab() {
     const isNew = editing === "new";
     const current = isNew ? null : pdfs.find((p) => p.id === editing);
     const body = {
+      kind: form.kind,
       title: form.title,
       description: form.description,
-      mode: form.mode,
       published: form.published,
     };
 
     setSaving(true);
     try {
-      if (form.source === "upload") {
+      if (form.kind === "news") {
+        body.link_url = form.link.trim();
+      } else if (form.source === "upload") {
+        body.mode = form.mode;
         if (file) {
           const { key, uploadUrl } = await api("/api/admin/pdfs/upload-url", {
             method: "POST",
@@ -145,6 +150,7 @@ export default function PdfsTab() {
           throw new Error("Choose a PDF to upload.");
         }
       } else {
+        body.mode = form.mode;
         if (!form.url.trim()) throw new Error("Paste a link to the PDF.");
         if (isNew || form.url.trim() !== current?.file_url) body.file_url = form.url.trim();
       }
@@ -203,7 +209,28 @@ export default function PdfsTab() {
     <div>
       {editing ? (
         <form className="pdf-admin-form" onSubmit={save}>
-          <b>{editing === "new" ? "Add a PDF" : "Edit PDF"}</b>
+          <b>{editing === "new" ? "Add to “Important news & PDFs”" : "Edit"}</b>
+
+          <div>
+            <span className="field-label">Type</span>
+            <div className="seg" role="radiogroup" aria-label="Type">
+              {[
+                ["pdf", "PDF"],
+                ["news", "News"],
+              ].map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="radio"
+                  aria-checked={form.kind === id}
+                  className={form.kind === id ? "active" : ""}
+                  onClick={() => set("kind", id)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div>
             <label className="field-label" htmlFor="pdf-title">Heading</label>
@@ -213,7 +240,7 @@ export default function PdfsTab() {
               value={form.title}
               maxLength={200}
               onChange={(e) => set("title", e.target.value)}
-              placeholder="e.g. UP TGT-PGT GS Syllabus"
+              placeholder={form.kind === "news" ? "e.g. UP TET 2026 admit cards released" : "e.g. UP TGT-PGT GS Syllabus"}
               required
             />
           </div>
@@ -226,10 +253,27 @@ export default function PdfsTab() {
               value={form.description}
               maxLength={1000}
               onChange={(e) => set("description", e.target.value)}
-              placeholder="Optional — a line or two on what is inside."
+              placeholder="Optional. Visitors see it when they hover the card or tap its “i”."
             />
           </div>
 
+          {form.kind === "news" ? (
+            <div>
+              <label className="field-label" htmlFor="news-link">Link</label>
+              <input
+                id="news-link"
+                className="text-input"
+                type="url"
+                value={form.link}
+                onChange={(e) => set("link", e.target.value)}
+                placeholder="Optional — e.g. the official notice, https://…"
+              />
+              <p className="muted-sm" style={{ margin: "6px 0 0" }}>
+                Shown as a “Read more” button. Leave empty for a notice that is just text.
+              </p>
+            </div>
+          ) : (
+          <>
           <div>
             <span className="field-label">File</span>
             <div className="pdf-admin-row" style={{ marginBottom: 10 }}>
@@ -315,6 +359,8 @@ export default function PdfsTab() {
               {form.mode === "view" && "This hides download controls; it can't stop someone determined from saving the file."}
             </p>
           </div>
+          </>
+          )}
 
           <label className="pdf-admin-row" style={{ cursor: "pointer" }}>
             <input type="checkbox" checked={form.published} onChange={(e) => set("published", e.target.checked)} />
@@ -335,13 +381,13 @@ export default function PdfsTab() {
       ) : (
         <div style={{ marginBottom: 18 }}>
           <button className="btn" type="button" onClick={openNew}>
-            + Add PDF
+            + Add news or PDF
           </button>
         </div>
       )}
 
       {pdfs.length === 0 ? (
-        <div className="loading">No PDFs yet. Added ones appear on the home page under “Important PDFs”.</div>
+        <div className="loading">Nothing yet. Added items appear on the home page under “Important news & PDFs”.</div>
       ) : (
         <div className="pdf-admin-list">
           {pdfs.map((p, i) => (
@@ -350,14 +396,23 @@ export default function PdfsTab() {
                 <b>{p.title}</b>
                 {p.description && <div className="muted-sm" style={{ marginTop: 4, whiteSpace: "pre-line" }}>{p.description}</div>}
                 <div className="muted-sm" style={{ marginTop: 6 }}>
-                  {MODE_LABEL[p.mode]} · {p.published ? "On home page" : "Hidden"} ·{" "}
-                  {p.file_key ? `${p.file_name} (${fmtSize(p.file_size)})` : "Outside link"}
+                  {p.kind === "news" ? (
+                    <>
+                      News · {p.published ? "On home page" : "Hidden"}
+                      {p.link_url && ` · links to ${p.link_url}`}
+                    </>
+                  ) : (
+                    <>
+                      PDF · {MODE_LABEL[p.mode]} · {p.published ? "On home page" : "Hidden"} ·{" "}
+                      {p.file_key ? `${p.file_name} (${fmtSize(p.file_size)})` : "Outside link"}
+                    </>
+                  )}
                 </div>
               </div>
               <div className="pdf-admin-actions">
                 <button className="btn ghost" type="button" disabled={i === 0} onClick={() => move(i, -1)} aria-label="Move up">↑</button>
                 <button className="btn ghost" type="button" disabled={i === pdfs.length - 1} onClick={() => move(i, 1)} aria-label="Move down">↓</button>
-                <a
+                {p.kind !== "news" && <a
                   className="btn ghost"
                   href={p.mode === "download" ? `/api/pdfs/${p.id}?download=1` : `/pdfs/${p.id}`}
                   target="_blank"
@@ -366,7 +421,7 @@ export default function PdfsTab() {
                   title={p.published ? "" : "Publish it first — hidden PDFs are not served"}
                 >
                   Open
-                </a>
+                </a>}
                 <button className="btn ghost" type="button" onClick={() => openEdit(p)}>Edit</button>
                 <button className="btn ghost" type="button" onClick={() => togglePublished(p)}>
                   {p.published ? "Hide" : "Publish"}

@@ -12,7 +12,9 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request, { params }) {
   const pdf = await getPdf(params.id).catch(() => null);
-  if (!pdf || !pdf.published) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!pdf || !pdf.published || pdf.kind === "news" || !(pdf.file_key || pdf.file_url)) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
   const wantsDownload = new URL(request.url).searchParams.has("download");
   if (wantsDownload ? !canDownload(pdf.mode) : !canView(pdf.mode)) {
