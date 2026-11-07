@@ -1,49 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { downloadMockPaperAsJson } from "./PaperDownload";
-import { loadView, nf, fmtTime, ago, pctClass } from "./format";
+import { nf, fmtTime, ago, pctClass } from "./format";
+import { usePagedFetch, viewUrl, Pager, useDebounced, usePage } from "./paging";
 
-const SORTS = {
-  attempts: (a, b) => b.attempts - a.attempts,
-  people: (a, b) => b.people - a.people,
-  recent: (a, b) => new Date(b.last_at) - new Date(a.last_at),
-  hardest: (a, b) => a.avg_pct - b.avg_pct,
-  easiest: (a, b) => b.avg_pct - a.avg_pct,
-};
-
+/** Papers that have been sat, a page at a time; search, filter and sort run on the server. */
 export default function TestsTab({ onOpen }) {
-  const [tests, setTests] = useState(null);
-  const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [exam, setExam] = useState("all");
+  const [exam, setExam] = useState("");
   const [sort, setSort] = useState("attempts");
+  const q = useDebounced(search.trim());
+  const [page, setPage] = usePage({ q, exam, sort });
 
-  useEffect(() => {
-    loadView({ view: "tests" })
-      .then((d) => setTests(d.tests))
-      .catch((e) => setError(e.message));
-  }, []);
+  const { data, error, loading } = usePagedFetch(viewUrl({ view: "tests", q, exam, sort, page }));
 
-  const exams = useMemo(() => [...new Map((tests || []).map((t) => [t.exam.id, t.exam])).values()], [tests]);
-  const shown = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return (tests || [])
-      .filter((t) => exam === "all" || t.exam.id === exam)
-      .filter((t) => !q || `${t.section_name} ${t.subject_name}`.toLowerCase().includes(q))
-      .sort(SORTS[sort]);
-  }, [tests, search, exam, sort]);
-
-  if (error) return <div className="loading">{error}</div>;
-  if (!tests) return <div className="loading">Loading…</div>;
+  if (error && !data) return <div className="loading">{error}</div>;
+  if (!data) return <div className="loading">Loading…</div>;
 
   return (
     <div>
       <div className="filters">
         <input className="text-input" placeholder="Search by subject or section…" value={search} onChange={(e) => setSearch(e.target.value)} />
         <select className="text-input" value={exam} onChange={(e) => setExam(e.target.value)} aria-label="Exam">
-          <option value="all">All exams</option>
-          {exams.map((e) => (
+          <option value="">All exams</option>
+          {data.exams.map((e) => (
             <option key={e.id} value={e.id}>{e.name}</option>
           ))}
         </select>
@@ -56,10 +37,10 @@ export default function TestsTab({ onOpen }) {
         </select>
       </div>
       <p className="muted-sm" style={{ marginBottom: 10 }}>
-        {nf(shown.length)} papers have been sat at least once. Click one to see who sat it.
+        {nf(data.total)} {data.total === 1 ? "paper has" : "papers have"} been sat at least once. Click one to see who sat it.
       </p>
 
-      <div className="table-wrap">
+      <div className={loading ? "table-wrap is-loading" : "table-wrap"}>
         <table className="table">
           <thead>
             <tr>
@@ -74,7 +55,7 @@ export default function TestsTab({ onOpen }) {
             </tr>
           </thead>
           <tbody>
-            {shown.map((t) => {
+            {data.tests.map((t) => {
               const key = `${t.section_id}/${t.group_id}/${t.subject_id}/${t.mock_num}`;
               const label = `${t.subject_name} · Mock ${t.mock_num}`;
               return (
@@ -108,7 +89,7 @@ export default function TestsTab({ onOpen }) {
                 </tr>
               );
             })}
-            {shown.length === 0 && (
+            {data.tests.length === 0 && (
               <tr>
                 <td colSpan={8} style={{ textAlign: "center", color: "var(--muted)" }}>No papers match.</td>
               </tr>
@@ -116,6 +97,8 @@ export default function TestsTab({ onOpen }) {
           </tbody>
         </table>
       </div>
+
+      <Pager page={data.page} pages={data.pages} total={data.total} noun="papers" loading={loading} onPage={setPage} />
     </div>
   );
 }

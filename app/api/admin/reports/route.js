@@ -5,12 +5,12 @@ import { listReports } from "@/lib/reports";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request) {
   if (!isTokenValid(cookies().get(ADMIN_COOKIE)?.value)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
-    return NextResponse.json({ reports: await listReports() });
+    return NextResponse.json(await listReports({ page: new URL(request.url).searchParams.get("page") }));
   } catch (e) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

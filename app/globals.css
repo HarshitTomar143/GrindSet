@@ -2114,3 +2114,12 @@ img, svg, video { max-width: 100%; }
 .pdf-admin-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 .pdf-admin-actions .btn { padding: 6px 12px; font-size: 13px; }
 .form-error { color: var(--red); font-size: 14px; margin: 0; }
+
+/* admin paging: the old page stays visible, dimmed, while the next one loads */
+.table-wrap.is-loading { opacity: 0.55; transition: opacity 0.15s; pointer-events: none; }
+.admin-pager { flex-wrap: wrap; gap: 8px 10px; }
+.admin-pager .btn { padding: 8px 14px; }
+.admin-pager-select {
+  font: inherit; font-size: 13px; padding: 3px 6px; border-radius: 8px;
+  border: 1px solid var(--line-strong); background: var(--card); color: var(--ink);
+}

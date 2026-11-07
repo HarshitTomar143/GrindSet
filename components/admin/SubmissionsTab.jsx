@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loadView, nf, fmtTime, fmtDateTime, pctClass } from "./format";
+import { nf, fmtTime, fmtDateTime, pctClass } from "./format";
+import { usePagedFetch, viewUrl, Pager, useDebounced, usePage } from "./paging";
 
 /**
  * Every finished paper, a page at a time. `scope` narrows it to one person or
@@ -10,39 +11,17 @@ import { loadView, nf, fmtTime, fmtDateTime, pctClass } from "./format";
  */
 export default function SubmissionsTab({ scope, onClearScope }) {
   const router = useRouter();
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
   const [input, setInput] = useState("");
-  const [q, setQ] = useState("");
   const [exam, setExam] = useState("");
   const [sort, setSort] = useState("newest");
-  const [page, setPage] = useState(1);
-
   // Search as the admin types, but not on every keystroke.
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setQ(input.trim());
-      setPage(1);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [input]);
-
-  useEffect(() => setPage(1), [scope]);
+  const q = useDebounced(input.trim());
 
   const filters = { q, exam, sort, ...(scope?.person && { person: scope.person }), ...(scope?.test && { test: scope.test }) };
-  const filterKey = JSON.stringify(filters);
+  const [page, setPage] = usePage(filters);
+  const { data, error, loading } = usePagedFetch(viewUrl({ view: "submissions", ...filters, page }));
 
-  useEffect(() => {
-    let live = true;
-    loadView({ view: "submissions", ...JSON.parse(filterKey), page })
-      .then((d) => live && (setData(d), setError(null)))
-      .catch((e) => live && setError(e.message));
-    return () => {
-      live = false;
-    };
-  }, [filterKey, page]);
-
-  if (error) return <div className="loading">{error}</div>;
+  if (error && !data) return <div className="loading">{error}</div>;
   if (!data) return <div className="loading">Loading…</div>;
 
   return (
@@ -65,13 +44,13 @@ export default function SubmissionsTab({ scope, onClearScope }) {
 
       <div className="filters">
         <input className="text-input" placeholder="Search by name, email or subject…" value={input} onChange={(e) => setInput(e.target.value)} />
-        <select className="text-input" value={exam} onChange={(e) => { setExam(e.target.value); setPage(1); }} aria-label="Exam">
+        <select className="text-input" value={exam} onChange={(e) => setExam(e.target.value)} aria-label="Exam">
           <option value="">All exams</option>
           {data.exams.map((e) => (
             <option key={e.id} value={e.id}>{e.name}</option>
           ))}
         </select>
-        <select className="text-input" value={sort} onChange={(e) => { setSort(e.target.value); setPage(1); }} aria-label="Sort">
+        <select className="text-input" value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort">
           <option value="newest">Newest first</option>
           <option value="oldest">Oldest first</option>
           <option value="highest">Highest score</option>
@@ -86,7 +65,7 @@ export default function SubmissionsTab({ scope, onClearScope }) {
         {!scope && data.total > 0 && ` · average ${data.avg_pct}%`}. Click one to see the answers.
       </p>
 
-      <div className="table-wrap">
+      <div className={loading ? "table-wrap is-loading" : "table-wrap"}>
         <table className="table">
           <thead>
             <tr>
@@ -130,17 +109,15 @@ export default function SubmissionsTab({ scope, onClearScope }) {
         </table>
       </div>
 
-      {data.pages > 1 && (
-        <div className="admin-pager">
-          <button type="button" className="btn ghost" disabled={data.page <= 1} onClick={() => setPage(data.page - 1)}>
-            ← Newer
-          </button>
-          <span className="muted-sm">Page {data.page} of {data.pages}</span>
-          <button type="button" className="btn ghost" disabled={data.page >= data.pages} onClick={() => setPage(data.page + 1)}>
-            Older →
-          </button>
-        </div>
-      )}
+      <Pager
+        page={data.page}
+        pages={data.pages}
+        total={data.total}
+        noun="submissions"
+        newer={sort === "newest"}
+        loading={loading}
+        onPage={setPage}
+      />
     </div>
   );
 }

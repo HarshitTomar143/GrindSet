@@ -25,9 +25,23 @@ export async function GET(request) {
         return NextResponse.json(await getOverview(RANGE_DAYS.includes(days) ? days : 30));
       }
       case "tests":
-        return NextResponse.json({ tests: await getTestStats() });
+        return NextResponse.json(
+          await getTestStats({
+            q: (p.get("q") || "").trim().slice(0, 100),
+            exam: p.get("exam"),
+            sort: p.get("sort"),
+            page: p.get("page"),
+          })
+        );
       case "people":
-        return NextResponse.json({ people: await getPeople() });
+        return NextResponse.json(
+          await getPeople({
+            q: (p.get("q") || "").trim().slice(0, 100),
+            kind: p.get("kind"),
+            sort: p.get("sort"),
+            page: p.get("page"),
+          })
+        );
       case "submissions":
         return NextResponse.json({
           exams: EXAMS,
