@@ -1,6 +1,8 @@
 import WelcomeModal from "@/components/WelcomeModal";
 import ContinuePractice from "@/components/ContinuePractice";
 import ExamLogo from "@/components/ExamLogo";
+import ImportantPdfs from "@/components/ImportantPdfs";
+import { listPublishedPdfs } from "@/lib/pdfs";
 import { listExams } from "@/lib/exams";
 import { getAllExamStats } from "@/lib/stats";
 import { uiText } from "@/lib/ui-text";
@@ -83,7 +85,14 @@ export default async function Home() {
   const lang = getSiteLang();
   const T = uiText(lang);
   const exams = listExams(lang);
-  const stats = await getAllExamStats();
+  // A database hiccup should cost the PDF strip, not the whole home page.
+  const [stats, pdfs] = await Promise.all([
+    getAllExamStats(),
+    listPublishedPdfs().catch((e) => {
+      console.error("Important PDFs:", e.message);
+      return [];
+    }),
+  ]);
 
   const live = Object.values(stats).filter(Boolean);
   const totalQuestions = live.reduce((a, s) => a + s.questions, 0);
@@ -128,6 +137,8 @@ export default async function Home() {
       </div>
 
       <ContinuePractice lang={lang} />
+
+      <ImportantPdfs pdfs={pdfs} T={T} />
 
       <section className="home-hero home-hero-below">
         <p className="hero-eyebrow">{T.heroEyebrow}</p>
