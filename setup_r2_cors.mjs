@@ -25,7 +25,13 @@ if (missing.length) {
   process.exit(1);
 }
 
-const origins = new Set(["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"]);
+// The live site is always included, so a rerun can never drop it by accident.
+const origins = new Set([
+  "https://www.octopus.ind.in",
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://localhost:3002",
+]);
 for (const v of [process.env.SITE_URL, process.env.NEXTAUTH_URL, ...(process.env.R2_CORS_ORIGINS || "").split(",")]) {
   const o = (v || "").trim().replace(/\/+$/, "");
   if (!o) continue;
