@@ -38,9 +38,16 @@ function putFile(url, file, onProgress) {
       xhr.status >= 200 && xhr.status < 300
         ? resolve()
         : reject(new Error(`Upload failed (${xhr.status}).`));
-    // A blocked request gives no status: almost always the bucket's CORS rule.
+    // A blocked request gives no status: almost always the bucket's CORS rule
+    // not listing the address the admin page is open on.
     xhr.onerror = () =>
-      reject(new Error("Upload was blocked. Run `npm run r2:cors` once so the bucket accepts uploads from this site."));
+      reject(
+        new Error(
+          `Upload was blocked by the storage bucket. This page is open on ${window.location.origin}, ` +
+            `which the bucket may not allow — open the admin on the live domain, or add this address ` +
+            `with: R2_CORS_ORIGINS=${window.location.origin} npm run r2:cors`
+        )
+      );
     xhr.send(file);
   });
 }
@@ -245,8 +252,15 @@ export default function PdfsTab() {
                   Paste link
                 </button>
               </div>
-              {!uploads && <span className="muted-sm">Uploads need the R2 settings in the env file.</span>}
             </div>
+            {!uploads && (
+              <p className="pdf-admin-notice">
+                Uploading is off: this server has no R2 storage keys. Add <code>R2_ACCOUNT_ID</code>,{" "}
+                <code>R2_ACCESS_KEY_ID</code>, <code>R2_SECRET_ACCESS_KEY</code> and <code>R2_BUCKET</code> to the
+                hosting environment (Vercel → Settings → Environment Variables) and redeploy. Until then, paste a
+                link to the PDF instead.
+              </p>
+            )}
 
             {form.source === "upload" ? (
               <div className="pdf-admin-row">

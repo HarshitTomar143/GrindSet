@@ -5,8 +5,9 @@
  *
  *   npm run r2:cors
  *
- * Origins come from SITE_URL and NEXTAUTH_URL plus local dev ports. Add more
- * with R2_CORS_ORIGINS=https://a.example,https://b.example.
+ * Origins: the live site, local dev ports, SITE_URL / NEXTAUTH_URL, plus any
+ * in R2_CORS_ORIGINS=https://a.example,https://b.example (bash syntax). The
+ * admin page has to be opened from one of these or uploads are blocked.
  *
  * The R2 token needs "Admin Read & Write" to change bucket settings. With an
  * object-only token this fails; set the same rule in the Cloudflare dashboard
@@ -27,10 +28,14 @@ if (missing.length) {
 
 // The live site is always included, so a rerun can never drop it by accident.
 const origins = new Set([
+  "https://pyqsetu.in",
+  "https://www.pyqsetu.in",
   "https://www.octopus.ind.in",
+  "https://octopus.ind.in",
   "http://localhost:3000",
   "http://localhost:3001",
   "http://localhost:3002",
+  "http://127.0.0.1:3000",
 ]);
 for (const v of [process.env.SITE_URL, process.env.NEXTAUTH_URL, ...(process.env.R2_CORS_ORIGINS || "").split(",")]) {
   const o = (v || "").trim().replace(/\/+$/, "");

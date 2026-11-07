@@ -2123,3 +2123,9 @@ img, svg, video { max-width: 100%; }
   font: inherit; font-size: 13px; padding: 3px 6px; border-radius: 8px;
   border: 1px solid var(--line-strong); background: var(--card); color: var(--ink);
 }
+.seg button:disabled { opacity: 0.4; cursor: not-allowed; }
+.pdf-admin-notice {
+  margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.5;
+  background: var(--amber-soft); color: var(--ink-2); border: 1px solid var(--line);
+}
+.pdf-admin-notice code { font-size: 12px; }
