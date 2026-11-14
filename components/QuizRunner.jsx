@@ -99,6 +99,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
 
   const autoSubmitRef = useRef(null);
   const paletteRef = useRef(null);
+  const qCardRef = useRef(null);
   // Keyboard handling is registered once and reads the live actions through a
   // ref, because the screen returns early for the gate and the report card and
   // a hook cannot be declared after those returns.
@@ -214,6 +215,20 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
     if (top < box.scrollTop) box.scrollTop = top - 8;
     else if (bottom > box.scrollTop + box.clientHeight) {
       box.scrollTop = bottom - box.clientHeight + 8;
+    }
+  }, [current]);
+
+  // On a phone the palette sits below the question, and Save & Next sits at
+  // the foot of a long one. Either way the new question would open out of
+  // sight, so bring its top back under the sticky bar.
+  useEffect(() => {
+    const card = qCardRef.current;
+    if (!card || !window.matchMedia("(max-width: 900px)").matches) return;
+    const bar = document.querySelector(".cbt-bar");
+    const offset = (bar ? bar.getBoundingClientRect().bottom : 0) + 8;
+    const top = card.getBoundingClientRect().top;
+    if (top < offset || top > window.innerHeight * 0.6) {
+      window.scrollBy({ top: top - offset, behavior: "smooth" });
     }
   }, [current]);
 
@@ -1123,7 +1138,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
 
       <div className="cbt-body">
         <main className="cbt-main">
-          <div className="q-card">
+          <div className="q-card" ref={qCardRef}>
             <div className="q-head">
               <span className="q-num">{T.questionOf(current + 1, total)}</span>
               <div className="q-tools">
