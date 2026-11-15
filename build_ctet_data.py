@@ -40,13 +40,16 @@ FOLDERS = [
     # General Studies: the UP-focused GS question banks (history, geography,
     # polity, economy, science, environment, ICT). One workbook per subject.
     ("gs", "general-studies", None, None),
+    # Sanskrit for UP TGT/PGT: grammar, Mahabhashya, darshan, dharmashastra,
+    # metre, linguistics, scripts, translation and pedagogy. One workbook each.
+    ("sanskrit", "sanskrit", None, None),
 ]
 
 # Folders whose questions are not CTET papers: their Subject column already names
 # the topic (a literature chapter, a GS chapter), so canon_subject -- which maps
 # onto CTET's five paper subjects -- must not touch it. Left unmapped, a GS row
 # labelled "सामान्य विज्ञान" would be rewritten to "Mathematics & Science".
-RAW_SUBJECT_FOLDERS = {"hindi", "English", "gs"}
+RAW_SUBJECT_FOLDERS = {"hindi", "English", "gs", "sanskrit"}
 
 # Sheets that hold commentary rather than questions.
 SKIP_SHEETS = {
@@ -527,11 +530,28 @@ def process_file(path, folder, exam_id, paper, stream):
 
 
 def main():
+    # `--only <folder> [...]` rebuilds just those folders and keeps every other
+    # folder's entry in the existing manifest as it is, so one new bank can be
+    # added without the other source folders having to be present.
+    only = None
+    if "--only" in sys.argv:
+        only = set(sys.argv[sys.argv.index("--only") + 1:])
+        unknown = only - {f[0] for f in FOLDERS}
+        if unknown or not only:
+            sys.exit(f"--only needs folder names from FOLDERS; unknown: {sorted(unknown)}")
+
     os.makedirs(ROW_DIR, exist_ok=True)
     manifest = {"folders": [], "totals": {}}
     grand = {"rows": 0, "gradable": 0, "files": 0}
+    kept = []
+    if only:
+        with open(os.path.join(OUT_DIR, "manifest.json"), encoding="utf-8") as fh:
+            old = json.load(fh)
+        kept = [f for f in old["folders"] if f["folder"] not in only]
 
     for folder, exam_id, paper, stream in FOLDERS:
+        if only and folder not in only:
+            continue
         d = os.path.join(CET_DIR, folder)
         if not os.path.isdir(d):
             print(f"skip missing folder: {folder}")
@@ -566,6 +586,16 @@ def main():
         grand["files"] += len(files)
         print(f"{folder:<16} files={len(files):<3} rows={len(all_rows):<6} gradable={ok}")
 
+    if only:
+        # Keep FOLDERS order for the merged manifest.
+        order = {f[0]: i for i, f in enumerate(FOLDERS)}
+        manifest["folders"] = sorted(kept + manifest["folders"],
+                                     key=lambda f: order.get(f["folder"], 99))
+        grand = {
+            "rows": sum(f["rows"] for f in manifest["folders"]),
+            "gradable": sum(f["gradable"] for f in manifest["folders"]),
+            "files": sum(len(f["files"]) for f in manifest["folders"]),
+        }
     manifest["totals"] = grand
     with open(os.path.join(OUT_DIR, "manifest.json"), "w", encoding="utf-8") as fh:
         json.dump(manifest, fh, ensure_ascii=False, indent=2)

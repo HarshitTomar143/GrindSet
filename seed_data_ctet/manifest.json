@@ -1489,11 +1489,113 @@
       "rows": 5662,
       "gradable": 5164,
       "unique_questions": 5432
+    },
+    {
+      "folder": "sanskrit",
+      "exam_id": "sanskrit",
+      "paper": null,
+      "stream": null,
+      "file": "sanskrit.json",
+      "files": [
+        {
+          "file": "Bhasha_Vigyan_MCQ.xlsx",
+          "rows": 130,
+          "gradable": 130,
+          "schemas": [
+            "G"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Chhand_Questions.xlsx",
+          "rows": 37,
+          "gradable": 37,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Darshan_ya_Bhagwat_Geeta_Questions.xlsx",
+          "rows": 465,
+          "gradable": 463,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Dharmshastra-Arthshastra-Smritiyan.xlsx",
+          "rows": 91,
+          "gradable": 91,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Mahabhashya_Questions.xlsx",
+          "rows": 65,
+          "gradable": 65,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Sanskrit_Shikshan_Computer_Questions.xlsx",
+          "rows": 122,
+          "gradable": 122,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Shilalekh_Lipi_Questions.xlsx",
+          "rows": 36,
+          "gradable": 36,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Shuddh_vakya_and_anuvad_questions.xlsx",
+          "rows": 129,
+          "gradable": 129,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        },
+        {
+          "file": "Vividh_Vyakaran_Questions.xlsx",
+          "rows": 98,
+          "gradable": 98,
+          "schemas": [
+            "C"
+          ],
+          "duplicate_of_another_file": false,
+          "known_bad_ocr": false
+        }
+      ],
+      "rows": 1173,
+      "gradable": 1171,
+      "unique_questions": 1148
     }
   ],
   "totals": {
-    "rows": 27916,
-    "gradable": 26553,
-    "files": 142
+    "rows": 29089,
+    "gradable": 27724,
+    "files": 151
   }
 }

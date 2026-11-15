@@ -132,19 +132,39 @@ async function main() {
     console.log(`UPTET 'questions' table left untouched (${n[0].c} rows).`);
   }
 
-  await client.query(`DROP TABLE IF EXISTS ${TABLE}`);
-  await client.query(DDL);
-  await client.query(
-    `CREATE INDEX idx_ctet_lookup ON ${TABLE} (exam_id, paper, stream, subject_id)`
-  );
-  await client.query(
-    `CREATE INDEX idx_ctet_gradable ON ${TABLE} (is_gradable, is_duplicate_file)`
-  );
-  await client.query(`CREATE INDEX idx_ctet_qkey ON ${TABLE} (qkey)`);
-  console.log(`Created table '${TABLE}'.`);
+  // `--only <folder> [...]` replaces just those folders' rows and leaves the
+  // rest of the table (and its ids) alone.
+  const onlyAt = process.argv.indexOf("--only");
+  const only = onlyAt > -1 ? process.argv.slice(onlyAt + 1) : null;
+  const folders = only
+    ? manifest.folders.filter((f) => only.includes(f.folder))
+    : manifest.folders;
+  if (only && (!only.length || folders.length !== only.length)) {
+    throw new Error(`--only: folders not in manifest: ${only.join(", ")}`);
+  }
 
+  if (only) {
+    const { rowCount } = await client.query(
+      `DELETE FROM ${TABLE} WHERE source_folder = ANY($1)`,
+      [only]
+    );
+    console.log(`Removed ${rowCount} old rows for: ${only.join(", ")}.`);
+  } else {
+    await client.query(`DROP TABLE IF EXISTS ${TABLE}`);
+    await client.query(DDL);
+    await client.query(
+      `CREATE INDEX idx_ctet_lookup ON ${TABLE} (exam_id, paper, stream, subject_id)`
+    );
+    await client.query(
+      `CREATE INDEX idx_ctet_gradable ON ${TABLE} (is_gradable, is_duplicate_file)`
+    );
+    await client.query(`CREATE INDEX idx_ctet_qkey ON ${TABLE} (qkey)`);
+    console.log(`Created table '${TABLE}'.`);
+  }
+
+  const expected = folders.reduce((a, f) => a + f.rows, 0);
   let inserted = 0;
-  for (const folder of manifest.folders) {
+  for (const folder of folders) {
     const rows = JSON.parse(
       await readFile(path.join(SEED_DIR, "rows", folder.file), "utf-8")
     );
@@ -165,7 +185,7 @@ async function main() {
         params
       );
       inserted += chunk.length;
-      process.stdout.write(`\rInserted ${inserted}/${manifest.totals.rows} rows…`);
+      process.stdout.write(`\rInserted ${inserted}/${expected} rows…`);
     }
   }
 

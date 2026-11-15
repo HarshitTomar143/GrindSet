@@ -9,6 +9,7 @@
     "data:ctet": "python build_ctet_data.py",
     "seed:ctet": "node seed_ctet.mjs",
     "setup:ctet": "python build_ctet_data.py && node seed_ctet.mjs",
+    "setup:sanskrit": "python build_ctet_data.py --only sanskrit && node seed_ctet.mjs --only sanskrit",
     "data:mp-police": "python build_mp_police_data.py",
     "upload:mp-police": "node upload_mp_police_diagrams.mjs",
     "seed:mp-police": "node seed_mp_police.mjs",
