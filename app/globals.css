@@ -2035,6 +2035,43 @@ img, svg, video { max-width: 100%; }
 .pdf-page-head .btn { display: inline-flex; align-items: center; text-decoration: none; }
 .pdf-page-sub { white-space: pre-line; margin-bottom: 20px; }
 .pdf-viewer { display: grid; gap: 12px; margin-bottom: 30px; }
+.pdf-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pdf-pages { display: grid; gap: 12px; min-width: 100%; }
+.pdf-toolbar {
+  position: sticky;
+  top: 74px;
+  z-index: 5;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: var(--card-solid);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+}
+.pdf-zoom-btn {
+  min-width: 40px;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.pdf-zoom-btn:hover:not(:disabled) { background: var(--line); }
+.pdf-zoom-btn:disabled { opacity: 0.35; cursor: default; }
+.pdf-zoom-fit { font-size: 14px; font-weight: 600; }
+.pdf-zoom-val { min-width: 48px; text-align: center; font-size: 14px; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) {
+  /* Give the pages the full phone width instead of the page gutter. */
+  .pdf-scroll { margin: 0 -8px; }
+}
 .pdf-page {
   position: relative;
   width: 100%;

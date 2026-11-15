@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
  * Draws a PDF onto canvases with pdf.js, so it reads the same on every phone
@@ -26,12 +26,55 @@ function loadPdfjs() {
   return pdfjsPromise;
 }
 
+const ZOOMS = [1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+const ZOOM_KEY = "pdf-zoom";
+// Biggest canvas side we draw; phones refuse (blank canvas) much past this.
+const MAX_CANVAS = 4096;
+
 export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
   const [doc, setDoc] = useState(null);
   const [ratio, setRatio] = useState(1.414); // A4 until page 1 says otherwise
   const [failed, setFailed] = useState(false);
   const [width, setWidth] = useState(0);
+  const [zoom, setZoom] = useState(1);
   const wrapRef = useRef(null);
+  const scrollRef = useRef(null);
+  const pagesRef = useRef(null);
+  const anchorRef = useRef(null);
+
+  // Start zoomed in on narrow screens (a fitted A4 page there is unreadable),
+  // or at whatever zoom this reader picked last time.
+  useEffect(() => {
+    let saved = null;
+    try {
+      saved = Number(localStorage.getItem(ZOOM_KEY)) || null;
+    } catch {}
+    if (saved && ZOOMS.includes(saved)) setZoom(saved);
+    else if (window.innerWidth < 640) setZoom(1.5);
+  }, []);
+
+  const changeZoom = (z) => {
+    // Remember where in the document we are, so zooming keeps the same spot.
+    const el = pagesRef.current;
+    if (el) {
+      const r = el.getBoundingClientRect();
+      anchorRef.current = r.height ? (window.innerHeight / 3 - r.top) / r.height : null;
+    }
+    setZoom(z);
+    try {
+      localStorage.setItem(ZOOM_KEY, String(z));
+    } catch {}
+  };
+  const zi = ZOOMS.indexOf(zoom);
+
+  useLayoutEffect(() => {
+    const f = anchorRef.current;
+    const el = pagesRef.current;
+    anchorRef.current = null;
+    if (f == null || !el) return;
+    const r = el.getBoundingClientRect();
+    window.scrollTo({ top: window.scrollY + r.top + f * r.height - window.innerHeight / 3 });
+  }, [zoom]);
 
   // Open the document.
   useEffect(() => {
@@ -66,7 +109,7 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
 
   // Track the column width; pages are redrawn when it changes noticeably.
   useEffect(() => {
-    const el = wrapRef.current;
+    const el = scrollRef.current;
     if (!el) return;
     let t;
     const ro = new ResizeObserver(([entry]) => {
@@ -85,7 +128,7 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
 
   // Draw pages as they come near the viewport.
   useEffect(() => {
-    if (!doc || !width || !wrapRef.current) return;
+    if (!doc || !width || !pagesRef.current) return;
     const drawn = new Set();
     const tasks = new Map();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -97,7 +140,9 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
       try {
         const page = await doc.getPage(n);
         const base = page.getViewport({ scale: 1 });
-        const vp = page.getViewport({ scale: (width / base.width) * dpr });
+        let scale = ((width * zoom) / base.width) * dpr;
+        scale = Math.min(scale, MAX_CANVAS / Math.max(base.width, base.height));
+        const vp = page.getViewport({ scale });
         const canvas = holder.querySelector("canvas");
         canvas.width = Math.floor(vp.width);
         canvas.height = Math.floor(vp.height);
@@ -115,12 +160,12 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
       (entries) => entries.forEach((e) => e.isIntersecting && draw(e.target)),
       { rootMargin: "1200px 0px" }
     );
-    wrapRef.current.querySelectorAll(".pdf-page").forEach((el) => io.observe(el));
+    pagesRef.current.querySelectorAll(".pdf-page").forEach((el) => io.observe(el));
     return () => {
       io.disconnect();
       tasks.forEach((t) => t.cancel());
     };
-  }, [doc, width]);
+  }, [doc, width, zoom]);
 
   if (failed) {
     return (
@@ -143,17 +188,53 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
       onContextMenu={viewOnly ? (e) => e.preventDefault() : undefined}
     >
       {!doc && <div className="loading">{text.loading}</div>}
-      {doc &&
-        Array.from({ length: doc.numPages }, (_, i) => (
-          <div
-            key={i}
-            className="pdf-page"
-            data-page={i + 1}
-            style={{ aspectRatio: `1 / ${ratio}` }}
+      {doc && (
+        <div className="pdf-toolbar" role="toolbar" aria-label="Zoom">
+          <button
+            type="button"
+            className="pdf-zoom-btn"
+            onClick={() => changeZoom(ZOOMS[zi - 1])}
+            disabled={zi <= 0}
+            aria-label="Zoom out"
           >
-            <canvas />
+            −
+          </button>
+          <span className="pdf-zoom-val">{Math.round(zoom * 100)}%</span>
+          <button
+            type="button"
+            className="pdf-zoom-btn"
+            onClick={() => changeZoom(ZOOMS[zi + 1])}
+            disabled={zi >= ZOOMS.length - 1}
+            aria-label="Zoom in"
+          >
+            +
+          </button>
+          <button
+            type="button"
+            className="pdf-zoom-btn pdf-zoom-fit"
+            onClick={() => changeZoom(1)}
+            disabled={zoom === 1}
+          >
+            Fit
+          </button>
+        </div>
+      )}
+      <div className="pdf-scroll" ref={scrollRef}>
+        {doc && (
+          <div className="pdf-pages" ref={pagesRef} style={{ width: `${zoom * 100}%` }}>
+            {Array.from({ length: doc.numPages }, (_, i) => (
+              <div
+                key={i}
+                className="pdf-page"
+                data-page={i + 1}
+                style={{ aspectRatio: `1 / ${ratio}` }}
+              >
+                <canvas />
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+      </div>
     </div>
   );
 }
