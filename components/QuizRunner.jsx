@@ -141,8 +141,13 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
   // count of correct answers, as every subject paper does.
   const marking = meta.marking || null;
   const maxMarks = marking ? total * marking.correct : total;
+  // Penalties can be fractions (1/3 a mark), so marks are kept to 2 decimals:
+  // 4 right and 3 wrong at +3/−1/3 is 12 − 1 = 11.
   const marksOf = (correct, wrong) =>
-    marking ? correct * marking.correct - wrong * marking.wrong : correct;
+    marking
+      ? Math.round((correct * marking.correct - wrong * marking.wrong) * 100) / 100
+      : correct;
+  const wrongLabel = marking ? marking.wrongLabel || String(marking.wrong) : "";
   // With negative marking the percentage is of the marks, never below zero.
   const pctOf = (correct, wrong, outOf = maxMarks) =>
     outOf ? Math.max(0, Math.round((marksOf(correct, wrong) / outOf) * 100)) : 0;
@@ -394,7 +399,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
               </div>
               {marking && (
                 <div className="muted-sm" style={{ marginTop: 10 }}>
-                  {T.markingNote(marking.correct, marking.wrong, maxMarks)}
+                  {T.markingNote(marking.correct, wrongLabel, maxMarks)}
                 </div>
               )}
             </>
@@ -917,7 +922,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
 
         {marking && (
           <p className="muted-sm" style={{ margin: "10px 0 0" }}>
-            {T.markingNote(marking.correct, marking.wrong, maxMarks)}
+            {T.markingNote(marking.correct, wrongLabel, maxMarks)}
           </p>
         )}
 
