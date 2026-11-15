@@ -42,6 +42,7 @@ export default async function PdfPage({ params }) {
       </div>
       <PdfViewer
         src={src}
+        streamSrc={`/api/pdfs/${pdf.id}?stream=1`}
         viewOnly={!canDownload(pdf.mode)}
         text={{ loading: T.pdfLoading, failed: T.pdfFailed, openInstead: T.pdfOpenInstead }}
         fallbackHref={`/api/pdfs/${pdf.id}`}

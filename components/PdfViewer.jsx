@@ -31,7 +31,7 @@ const ZOOM_KEY = "pdf-zoom";
 // Biggest canvas side we draw; phones refuse (blank canvas) much past this.
 const MAX_CANVAS = 4096;
 
-export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
+export default function PdfViewer({ src, streamSrc, viewOnly, text, fallbackHref }) {
   const [doc, setDoc] = useState(null);
   const [ratio, setRatio] = useState(1.414); // A4 until page 1 says otherwise
   const [failed, setFailed] = useState(false);
@@ -80,15 +80,33 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
   useEffect(() => {
     let cancelled = false;
     let task;
+    const common = {
+      cMapUrl: `${PDFJS}cmaps/`,
+      cMapPacked: true,
+      standardFontDataUrl: `${PDFJS}standard_fonts/`,
+    };
+    const open = (pdfjs, options) => {
+      task?.destroy();
+      task = pdfjs.getDocument({ ...common, ...options });
+      return task.promise;
+    };
     loadPdfjs()
-      .then((pdfjs) => {
-        task = pdfjs.getDocument({
-          url: src,
-          cMapUrl: `${PDFJS}cmaps/`,
-          cMapPacked: true,
-          standardFontDataUrl: `${PDFJS}standard_fonts/`,
-        });
-        return task.promise;
+      .then(async (pdfjs) => {
+        // Straight from storage first (fastest). If the browser is not allowed
+        // to read it there (CORS), go through this site's own server instead,
+        // in range requests so a big file still opens a page at a time.
+        try {
+          return await open(pdfjs, { url: src });
+        } catch (e) {
+          if (!streamSrc || cancelled) throw e;
+          console.warn("pdf.js could not read the file directly, streaming it via the site:", e);
+          return open(pdfjs, {
+            url: streamSrc,
+            disableStream: true,
+            disableAutoFetch: true,
+            rangeChunkSize: 256 * 1024,
+          });
+        }
       })
       .then(async (d) => {
         const first = await d.getPage(1);
@@ -105,7 +123,7 @@ export default function PdfViewer({ src, viewOnly, text, fallbackHref }) {
       cancelled = true;
       task?.destroy();
     };
-  }, [src]);
+  }, [src, streamSrc]);
 
   // Track the column width; pages are redrawn when it changes noticeably.
   useEffect(() => {
