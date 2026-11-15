@@ -106,9 +106,12 @@ export default async function BankHome({ bank }) {
                       ? T.wTopics(sec.topicCount)
                       : T.wSubjects(sec.topicCount)}
                   </span>
-                  <span>
-                    <b>{nf(sec.total)}</b> {T.wQuestions(sec.total)}
-                  </span>
+                  {/* Full mocks reuse the subject banks' questions. */}
+                  {!sec.derived && (
+                    <span>
+                      <b>{nf(sec.total)}</b> {T.wQuestions(sec.total)}
+                    </span>
+                  )}
                   {/* Whole papers are already counted as papers above. */}
                   {sec.itemWord !== "wPapers" && (
                     <span>

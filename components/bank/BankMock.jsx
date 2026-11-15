@@ -57,6 +57,8 @@ export default async function BankMock({ bank, sectionId, topicId, mock }) {
         // null for an exam with no published qualifying mark: no verdict shown.
         passMark: exam?.cutoff?.general ?? null,
         mockCount: topic.mocks,
+        // Marks per correct answer and marks lost per wrong one (full mocks).
+        marking: section.marking || null,
         sectionName: `${bank.name} · ${displayLabel(section, lang)}`,
         groupName: kindWord(lang, t),
         subjectName: displayLabel(topic, lang),

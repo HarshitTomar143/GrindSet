@@ -137,6 +137,15 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
   const passMark = meta.passMark === undefined ? DEFAULT_PASS_PCT : meta.passMark;
 
   const total = questions.length;
+  // Marks per correct answer and marks lost per wrong one; null scores by
+  // count of correct answers, as every subject paper does.
+  const marking = meta.marking || null;
+  const maxMarks = marking ? total * marking.correct : total;
+  const marksOf = (correct, wrong) =>
+    marking ? correct * marking.correct - wrong * marking.wrong : correct;
+  // With negative marking the percentage is of the marks, never below zero.
+  const pctOf = (correct, wrong, outOf = maxMarks) =>
+    outOf ? Math.max(0, Math.round((marksOf(correct, wrong) / outOf) * 100)) : 0;
   const answeredCount = Object.keys(answers).length;
 
   // Sections only exist on full mock papers; a subject paper has none.
@@ -383,6 +392,11 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
                   </span>
                 ))}
               </div>
+              {marking && (
+                <div className="muted-sm" style={{ marginTop: 10 }}>
+                  {T.markingNote(marking.correct, marking.wrong, maxMarks)}
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -511,7 +525,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
       else if (a === qq.correct) correct++;
       else wrong++;
     });
-    const percentage = Math.round((correct / total) * 100);
+    const percentage = pctOf(correct, wrong);
 
     setSubmitted(true);
     setConfirmingSubmit(false);
@@ -552,6 +566,8 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
           wrong,
           skipped,
           percentage,
+          marks: marksOf(correct, wrong),
+          maxMarks,
           duration: seconds,
           answers,
         }),
@@ -750,7 +766,8 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
   // ---------- REPORT CARD ----------
   if (submitted && results) {
     keysRef.current = { enabled: false, escape: report ? closeReport : null };
-    const pct = Math.round((results.correct / results.total) * 100);
+    const pct = pctOf(results.correct, results.wrong);
+    const marks = marksOf(results.correct, results.wrong);
     const attempted = results.correct + results.wrong;
     const accuracy = attempted ? Math.round((results.correct / attempted) * 100) : 0;
     const pace = results.total ? seconds / results.total : 0;
@@ -794,13 +811,16 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
               else if (a === questions[i].correct) correct++;
               else wrong++;
             }
+            const outOf = marking ? idx.length * marking.correct : idx.length;
             return {
               name,
               correct,
               wrong,
               skipped,
               total: idx.length,
-              pct: idx.length ? Math.round((correct / idx.length) * 100) : 0,
+              marks: marksOf(correct, wrong),
+              outOf,
+              pct: pctOf(correct, wrong, outOf),
             };
           })
         : [];
@@ -850,7 +870,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
             <div className="score-ring-text">
               <span className="score-num">{pct}%</span>
               <span className="score-of">
-                {results.correct}/{results.total}
+                {marking ? `${marks}/${maxMarks}` : `${results.correct}/${results.total}`}
               </span>
             </div>
           </div>
@@ -864,6 +884,14 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
           )}
 
           <div className="stat-row">
+            {marking && (
+              <div className="stat neutral">
+                <div className="n">
+                  {marks}/{maxMarks}
+                </div>
+                <div className="l">{T.marksLabel}</div>
+              </div>
+            )}
             <div className="stat correct">
               <div className="n">{results.correct}</div>
               <div className="l">{T.correct}</div>
@@ -887,6 +915,12 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
           </div>
         </div>
 
+        {marking && (
+          <p className="muted-sm" style={{ margin: "10px 0 0" }}>
+            {T.markingNote(marking.correct, marking.wrong, maxMarks)}
+          </p>
+        )}
+
         {bySection.length > 0 && (
           <>
             <h2 className="strip-title">{T.sectionBreakdown}</h2>
@@ -905,7 +939,7 @@ export default function QuizRunner({ questions, meta, submitMeta, mockNum, accou
                     />
                   </div>
                   <div className="breakdown-score">
-                    {s.correct}/{s.total}
+                    {marking ? `${s.marks}/${s.outOf}` : `${s.correct}/${s.total}`}
                     <span className="breakdown-pct">{s.pct}%</span>
                   </div>
                 </div>
