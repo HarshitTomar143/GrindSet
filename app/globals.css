@@ -2324,3 +2324,69 @@ img, svg, video { max-width: 100%; }
   .cbt-bar .timer { padding: 4px 7px; font-size: 13px; }
   .cbt-bar .btn-sm { padding: 6px 9px; font-size: 12.5px; }
 }
+
+/* ==========================================================================
+   PHONE READING SIZES
+   The sizes above were set for a laptop and read too small on a phone. Body
+   text is 16px here and nothing a candidate has to read is under 13px. The
+   header controls are left alone: they only just fit at 320px.
+   ========================================================================== */
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+
+  /* Test screen: question, options and explanation. */
+  .q-text { font-size: calc(18px * var(--reading-scale)); line-height: 1.5; }
+  .option .otext { font-size: calc(16px * var(--reading-scale)); }
+  .explain { font-size: calc(15px * var(--reading-scale)); }
+  .q-num { font-size: 15px; }
+  .q-tools .tool-btn { font-size: 13px; }
+  .palette button { font-size: 14px; }
+  .table { font-size: 15px; }
+
+  /* Page furniture. */
+  .page-sub { font-size: 16px; }
+  .breadcrumb, .back-btn { font-size: 14px; }
+  .site-footer, .footer-line, .footer-line a { font-size: 14px; }
+  .app-disclaimer { font-size: 14px; }
+
+  /* Home: hero and exam cards. */
+  .hero-eyebrow { font-size: 13px; }
+  .hero-sub { font-size: 16px; }
+  .hero-stats dt, .exam-pattern dt { font-size: 13px; }
+  .exam-card-authority { font-size: 12.5px; }
+  .exam-card-full { font-size: 14.5px; }
+  .exam-card-blurb { font-size: 15px; }
+  .exam-card .fact { font-size: 13px; }
+  .exam-card .fact span, .exam-card .fact b { font-size: inherit; }
+  .exam-card-cta { font-size: 14.5px; }
+  .strip-title { font-size: 14px; }
+
+  /* News / notices panel. */
+  .np-panel-title { font-size: 14px; }
+  .np-title { font-size: 15.5px; }
+  .np-meta { font-size: 13px; }
+  .np-info { font-size: 14px; }
+  .np-desc > p { font-size: 14.5px; }
+
+  /* Subject and topic lists. */
+  .topic-group-title { font-size: 19px; }
+  .topic-group-sub, .topic-group-count { font-size: 14px; }
+  .unit-nav-count { font-size: 13px; }
+  .card .card-title { font-size: 17px; }
+  .card .card-meta { font-size: 15px; }
+  .pill, .card .pill { font-size: 13px; }
+  .unit-nav a { font-size: 14px; }
+
+  /* Paper and mock cards, counts and small notes. */
+  .exam-card-counts { font-size: 13.5px; }
+  .paper-blurb, .fullmock-blurb { font-size: 15px; }
+  .paper-facts .fact { font-size: 13px; }
+  .paper-counts, .resume-meta, .mock-meta { font-size: 13.5px; }
+  .paper-cta, .mock-cta, .np-actions .btn { font-size: 14px; }
+  .muted-sm, .palette-legend, .breakdown-pct { font-size: 13px; }
+  .mode-card p, .dash-note, .dash-tile-label, .auth-hint, .auth-note { font-size: 13.5px; }
+  .exam-authority, .paper-eyebrow { font-size: 12.5px; }
+  .exam-full { font-size: 14.5px; }
+  .exam-header-sub { font-size: 15.5px; }
+  .exam-note { font-size: 13.5px; }
+}
